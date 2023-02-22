@@ -2,30 +2,71 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import routes from "./routes";
-import { HomeScreen } from "../screens";
+import { HomeScreen } from "../screens/";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import DocumentScreen from "../screens/user/DocumentsScreen";
+import ConsultationScreen from "../screens/user/ConsultationScreen";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const Stack = createNativeStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
-function Routes() {
+function Router() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <Tab.Navigator
         initialRouteName={routes.HOME}
-        options={{ headerShadowVisible: false }}
+        labeled={false}
         screenOptions={{
+          headerShadowVisible: false,
           headerStyle: {
-            elevation: 0,
-            shadowOpacity: 0,
+            backgroundColor: "white",
           },
           headerTitleStyle: {
             fontWeight: "bold",
           },
         }}
       >
-        <Stack.Screen name={routes.HOME} component={HomeScreen} />
-      </Stack.Navigator>
+        <Tab.Screen
+          name={routes.HOME}
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="home" color={color} size={22} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name={routes.DOCUMENTS}
+          component={DocumentScreen}
+          options={{
+            headerShown: true,
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name="file-document"
+                color={color}
+                size={22}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name={routes.CONSULTATION}
+          component={ConsultationScreen}
+          options={{
+            headerShown: true,
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name="account-group"
+                color={color}
+                size={22}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
 
-export default Routes;
+export default Router;
