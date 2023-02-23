@@ -15,7 +15,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <List.Item
-        style={{ margin: 10, marginTop: 30 }}
+        style={{ margin: 10, marginTop: 35 }}
         title={`Hello Kiran`}
         description={`How are you feeling today !!`}
         left={(props) => (
