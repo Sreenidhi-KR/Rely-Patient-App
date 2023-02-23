@@ -7,14 +7,45 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import DocumentScreen from "../screens/user/DocumentsScreen";
 import ConsultationScreen from "../screens/user/ConsultationScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import DoctorListScreen from "../screens/doctor/DoctorsListScreen";
 
 const Tab = createMaterialBottomTabNavigator();
+
+const HomeStack = createNativeStackNavigator();
+const DocumentStack = createNativeStackNavigator();
+
+function HomeStackRenderer() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name={routes.HOME}
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name={routes.DOCTOR_LIST}
+        component={DoctorListScreen}
+      />
+    </HomeStack.Navigator>
+  );
+}
+
+function DocumentStackRenderer() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name={routes.DOCUMENTS}
+        component={DocumentScreen}
+        options={{ headerShown: false }}
+      />
+    </HomeStack.Navigator>
+  );
+}
 
 function Router() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName={routes.HOME}
         labeled={false}
         screenOptions={{
           headerShadowVisible: false,
@@ -27,8 +58,8 @@ function Router() {
         }}
       >
         <Tab.Screen
-          name={routes.HOME}
-          component={HomeScreen}
+          name="HomeStack"
+          component={HomeStackRenderer}
           options={{
             headerShown: false,
             tabBarIcon: ({ color }) => (
@@ -37,8 +68,8 @@ function Router() {
           }}
         />
         <Tab.Screen
-          name={routes.DOCUMENTS}
-          component={DocumentScreen}
+          name="DocumentStack"
+          component={DocumentStackRenderer}
           options={{
             headerShown: true,
             tabBarIcon: ({ color }) => (
