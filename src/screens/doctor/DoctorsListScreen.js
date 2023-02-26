@@ -23,7 +23,7 @@ const DoctorListScreen = () => {
   const getDoctors = async () => {
     try {
       const response = await fetch(
-        "https://bdcc-119-161-98-68.in.ngrok.io/api/v1/doctor/getAllDoctors"
+        "https://13a6-103-156-19-229.in.ngrok.io/api/v1/doctor/getAllDoctors"
       );
       const json = await response.json();
       // console.log(json);
@@ -51,13 +51,8 @@ const DoctorListScreen = () => {
             <View style={styles.box}>
               <List.Item
                 title={`${item.fname} ${item.lname}`}
-                description={`${item.qualification} , ${item.specialization}`}
+                description={`${item.qualification}`}
                 left={(props) => (
-                  // <Avatar.Text
-                  //   size={50}
-                  //   label="XD"
-                  //   style={{ backgroundColor: randomRGB() }}
-                  // />
                   <Image
                     source={require(`../../../assets/general-doc.png`)}
                     style={{ width: 55, height: 55 }}
