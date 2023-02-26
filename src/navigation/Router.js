@@ -2,10 +2,8 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import routes from "./routes";
-import { HomeScreen } from "../screens/";
+import { HomeScreen, ConsultationScreen, DocumentScreen } from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import DocumentScreen from "../screens/user/DocumentsScreen";
-import ConsultationScreen from "../screens/user/ConsultationScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import DoctorListScreen from "../screens/doctor/DoctorsListScreen";
 

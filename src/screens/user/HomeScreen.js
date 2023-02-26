@@ -9,8 +9,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { List, Avatar } from "react-native-paper";
+import SquareTile from "../../components/user/SquareTile";
 import routes from "../../navigation/routes";
-// create a component
+
 const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
@@ -32,64 +33,31 @@ const HomeScreen = ({ navigation }) => {
           alignItems: "center",
         }}
       >
-        <TouchableOpacity>
-          <View style={styles.box_green}>
-            <Image
-              source={require(`../../../assets/general-doc.png`)}
-              style={{ width: 70, height: 70, margin: 20 }}
-            />
-            <Text style={styles.text}>General Consulatation</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
+        <SquareTile
+          imgSrc={require("../../../assets/general-doc.png")}
+          color={"#ECF9E3"}
+          text={"General Consulatation"}
+        />
+        <SquareTile
+          imgSrc={require("../../../assets/special-doc.png")}
+          color={"#F9E3E3"}
+          text={"Specialist Consulatation"}
           onPress={() => navigation.navigate(routes.DOCTOR_LIST)}
-        >
-          <View style={styles.box_red}>
-            <Image
-              source={require(`../../../assets/special-doc.png`)}
-              style={{ width: 70, height: 70, margin: 20 }}
-            />
-            <Text style={styles.text}>Specialist Consulatation</Text>
-          </View>
-        </TouchableOpacity>
+        />
       </View>
     </SafeAreaView>
   );
 };
 
-// define your styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
     flexDirection: "column",
   },
-  box_green: {
-    height: 200,
-    width: 170,
-    padding: 10,
-    margin: 10,
-    borderRadius: 20,
-    opacity: 10,
-    backgroundColor: "#ECF9E3",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  box_red: {
-    height: 200,
-    width: 170,
-    padding: 10,
-    margin: 10,
-    borderRadius: 20,
-    opacity: 10,
-    backgroundColor: "#F9E3E3",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   text: {
     fontSize: 12,
   },
 });
 
-//make this component available to the app
 export default HomeScreen;
