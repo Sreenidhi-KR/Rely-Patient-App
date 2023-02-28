@@ -32,16 +32,7 @@ const HomeScreen = ({ navigation }) => {
         </Modal>
       </Portal>
       <Header />
-      <View
-        style={{
-          flexDirection: "row",
-          width: "100%",
-          height: "30%",
-          flexWrap: "wrap",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <View style={styles.squareTiles}>
         <SquareTile
           imgSrc={require("../../../assets/general-doc.png")}
           color={"#ECF9E3"}
@@ -71,6 +62,14 @@ const styles = StyleSheet.create({
     height: "50%",
     margin: 20,
     borderRadius: 20,
+  },
+  squareTiles: {
+    flexDirection: "row",
+    width: "100%",
+    height: "30%",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
     fontSize: 12,
