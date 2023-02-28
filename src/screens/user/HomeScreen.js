@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Modal, Portal, List, Avatar } from "react-native-paper";
+import Header from "../../components/user/Header";
 import SpecializationsModal from "../../components/user/SpecializationsModal";
 import SquareTile from "../../components/user/SquareTile";
 import routes from "../../navigation/routes";
@@ -20,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
   const hideModal = () => setVisible(false);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Portal>
         <Modal
           visible={visible}
@@ -30,22 +31,15 @@ const HomeScreen = ({ navigation }) => {
           <SpecializationsModal navigation={navigation} hideModal={hideModal} />
         </Modal>
       </Portal>
-      <List.Item
-        style={{ margin: 10, marginTop: 35 }}
-        title={`Hello Kiran`}
-        description={`How are you feeling today !!`}
-        left={(props) => (
-          <Image
-            source={require(`../../../assets/man.png`)}
-            style={{ width: 50, height: 50 }}
-          />
-        )}
-      />
+      <Header />
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "center",
+          width: "100%",
+          height: "30%",
+          flexWrap: "wrap",
           alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <SquareTile
@@ -61,7 +55,7 @@ const HomeScreen = ({ navigation }) => {
           onPress={showModal}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
