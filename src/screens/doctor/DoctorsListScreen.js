@@ -23,10 +23,10 @@ const DoctorListScreen = () => {
   const getDoctors = async () => {
     try {
       const response = await fetch(
-        "https://13a6-103-156-19-229.in.ngrok.io/api/v1/doctor/getAllDoctors"
+        "https://7187-119-161-98-68.in.ngrok.io/api/v1/doctor/getAllDoctors"
       );
       const json = await response.json();
-      // console.log(json);
+      console.log(json);
       setData(json);
     } catch (error) {
       console.error(error);
