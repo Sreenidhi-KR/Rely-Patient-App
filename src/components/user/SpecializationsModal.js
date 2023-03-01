@@ -23,7 +23,9 @@ const SpecializationsModal = ({ navigation, hideModal }) => {
             <TouchableOpacity
               onPress={() => {
                 hideModal();
-                navigation.navigate(routes.DOCTOR_LIST);
+                navigation.navigate(routes.DOCTOR_LIST, {
+                  specialization: item.name,
+                });
               }}
             >
               <View

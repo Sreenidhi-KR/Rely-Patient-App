@@ -16,14 +16,14 @@ const randomRGB = () => {
   return `rgb(${red},${green},${blue})`;
 };
 
-const DoctorListScreen = () => {
+const DoctorListScreen = ({ route }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
+  const { specialization } = route.params;
   const getDoctors = async () => {
     try {
       const response = await fetch(
-        "https://7187-119-161-98-68.in.ngrok.io/api/v1/doctor/getAllDoctors"
+        `https://f738-103-156-19-229.in.ngrok.io/api/v1/doctor/getAllDoctorsBySpec/${specialization}`
       );
       const json = await response.json();
       console.log(json);
