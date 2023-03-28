@@ -2,10 +2,17 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import routes from "./routes";
-import { HomeScreen, ConsultationScreen, DocumentScreen, VideoCall } from "../screens/";
+import {
+  HomeScreen,
+  ConsultationScreen,
+  DocumentScreen,
+  VideoCall,
+  DoctorListScreen,
+  DoctorQueueWaitingScreen,
+  DoctorDetaisScreen,
+} from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import DoctorListScreen from "../screens/doctor/DoctorsListScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -25,9 +32,14 @@ function HomeStackRenderer() {
         component={DoctorListScreen}
       />
 
+      <HomeStack.Screen name={routes.VIDEO} component={VideoCall} />
       <HomeStack.Screen
-        name={routes.VIDEO}
-        component={VideoCall}
+        name={routes.DOCTOR_DETAILS}
+        component={DoctorDetaisScreen}
+      />
+      <HomeStack.Screen
+        name={routes.DOCTOR_WAITING}
+        component={DoctorQueueWaitingScreen}
       />
     </HomeStack.Navigator>
   );
