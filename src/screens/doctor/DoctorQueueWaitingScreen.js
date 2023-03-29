@@ -9,7 +9,7 @@ import routes from "../../navigation/routes";
 const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   const { doctor } = route.params;
   const [index, setIndex] = useState(0);
-  const patientId = 1;
+  const patientId = 2;
 
   useEffect(() => {
     addAndGetIndexFromQueue(doctor.id, patientId, setIndex);
