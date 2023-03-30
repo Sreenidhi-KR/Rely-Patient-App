@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AgoraUIKit from "agora-rn-uikit";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 
 const VideoCall = ({ route }) => {
   const { doctor } = route.params;
@@ -16,6 +16,7 @@ const VideoCall = ({ route }) => {
   const callbacks = {
     EndCall: () => setVideoCall(false),
   };
+
   return videoCall ? (
     <AgoraUIKit connectionData={connectionData} rtcCallbacks={callbacks} />
   ) : (
@@ -24,4 +25,5 @@ const VideoCall = ({ route }) => {
     </Text>
   );
 };
+
 export default VideoCall;
