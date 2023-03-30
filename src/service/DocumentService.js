@@ -48,9 +48,28 @@ async function downloadDocument(docId) {
     );
     const pdfstr = response.data; 
     const DownloadDir = RNFetchBlob.fs.dirs.DownloadDir;
-    let pdfLocation = DownloadDir + '/' + 'test.pdf';
+    let fileName = "test.pdf"
+    let pdfLocation = DownloadDir + '/' + fileName;
     console.log(pdfLocation)
     RNFetchBlob.fs.writeFile(pdfLocation, pdfstr, 'base64');
+    const filePath = `${RNFetchBlob.fs.dirs.DownloadDir}/${fileName}`;
+    RNFetchBlob.fs
+    .cp(filePath, filePath)
+    .then(() =>
+      RNFetchBlob.android.addCompleteDownload({
+        title: fileName,
+        description: 'Download complete',
+        mime: 'base64',
+        path: filePath,
+        showNotification: true,
+      })
+    )
+    .then(() =>
+      RNFetchBlob.fs.scanFile([
+        { path: filePath, mime: 'base64' },
+      ])
+    );
+    
   } catch (err) {
     console.log(err);
   }
