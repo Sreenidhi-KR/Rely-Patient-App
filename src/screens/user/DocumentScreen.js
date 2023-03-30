@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { List, Button } from "react-native-paper";
+import { List, Button, FAB } from "react-native-paper";
 import React, { useState, useEffect } from "react";
 import {
   uploadDocument,
@@ -29,6 +29,11 @@ const DocumentScreen = () => {
     console.log(docs);
   }
 
+  async function docUpload() {
+    await uploadDocument();
+    await getDocuments();
+  }
+
   async function removeDoc(docId) {
     await removeDocument(docId);
     await getDocuments();
@@ -39,7 +44,7 @@ const DocumentScreen = () => {
     await getDocuments();
   }
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.text}>Documents</Text>
       <FlatList
         data={docs}
@@ -77,6 +82,14 @@ const DocumentScreen = () => {
           </View>
         )}
       />
+
+      <FAB
+        icon="plus"
+        style={styles.fab}
+        onPress={() => {
+          docUpload();
+        }}
+      />
     </View>
   );
 };
@@ -94,6 +107,12 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 20,
     backgroundColor: "#F5ECFF",
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });
 //make this component available to the app
