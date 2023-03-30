@@ -13,6 +13,8 @@ import {
 import {
   uploadDocument,
   docsForConsultation,
+  addDocToConsultation,
+  removeDocFromConsultation,
 } from "../../service/DocumentService";
 import React, { useState, useEffect } from "react";
 const ConsultationDocs = () => {
@@ -30,6 +32,20 @@ const ConsultationDocs = () => {
     setInConsultation(json[0]);
     setCanBeAdded(json[1]);
     setLoading(false);
+  }
+
+  //After adding docs to consultaton we should reload the files which are in consultation and not in consultaton .
+  async function addDocToConsul(docId) {
+    setLoading(true);
+    await addDocToConsultation(docId);
+    await consultationDocs();
+  }
+
+  //After removeing docs from consultation we shoudl reload the files
+  async function removeDocFromConsul(docId) {
+    setLoading(true);
+    await removeDocFromConsultation(docId);
+    await consultationDocs();
   }
 
   //After upload we should also reolad all the docs in the consultation and not in consultation also
@@ -57,15 +73,97 @@ const ConsultationDocs = () => {
           {isLoading ? (
             <ActivityIndicator />
           ) : (
-            <Button
-              icon="upload"
-              onPress={() => {
-                uploadDoc();
-                setLoading(true);
-              }}
-            >
-              Upload New Document
-            </Button>
+            <View>
+              <Button
+                icon="upload"
+                onPress={() => {
+                  uploadDoc();
+                  setLoading(true);
+                }}
+              >
+                Upload New Document
+              </Button>
+              {/* View all the documents that are in the consultation */}
+              <Appbar.Header style={{ backgroundColor: "white" }}>
+                <Appbar.Content
+                  title="Documents in Consultation"
+                  titleStyle={{ color: "black" }}
+                />
+              </Appbar.Header>
+              <FlatList
+                data={inConsultation}
+                keyExtractor={({ id }) => id}
+                renderItem={({ item }) => (
+                  <View style={styles.box}>
+                    <List.Item
+                      title={`${item.name}`}
+                      titleStyle={{ color: "black" }}
+                      right={() => {
+                        return (
+                          <View
+                            style={{
+                              flex: 1,
+                              flexDirection: "row",
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <Button
+                              icon="delete"
+                              onPress={() => {
+                                removeDocFromConsul(item.id);
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          </View>
+                        );
+                      }}
+                    />
+                  </View>
+                )}
+              />
+              {/* View all the documents that are not yet in the consultation */}
+              <Appbar.Header style={{ backgroundColor: "white" }}>
+                <Appbar.Content
+                  title="Other documents"
+                  titleStyle={{ color: "black" }}
+                />
+              </Appbar.Header>
+              <FlatList
+                data={canBeAdded}
+                keyExtractor={({ id }) => id}
+                renderItem={({ item }) => (
+                  <View style={styles.box}>
+                    <List.Item
+                      title={`${item.name}`}
+                      titleStyle={{ color: "black" }}
+                      right={() => {
+                        return (
+                          <View
+                            style={{
+                              flex: 1,
+                              flexDirection: "row",
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <Button
+                              icon="plus"
+                              onPress={() => {
+                                // setLoading(true);
+                                // addDocToConsultation(item.id);
+                                addDocToConsul(item.id);
+                              }}
+                            >
+                              Add
+                            </Button>
+                          </View>
+                        );
+                      }}
+                    />
+                  </View>
+                )}
+              />
+            </View>
           )}
         </Modal>
       </Portal>
