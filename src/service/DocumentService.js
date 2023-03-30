@@ -1,13 +1,12 @@
 import DocumentPicker from "react-native-document-picker";
 import axios from "axios";
+import {Buffer} from 'buffer';
 import RNFetchBlob from "rn-fetch-blob";
 const { fs } = RNFetchBlob;
-const urlBase = "https://1403-103-156-19-229.in.ngrok.io/api/v1";
+const urlBase = "https://5ef4-119-161-98-68.in.ngrok.io/api/v1";
 const patientId = 1; //Dummy patient Id for now later should be changed
 const consultationId = 3; //Dummy consultatoin id
-const token =
-  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjgwMTA2NzAzLCJleHAiOjE2ODAxOTMxMDN9.vkx7CAeJIFYpujT509TzCOS70sLNLEWWBNbLXsvzakxziipJJ1BA-ytlh4x10wGAZyZr3EGe73nk4hzdulfvmA";
-//returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
+const token ="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjgwMTgyNjk4LCJleHAiOjE2ODAyNjkwOTh9.ZAnXb4c_ra5Nu8KvSVwYBfyOobm7S83OojDqNf0cXHO33hV7s6yAw3P2YlTdjdE_i8dTef5ItIWEphP7yPO4TQ"//returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
 async function docsForConsultation() {
   const config = {
     method: "GET",
@@ -35,7 +34,7 @@ async function docsForConsultation() {
 async function downloadDocument(docId) {
   const config = {
     method: "GET",
-    responseType: "arraybuffer",
+    "Content-Type": "multipart/form-data",
     headers: {
       "ngrok-skip-browser-warning": "true",
       Authorization: `Bearer ${token}`,
@@ -47,13 +46,11 @@ async function downloadDocument(docId) {
       `${urlBase}/document/download/${docId}`,
       config
     );
-
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "temp.pdf");
-    document.body.appendChild(link);
-    link.click();
+    const pdfstr = response.data; 
+    const DownloadDir = RNFetchBlob.fs.dirs.DownloadDir;
+    let pdfLocation = DownloadDir + '/' + 'test.pdf';
+    console.log(pdfLocation)
+    RNFetchBlob.fs.writeFile(pdfLocation, pdfstr, 'base64');
   } catch (err) {
     console.log(err);
   }
