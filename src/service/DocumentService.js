@@ -72,7 +72,6 @@ async function removeDocument(docId) {
       `${urlBase}/document/delete/${docId}`,
       config
     );
-    console.log("deleted");
   } catch (err) {
     console.log(err);
   }
@@ -91,7 +90,7 @@ async function getAllDocuments() {
       `${urlBase}/document/getAll/${patientId}`,
       config
     );
-    console.log(response.data);
+
     return response.data;
   } catch (err) {
     console.log(err);
@@ -125,7 +124,6 @@ async function uploadDocument() {
       formdata,
       config
     );
-    console.log(response);
   } catch (err) {
     console.log(err);
   }
