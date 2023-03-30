@@ -8,10 +8,8 @@ const VideoCall = ({ route }) => {
   console.log(doctor);
   const connectionData = {
     appId: "5e2ee6c6fc13459caa99cb8c234d42e0",
-    channel: "1NS",
-    uid: 1,
-    token:
-      "0065e2ee6c6fc13459caa99cb8c234d42e0IADrivZFacX3VF8u52RhtY7NsI8HnKYCvRzkH6uGk9tAZ3A0cEYAAAAAIgCZoedShkEgZAQAAQAW/h5kAgAW/h5kAwAW/h5kBAAW/h5k",
+    channel: doctor.channel_name,
+    token: doctor.token,
   };
   const callbacks = {
     EndCall: () => setVideoCall(false),
