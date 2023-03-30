@@ -4,9 +4,10 @@ import { Text, View } from "react-native";
 import { ConsultationDocs } from "../user/consultationDocumentsFAB";
 
 const VideoCall = ({ route }) => {
-  const { doctor } = route.params;
+  const { doctor , consultationId } = route.params;
   const [videoCall, setVideoCall] = useState(true);
   console.log(doctor);
+  console.log(consultationId);
   const connectionData = {
     appId: "5e2ee6c6fc13459caa99cb8c234d42e0",
     channel: "1NS",
@@ -15,7 +16,7 @@ const VideoCall = ({ route }) => {
       "0065e2ee6c6fc13459caa99cb8c234d42e0IADrivZFacX3VF8u52RhtY7NsI8HnKYCvRzkH6uGk9tAZ3A0cEYAAAAAIgCZoedShkEgZAQAAQAW/h5kAgAW/h5kAwAW/h5kBAAW/h5k",
   };
   const callbacks = {
-    EndCall: () => setVideoCall(false),
+    EndCall: () => {setVideoCall(false)},
   };
 
   return videoCall ? (

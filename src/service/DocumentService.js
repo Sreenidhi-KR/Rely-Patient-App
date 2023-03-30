@@ -3,11 +3,12 @@ import axios from "axios";
 import { Buffer } from "buffer";
 import RNFetchBlob from "rn-fetch-blob";
 const { fs } = RNFetchBlob;
-const urlBase = "https://1403-103-156-19-229.in.ngrok.io/api/v1";
+const urlBase = "https://af2f-119-161-98-68.in.ngrok.io/api/v1";
 const patientId = 1; //Dummy patient Id for now later should be changed
 const consultationId = 3; //Dummy consultatoin id
 const token =
-  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjgwMjA2MDg4LCJleHAiOjE2ODAyOTI0ODh9.7c0jWW7y0-V7W2Eogit_82pfn4nnxxHZXDbPfygGhznW77IOlfXHGkbIY4SYGjvZd3ncbsWNpDkI7ChOmVqung"; //returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
+  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcnMiLCJpYXQiOjE2ODAyMTg0NDEsImV4cCI6MTY4MDMwNDg0MX0.8WHVq7mwNMfHl8SbAVzx00pYTtXdDx_hU2J7CM-f7HtCNn61zPezdkJK_CY4_Gm01juDBgQgqDTBKv_-lqYikw";
+  //returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
 
 async function removeDocFromConsultation(docId) {
   const config = {

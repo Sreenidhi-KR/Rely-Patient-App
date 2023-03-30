@@ -1,6 +1,6 @@
 import axios from "axios";
-const urlBase = "https://1403-103-156-19-229.in.ngrok.io/api/v1";
-const token ="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjgwMjA2MDg4LCJleHAiOjE2ODAyOTI0ODh9.7c0jWW7y0-V7W2Eogit_82pfn4nnxxHZXDbPfygGhznW77IOlfXHGkbIY4SYGjvZd3ncbsWNpDkI7ChOmVqung"
+const urlBase = "https://af2f-119-161-98-68.in.ngrok.io/api/v1";
+const token ="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcnMiLCJpYXQiOjE2ODAyMTg0NDEsImV4cCI6MTY4MDMwNDg0MX0.8WHVq7mwNMfHl8SbAVzx00pYTtXdDx_hU2J7CM-f7HtCNn61zPezdkJK_CY4_Gm01juDBgQgqDTBKv_-lqYikw";
 
 const config = {
   headers: {
@@ -35,7 +35,25 @@ const getPrevConsultDetails = async (consultId) => {
     }
 };
 
+const addConsultation = async (patientId, doctorId, startTime) => {
+    console.log("Creating new Consultation");
+    try{
+        const response = await axios.post(
+            `${urlBase}/consultation/addConsultation`,{
+                patientId,
+                doctorId,
+                startTime
+            },
+            config
+        )
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export {
     getAllPreviousConsultations,
     getPrevConsultDetails,
+    addConsultation,
 };

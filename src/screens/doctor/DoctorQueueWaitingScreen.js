@@ -9,12 +9,13 @@ import {
 } from "../../service/DoctorService";
 import routes from "../../navigation/routes";
 import SquareTile from "../../components/user/SquareTile";
+import { addConsultation } from "../../service/ConsultationService";
 
 // create a component
 const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   const { doctor } = route.params;
   const [index, setIndex] = useState(null);
-  const patientId = 2;
+  const patientId = 1;
   var interval;
 
   const refreshPatientIndex = () => {
@@ -55,11 +56,13 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
         <Button
           mode="contained"
           style={{ width: 150 }}
-          onPress={() => {
+          onPress={async () => {
             console.log("Interval Cleared");
             clearInterval(interval);
+            var consultationId = await addConsultation(patientId, doctor.id, "2023-03-30T21:46:14.679+00:00")
             navigation.navigate(routes.VIDEO, {
               doctor: doctor,
+              consultationId : consultationId
             });
           }}
         >

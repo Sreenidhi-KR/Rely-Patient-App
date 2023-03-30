@@ -1,7 +1,7 @@
 import axios from "axios";
 const urlBase = "https://af2f-119-161-98-68.in.ngrok.io/api/auth";
 const token =
-  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjgwMTg1NDE1LCJleHAiOjE2ODAyNzE4MTV9.idmph9LwS35jOjzlhNh1yWh0HNqIFaOF_Mbw7KoeTYnuApFv72zbaE3o6AjsM3Xccg0q4pxpzihsBX85QXPiVQ";
+  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcnMiLCJpYXQiOjE2ODAyMTg0NDEsImV4cCI6MTY4MDMwNDg0MX0.8WHVq7mwNMfHl8SbAVzx00pYTtXdDx_hU2J7CM-f7HtCNn61zPezdkJK_CY4_Gm01juDBgQgqDTBKv_-lqYikw";
 
 const config = {
   headers: {
