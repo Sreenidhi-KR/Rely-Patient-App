@@ -11,6 +11,7 @@ import {
   DoctorQueueWaitingScreen,
   DoctorDetaisScreen,
   SplashScreen,
+  ConsultationDetailsScreen,
 } from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -57,6 +58,23 @@ function DocumentStackRenderer() {
       <HomeStack.Screen
         name={routes.DOCUMENTS}
         component={DocumentScreen}
+        options={{ headerShown: false }}
+      />
+    </HomeStack.Navigator>
+  );
+}
+
+function ConsultationStackRenderer() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name={routes.CONSULTATION}
+        component={ConsultationScreen}
+        options={{ headerShown: false }}
+      />
+       <HomeStack.Screen
+        name={routes.CONSULTATION_DETAILS}
+        component={ConsultationDetailsScreen}
         options={{ headerShown: false }}
       />
     </HomeStack.Navigator>
@@ -126,8 +144,8 @@ function Router() {
               }}
             />
             <Tab.Screen
-              name={routes.CONSULTATION}
-              component={ConsultationScreen}
+              name="ConsultationStack"
+              component={ConsultationStackRenderer}
               options={{
                 headerShown: true,
                 tabBarIcon: ({ color }) => (
