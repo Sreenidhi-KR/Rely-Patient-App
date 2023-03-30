@@ -12,7 +12,6 @@ import {
   getAllDocuments,
   removeDocument,
   downloadDocument,
-  docsForConsultation,
 } from "../../service/DocumentService";
 
 // create a component
@@ -22,7 +21,6 @@ const DocumentScreen = () => {
   //onMount load all the documents
   useEffect(() => {
     getDocuments();
-    docsForConsultation();
   }, []);
 
   async function getDocuments() {

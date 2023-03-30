@@ -1,12 +1,51 @@
 import DocumentPicker from "react-native-document-picker";
 import axios from "axios";
-import {Buffer} from 'buffer';
+import { Buffer } from "buffer";
 import RNFetchBlob from "rn-fetch-blob";
 const { fs } = RNFetchBlob;
-const urlBase = "https://5ef4-119-161-98-68.in.ngrok.io/api/v1";
+const urlBase = "https://1403-103-156-19-229.in.ngrok.io/api/v1";
 const patientId = 1; //Dummy patient Id for now later should be changed
 const consultationId = 3; //Dummy consultatoin id
-const token ="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjgwMTgyNjk4LCJleHAiOjE2ODAyNjkwOTh9.ZAnXb4c_ra5Nu8KvSVwYBfyOobm7S83OojDqNf0cXHO33hV7s6yAw3P2YlTdjdE_i8dTef5ItIWEphP7yPO4TQ"//returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
+const token =
+  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjgwMTE0Nzk0LCJleHAiOjE2ODAyMDExOTR9.xVG0jXlxKk81PbJBJgmeO26UzQYEEIfJ-UnlQhkZ7Vm-esU5E59Wq2eJPy5m2inC0Cliv-8TuNc9snw0Bigurw"; //returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
+
+async function removeDocFromConsultation(docId) {
+  const config = {
+    method: "GET",
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  try {
+    await axios.get(
+      `${urlBase}/consultation/removeDocumentByCid_Docuid/${consultationId}/${docId}`,
+      config
+    );
+    console.log("Document removed from  consultation");
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function addDocToConsultation(docId) {
+  const config = {
+    method: "GET",
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  try {
+    await axios.get(
+      `${urlBase}/consultation/addDocumentByCid_Docuid/${consultationId}/${docId}`,
+      config
+    );
+    console.log("Document added to consultation");
+  } catch (err) {
+    console.log(err);
+  }
+}
 async function docsForConsultation() {
   const config = {
     method: "GET",
@@ -46,30 +85,27 @@ async function downloadDocument(docId) {
       `${urlBase}/document/download/${docId}`,
       config
     );
-    const pdfstr = response.data; 
+    const pdfstr = response.data;
     const DownloadDir = RNFetchBlob.fs.dirs.DownloadDir;
-    let fileName = "test.pdf"
-    let pdfLocation = DownloadDir + '/' + fileName;
-    console.log(pdfLocation)
-    RNFetchBlob.fs.writeFile(pdfLocation, pdfstr, 'base64');
+    let fileName = "test.pdf";
+    let pdfLocation = DownloadDir + "/" + fileName;
+    console.log(pdfLocation);
+    RNFetchBlob.fs.writeFile(pdfLocation, pdfstr, "base64");
     const filePath = `${RNFetchBlob.fs.dirs.DownloadDir}/${fileName}`;
     RNFetchBlob.fs
-    .cp(filePath, filePath)
-    .then(() =>
-      RNFetchBlob.android.addCompleteDownload({
-        title: fileName,
-        description: 'Download complete',
-        mime: 'base64',
-        path: filePath,
-        showNotification: true,
-      })
-    )
-    .then(() =>
-      RNFetchBlob.fs.scanFile([
-        { path: filePath, mime: 'base64' },
-      ])
-    );
-    
+      .cp(filePath, filePath)
+      .then(() =>
+        RNFetchBlob.android.addCompleteDownload({
+          title: fileName,
+          description: "Download complete",
+          mime: "base64",
+          path: filePath,
+          showNotification: true,
+        })
+      )
+      .then(() =>
+        RNFetchBlob.fs.scanFile([{ path: filePath, mime: "base64" }])
+      );
   } catch (err) {
     console.log(err);
   }
@@ -88,7 +124,6 @@ async function removeDocument(docId) {
       `${urlBase}/document/delete/${docId}`,
       config
     );
-    console.log("deleted");
   } catch (err) {
     console.log(err);
   }
@@ -107,7 +142,7 @@ async function getAllDocuments() {
       `${urlBase}/document/getAll/${patientId}`,
       config
     );
-    console.log(response.data);
+
     return response.data;
   } catch (err) {
     console.log(err);
@@ -141,7 +176,6 @@ async function uploadDocument() {
       formdata,
       config
     );
-    console.log(response);
   } catch (err) {
     console.log(err);
   }
@@ -153,4 +187,6 @@ export {
   removeDocument,
   downloadDocument,
   docsForConsultation,
+  addDocToConsultation,
+  removeDocFromConsultation,
 };
