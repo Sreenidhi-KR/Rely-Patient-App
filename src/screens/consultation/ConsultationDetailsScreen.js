@@ -9,6 +9,7 @@ import {
 import { Button, List, Text, IconButton, MD3Colors} from "react-native-paper";
 import routes from "../../navigation/routes";
 import { getPrevConsultDetails } from "../../service/ConsultationService";
+import { downloadDocument } from "../../service/DocumentService";
 
 // create a component
 const ConsultationDetailsScreen = ({ navigation, route }) => {
@@ -99,7 +100,7 @@ const ConsultationDetailsScreen = ({ navigation, route }) => {
                     icon="download"
                     iconColor={MD3Colors.secondary10}
                     size={20}
-                    onPress={() => console.log('Pressed')}
+                    onPress={() => downloadDocument(item.id)}
                   />} />
               </View>
             )} /></>
