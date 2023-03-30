@@ -55,6 +55,8 @@ const DoctorListScreen = ({ route, navigation }) => {
                     doctor: item,
                   });
                 }}
+                titleStyle={{ color: "black" }}
+                descriptionStyle={{ color: "gray" }}
                 title={`${item.fname} ${item.lname}`}
                 description={`${item.qualification}`}
                 left={(props) => (

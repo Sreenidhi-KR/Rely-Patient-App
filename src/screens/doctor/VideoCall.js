@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AgoraUIKit from "agora-rn-uikit";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
+import { ConsultationDocs } from "../user/consultationDocumentsFAB";
 
 const VideoCall = ({ route }) => {
   const { doctor } = route.params;
@@ -16,12 +17,17 @@ const VideoCall = ({ route }) => {
   const callbacks = {
     EndCall: () => setVideoCall(false),
   };
+
   return videoCall ? (
-    <AgoraUIKit connectionData={connectionData} rtcCallbacks={callbacks} />
+    <View style={{ flex: 1 }}>
+      <AgoraUIKit connectionData={connectionData} rtcCallbacks={callbacks} />
+      <ConsultationDocs />
+    </View>
   ) : (
     <Text setVideoCall={setVideoCall} onPress={() => setVideoCall(true)}>
       Start Call
     </Text>
   );
 };
+
 export default VideoCall;

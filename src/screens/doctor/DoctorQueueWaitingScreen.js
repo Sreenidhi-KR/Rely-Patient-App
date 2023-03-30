@@ -2,35 +2,90 @@
 import React, { Component, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
-import { addAndGetIndexFromQueue } from "../../service/DoctorService";
+import {
+  addAndGetIndexFromQueue,
+  getPatientIndexFromQueue,
+  removePatientFromQueue,
+} from "../../service/DoctorService";
 import routes from "../../navigation/routes";
+import SquareTile from "../../components/user/SquareTile";
 
 // create a component
 const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   const { doctor } = route.params;
-  const [index, setIndex] = useState(0);
-  const patientId = 1;
+  const [index, setIndex] = useState(null);
+  const patientId = 2;
+  var interval;
+
+  const refreshPatientIndex = () => {
+    getPatientIndexFromQueue(doctor.id, patientId, setIndex);
+  };
+
+  const removePatient = () => {
+    removePatientFromQueue(doctor.id, patientId);
+  };
 
   useEffect(() => {
     addAndGetIndexFromQueue(doctor.id, patientId, setIndex);
+
+    interval = setInterval(() => {
+      getPatientIndexFromQueue(doctor.id, patientId, setIndex);
+    }, 30000);
+
+    return () => {
+      console.log("Interval Cleared");
+      clearInterval(interval);
+    };
   }, []);
+
   return (
     <View style={styles.container}>
-      <Text>Position in the Queue</Text>
-      <Text style={{ fontSize: 25 }}>{index}</Text>
+      <View style={styles.squareTiles}>
+        <SquareTile
+          imgSrc={null}
+          imgAlt={index}
+          color={"#F5EDF8"}
+          text={"Position in Queue"}
+          onPress={() => {
+            refreshPatientIndex();
+          }}
+        />
+      </View>
       {index == 1 ? (
         <Button
+          mode="contained"
+          style={{ width: 150 }}
           onPress={() => {
-            console.log(doctor.id);
+            console.log("Interval Cleared");
+            clearInterval(interval);
             navigation.navigate(routes.VIDEO, {
               doctor: doctor,
             });
           }}
         >
-          {" "}
-          JOIN
+          Join Video Call
         </Button>
-      ) : null}
+      ) : (
+        <View>
+          <Text> Please wait for your turn </Text>
+        </View>
+      )}
+      <Button
+        mode="contained"
+        style={{ width: 150, marginTop: 10 }}
+        buttonColor="red"
+        textColor="white"
+        onPress={() => {
+          console.log("Interval Cleared");
+          clearInterval(interval);
+          removePatient();
+          navigation.navigate(routes.HOME, {
+            doctor: doctor,
+          });
+        }}
+      >
+        Leave Queue
+      </Button>
     </View>
   );
 };
@@ -43,6 +98,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     fontSize: 25,
+  },
+  squareTiles: {
+    flexDirection: "row",
+    width: "100%",
+    height: "30%",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
   },
 });
 

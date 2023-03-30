@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment, useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import routes from "./routes";
@@ -10,11 +10,17 @@ import {
   DoctorListScreen,
   DoctorQueueWaitingScreen,
   DoctorDetaisScreen,
+  SplashScreen,
 } from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import { AuthContext } from "../context/AuthContext";
+import LoginScreen from "../screens/auth/LoginScreen";
+import RegisterScreen from "../screens/auth/RegisterScreen";
+
 const Tab = createMaterialBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const HomeStack = createNativeStackNavigator();
 const DocumentStack = createNativeStackNavigator();
@@ -58,6 +64,8 @@ function DocumentStackRenderer() {
 }
 
 function Router() {
+  const { userInfo, splashLoading } = useContext(AuthContext);
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -72,44 +80,67 @@ function Router() {
           },
         }}
       >
-        <Tab.Screen
-          name="HomeStack"
-          component={HomeStackRenderer}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="home" color={color} size={22} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="DocumentStack"
-          component={DocumentStackRenderer}
-          options={{
-            headerShown: true,
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="file-document"
-                color={color}
-                size={22}
-              />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name={routes.CONSULTATION}
-          component={ConsultationScreen}
-          options={{
-            headerShown: true,
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="account-group"
-                color={color}
-                size={22}
-              />
-            ),
-          }}
-        />
+        {splashLoading ? (
+          <Stack.Screen
+            name="Splash Screen"
+            component={SplashScreen}
+            options={{ headerShown: false }}
+          />
+        ) : !userInfo.accessToken ? (
+          <>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
+              options={{ headerShown: false }}
+            />
+          </>
+        ) : (
+          <Fragment>
+            <Tab.Screen
+              name="HomeStack"
+              component={HomeStackRenderer}
+              options={{
+                headerShown: false,
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons name="home" color={color} size={22} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="DocumentStack"
+              component={DocumentStackRenderer}
+              options={{
+                headerShown: true,
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons
+                    name="file-document"
+                    color={color}
+                    size={22}
+                  />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name={routes.CONSULTATION}
+              component={ConsultationScreen}
+              options={{
+                headerShown: true,
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons
+                    name="account-group"
+                    color={color}
+                    size={22}
+                  />
+                ),
+              }}
+            />
+          </Fragment>
+        )}
       </Tab.Navigator>
     </NavigationContainer>
   );
