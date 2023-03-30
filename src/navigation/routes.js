@@ -6,4 +6,5 @@ export default {
   VIDEO: "VideoCall",
   DOCTOR_DETAILS: "DoctorDetails",
   DOCTOR_WAITING: "DoctorWaiting",
+  CONSULTATION_DETAILS: "ConsultationDetails",
 };
