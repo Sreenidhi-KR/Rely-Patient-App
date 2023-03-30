@@ -9,8 +9,8 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
   const { doctor } = route.params;
   return (
     <View style={styles.container}>
-      <Text>DoctorDetailScreen</Text>
       <Button
+        mode="contained"
         onPress={() => {
           console.log(doctor.id);
           navigation.navigate(routes.DOCTOR_WAITING, {
@@ -18,7 +18,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
           });
         }}
       >
-        Join
+        Join For Consultation
       </Button>
     </View>
   );
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#2c3e50",
+    backgroundColor: "white",
   },
 });
 

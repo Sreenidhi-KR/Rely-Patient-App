@@ -8,6 +8,8 @@ const Header = () => {
   return (
     <List.Item
       style={{ marginHorizontal: 10 }}
+      titleStyle={{ color: "black" }}
+      descriptionStyle={{ color: "gray" }}
       title={`Hello Kiran`}
       description={`How are you feeling today !!`}
       left={(props) => (
