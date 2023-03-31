@@ -10,6 +10,7 @@ import {
 import routes from "../../navigation/routes";
 import SquareTile from "../../components/user/SquareTile";
 import { AuthContext } from "../../context/AuthContext";
+import { addConsultation } from "../../service/ConsultationService";
 
 // create a component
 const DoctorQueueWaitingScreen = ({ navigation, route }) => {
@@ -62,6 +63,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
           onPress={async () => {
             console.log("Interval Cleared");
             clearInterval(interval);
+            
             var consultationId = await addConsultation(patientId, doctor.id, "2023-03-30T21:46:14.679+00:00")
             navigation.navigate(routes.VIDEO, {
               doctor: doctor,
