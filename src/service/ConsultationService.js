@@ -41,9 +41,9 @@ const addConsultation = async (patientId, doctorId, startTime) => {
     try{
         const response = await axios.post(
             `${urlBase}/consultation/addConsultation`,{
-                patientId,
-                doctorId,
-                startTime
+                "patient_id" : patientId,
+                "doctor_id" : doctorId,
+                "start_time" : startTime
             },
             config
         )

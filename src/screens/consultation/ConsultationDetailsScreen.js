@@ -16,7 +16,7 @@ const ConsultationDetailsScreen = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const { consultation } = route.params;
-  const consultId = 3;
+  const consultId = 5;
 
   const getPreviousConsultationDetails = async (consultId) => {
     try{

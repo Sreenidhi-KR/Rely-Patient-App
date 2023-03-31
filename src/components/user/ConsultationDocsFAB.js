@@ -17,7 +17,7 @@ import {
   removeDocFromConsultation,
 } from "../../service/DocumentService";
 import React, { useState, useEffect } from "react";
-const ConsultationDocs = () => {
+const ConsultationDocsFAB = () => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [inConsultation, setInConsultation] = useState([]);
   const [canBeAdded, setCanBeAdded] = useState([]);
@@ -197,4 +197,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { ConsultationDocs };
+export { ConsultationDocsFAB };

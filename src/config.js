@@ -1,6 +1,6 @@
-const BASE_URL = "https://af2f-119-161-98-68.in.ngrok.io";
+const BASE_URL = "https://dfd4-103-156-19-229.in.ngrok.io";
 
 const token =
-  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcnMiLCJpYXQiOjE2ODAyNDczNTgsImV4cCI6MTY4MDMzMzc1OH0.xiFwmcb4lkBVaaEMpiQPHl67SsAZgyl_PghTq-cfKC0doxdBh35GOBpnJtii7F-H-LcLvBowjDjXeaO2reG-Ag";
+  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0IiwiaWF0IjoxNjgwMjU3OTg1LCJleHAiOjE2ODAzNDQzODV9.qaU41wZao-rCEH19xyYGm_7-mF2PnDAD31-JdgMyVPrIGyTuLuH1tAY1NUhnz37l-OO0zY1tkoJz9u5eL2kk3Q";
 
 export { BASE_URL, token };
