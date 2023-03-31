@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../../service/DoctorService";
 import routes from "../../navigation/routes";
 import SquareTile from "../../components/user/SquareTile";
-import { addConsultation } from "../../service/ConsultationService";
+import { AuthContext } from "../../context/AuthContext";
 
 // create a component
 const DoctorQueueWaitingScreen = ({ navigation, route }) => {
@@ -17,6 +17,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   const [index, setIndex] = useState(null);
   const patientId = 1;
   var interval;
+  const { setBottomBarVisible } = useContext(AuthContext);
 
   const refreshPatientIndex = () => {
     getPatientIndexFromQueue(doctor.id, patientId, setIndex);
@@ -27,6 +28,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
+    setBottomBarVisible(false);
     addAndGetIndexFromQueue(doctor.id, patientId, setIndex);
 
     interval = setInterval(() => {
@@ -34,6 +36,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
     }, 30000);
 
     return () => {
+      setBottomBarVisible(true);
       console.log("Interval Cleared");
       clearInterval(interval);
     };

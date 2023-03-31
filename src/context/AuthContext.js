@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
+  const [bottomBarVisible, setBottomBarVisible] = useState(true);
 
   const login = async (name, password) => {
     setIsLoading(true);
@@ -18,7 +19,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await userLogin(name, password);
       setUserInfo(res);
-      AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+      await AsyncStorage.setItem("userInfo", JSON.stringify(res));
     } catch (e) {
       console.log(`register error ${e}`);
     } finally {
@@ -38,9 +39,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     setIsLoading(true);
-    AsyncStorage.removeItem("userInfo");
+    await AsyncStorage.removeItem("userInfo");
     setUserInfo({});
     setIsLoading(false);
   };
@@ -50,7 +51,6 @@ export const AuthProvider = ({ children }) => {
       setSplashLoading(true);
       let userInfo = await AsyncStorage.getItem("userInfo");
       userInfo = JSON.parse(userInfo);
-      console.log("userInfo");
       console.log(userInfo);
       if (userInfo) {
         setUserInfo(userInfo);
@@ -75,6 +75,8 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
         logout,
+        bottomBarVisible,
+        setBottomBarVisible,
       }}
     >
       {children}

@@ -1,6 +1,7 @@
 import axios from "axios";
-const urlBase = "https://af2f-119-161-98-68.in.ngrok.io/api/v1";
-const token ="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcnMiLCJpYXQiOjE2ODAyMTg0NDEsImV4cCI6MTY4MDMwNDg0MX0.8WHVq7mwNMfHl8SbAVzx00pYTtXdDx_hU2J7CM-f7HtCNn61zPezdkJK_CY4_Gm01juDBgQgqDTBKv_-lqYikw";
+import { BASE_URL, token } from "../config";
+
+const urlBase = `${BASE_URL}/api/v1`;
 
 const config = {
   headers: {
@@ -10,29 +11,29 @@ const config = {
 };
 
 const getAllPreviousConsultations = async (patientId) => {
-    console.log("Get All Previous Consultations");
-    try{
-        const response = await axios.get(
-            `${urlBase}/consultation/getPrevConsultations/${patientId}`,
-            config
-        );
-        return response.data;
-    } catch (error) {
-        console.log(error);
-    }
+  console.log("Get All Previous Consultations");
+  try {
+    const response = await axios.get(
+      `${urlBase}/consultation/getPrevConsultations/${patientId}`,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getPrevConsultDetails = async (consultId) => {
-    console.log("Get Individual Previous Consultation Details");
-    try{
-        const response =  await axios.get(
-            `${urlBase}/consultation/getAllDocumentsByCid/${consultId}`,
-            config
-        );
-        return response.data;
-    } catch (error) {
-        console.log(error);
-    }
+  console.log("Get Individual Previous Consultation Details");
+  try {
+    const response = await axios.get(
+      `${urlBase}/consultation/getAllDocumentsByCid/${consultId}`,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const addConsultation = async (patientId, doctorId, startTime) => {

@@ -14,6 +14,7 @@ import {
   ConsultationDetailsScreen,
 } from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { AuthContext } from "../context/AuthContext";
@@ -25,6 +26,7 @@ const Stack = createNativeStackNavigator();
 
 const HomeStack = createNativeStackNavigator();
 const DocumentStack = createNativeStackNavigator();
+const ConsultationStack = createNativeStackNavigator();
 
 function HomeStackRenderer() {
   return (
@@ -54,71 +56,74 @@ function HomeStackRenderer() {
 
 function DocumentStackRenderer() {
   return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
+    <DocumentStack.Navigator>
+      <DocumentStack.Screen
         name={routes.DOCUMENTS}
         component={DocumentScreen}
         options={{ headerShown: false }}
       />
-    </HomeStack.Navigator>
+    </DocumentStack.Navigator>
   );
 }
 
 function ConsultationStackRenderer() {
   return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
+    <ConsultationStack.Navigator>
+      <ConsultationStack.Screen
         name={routes.CONSULTATION}
         component={ConsultationScreen}
         options={{ headerShown: false }}
       />
-       <HomeStack.Screen
+      <ConsultationStack.Screen
         name={routes.CONSULTATION_DETAILS}
         component={ConsultationDetailsScreen}
         options={{ headerShown: false }}
       />
-    </HomeStack.Navigator>
+    </ConsultationStack.Navigator>
   );
 }
 
 function Router() {
-  const { userInfo, splashLoading } = useContext(AuthContext);
+  const { userInfo, bottomBarVisible, splashLoading } = useContext(AuthContext);
 
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        labeled={false}
-        screenOptions={{
-          headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: "white",
-          },
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      >
-        {splashLoading ? (
+      {splashLoading ? (
+        <Stack.Screen
+          name="Splash Screen"
+          component={SplashScreen}
+          options={{ headerShown: false }}
+        />
+      ) : !userInfo.accessToken ? (
+        <Stack.Navigator>
           <Stack.Screen
-            name="Splash Screen"
-            component={SplashScreen}
+            name="Login"
+            component={LoginScreen}
             options={{ headerShown: false }}
           />
-        ) : !userInfo.accessToken ? (
-          <>
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Register"
-              component={RegisterScreen}
-              options={{ headerShown: false }}
-            />
-          </>
-        ) : (
-          <Fragment>
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      ) : (
+        <Fragment>
+          <Tab.Navigator
+            labeled={false}
+            barStyle={{
+              display: bottomBarVisible ? null : "none",
+            }}
+            screenOptions={{
+              headerShadowVisible: false,
+              headerStyle: {
+                backgroundColor: "white",
+              },
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+            }}
+          >
             <Tab.Screen
               name="HomeStack"
               component={HomeStackRenderer}
@@ -157,9 +162,9 @@ function Router() {
                 ),
               }}
             />
-          </Fragment>
-        )}
-      </Tab.Navigator>
+          </Tab.Navigator>
+        </Fragment>
+      )}
     </NavigationContainer>
   );
 }
