@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
+  const [bottomBarVisible, setBottomBarVisible] = useState(true);
 
   const login = async (name, password) => {
     setIsLoading(true);
@@ -74,6 +75,8 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
         logout,
+        bottomBarVisible,
+        setBottomBarVisible,
       }}
     >
       {children}

@@ -14,6 +14,7 @@ import {
   ConsultationDetailsScreen,
 } from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { AuthContext } from "../context/AuthContext";
@@ -83,43 +84,46 @@ function ConsultationStackRenderer() {
 }
 
 function Router() {
-  const { userInfo, splashLoading } = useContext(AuthContext);
+  const { userInfo, bottomBarVisible, splashLoading } = useContext(AuthContext);
 
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        labeled={false}
-        screenOptions={{
-          headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: "white",
-          },
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      >
-        {splashLoading ? (
+      {splashLoading ? (
+        <Stack.Screen
+          name="Splash Screen"
+          component={SplashScreen}
+          options={{ headerShown: false }}
+        />
+      ) : !userInfo.accessToken ? (
+        <Stack.Navigator>
           <Stack.Screen
-            name="Splash Screen"
-            component={SplashScreen}
+            name="Login"
+            component={LoginScreen}
             options={{ headerShown: false }}
           />
-        ) : !userInfo.accessToken ? (
-          <>
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Register"
-              component={RegisterScreen}
-              options={{ headerShown: false }}
-            />
-          </>
-        ) : (
-          <Fragment>
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      ) : (
+        <Fragment>
+          <Tab.Navigator
+            labeled={false}
+            barStyle={{
+              display: bottomBarVisible ? null : "none",
+            }}
+            screenOptions={{
+              headerShadowVisible: false,
+              headerStyle: {
+                backgroundColor: "white",
+              },
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+            }}
+          >
             <Tab.Screen
               name="HomeStack"
               component={HomeStackRenderer}
@@ -158,9 +162,9 @@ function Router() {
                 ),
               }}
             />
-          </Fragment>
-        )}
-      </Tab.Navigator>
+          </Tab.Navigator>
+        </Fragment>
+      )}
     </NavigationContainer>
   );
 }
