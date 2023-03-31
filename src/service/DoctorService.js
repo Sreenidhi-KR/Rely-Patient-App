@@ -1,7 +1,7 @@
 import axios from "axios";
-const urlBase = "https://af2f-119-161-98-68.in.ngrok.io/api/v1";
-const token =
-  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcnMiLCJpYXQiOjE2ODAyMDQ3NjksImV4cCI6MTY4MDI5MTE2OX0.zGuskbS8KbleltXB-VOWE9CcMkefdZlCGeQckhiP1Cc0JTaqonaICQz74H0zHCZDLr9HNY6Toxu2O6oIUCPrsQ";
+import { BASE_URL, token } from "../config";
+
+const urlBase = `${BASE_URL}/api/v1`;
 
 const config = {
   headers: {
@@ -39,7 +39,7 @@ const addPatientToQueue = async (doctorId, patientId) => {
 const removePatientFromQueue = async (doctorId, patientId) => {
   console.log("removePatientFromoQueue");
   try {
-    const response = await fetch(
+    const response = await axios.get(
       `${urlBase}/dqueue/removePatient/${doctorId}/${patientId}`,
       config
     );
@@ -64,7 +64,7 @@ const getPatientIndexFromQueue = async (doctorId, patientId, setIndex) => {
 
 const addAndGetIndexFromQueue = async (doctorId, patientId, setIndex) => {
   try {
-    await fetch(
+    await axios.get(
       `${urlBase}/dqueue/addPatient/${doctorId}/${patientId}`,
       config
     );

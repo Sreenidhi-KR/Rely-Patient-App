@@ -25,6 +25,7 @@ const Stack = createNativeStackNavigator();
 
 const HomeStack = createNativeStackNavigator();
 const DocumentStack = createNativeStackNavigator();
+const ConsultationStack = createNativeStackNavigator();
 
 function HomeStackRenderer() {
   return (
@@ -54,30 +55,30 @@ function HomeStackRenderer() {
 
 function DocumentStackRenderer() {
   return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
+    <DocumentStack.Navigator>
+      <DocumentStack.Screen
         name={routes.DOCUMENTS}
         component={DocumentScreen}
         options={{ headerShown: false }}
       />
-    </HomeStack.Navigator>
+    </DocumentStack.Navigator>
   );
 }
 
 function ConsultationStackRenderer() {
   return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
+    <ConsultationStack.Navigator>
+      <ConsultationStack.Screen
         name={routes.CONSULTATION}
         component={ConsultationScreen}
         options={{ headerShown: false }}
       />
-       <HomeStack.Screen
+      <ConsultationStack.Screen
         name={routes.CONSULTATION_DETAILS}
         component={ConsultationDetailsScreen}
         options={{ headerShown: false }}
       />
-    </HomeStack.Navigator>
+    </ConsultationStack.Navigator>
   );
 }
 

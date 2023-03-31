@@ -1,7 +1,7 @@
 import axios from "axios";
-const urlBase = "https://af2f-119-161-98-68.in.ngrok.io/api/auth";
-const token =
-  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcnMiLCJpYXQiOjE2ODAyMDQ3NjksImV4cCI6MTY4MDI5MTE2OX0.zGuskbS8KbleltXB-VOWE9CcMkefdZlCGeQckhiP1Cc0JTaqonaICQz74H0zHCZDLr9HNY6Toxu2O6oIUCPrsQ";
+import { BASE_URL, token } from "../config";
+
+const urlBase = `${BASE_URL}/api/auth`;
 
 const config = {
   headers: {
