@@ -14,7 +14,7 @@ import SquareTile from "../../components/user/SquareTile";
 const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   const { doctor } = route.params;
   const [index, setIndex] = useState(null);
-  const patientId = 2;
+  const patientId = 1;
   var interval;
 
   const refreshPatientIndex = () => {

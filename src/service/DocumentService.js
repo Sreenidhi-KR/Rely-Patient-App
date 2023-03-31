@@ -3,7 +3,7 @@ import axios from "axios";
 import { Buffer } from "buffer";
 import RNFetchBlob from "rn-fetch-blob";
 const { fs } = RNFetchBlob;
-const urlBase = "https://1403-103-156-19-229.in.ngrok.io/api/v1";
+const urlBase = "https://af2f-119-161-98-68.in.ngrok.io/api/v1";
 const patientId = 1; //Dummy patient Id for now later should be changed
 const consultationId = 3; //Dummy consultatoin id
 const token =
