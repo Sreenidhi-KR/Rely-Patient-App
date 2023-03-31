@@ -36,4 +36,25 @@ const getPrevConsultDetails = async (consultId) => {
   }
 };
 
-export { getAllPreviousConsultations, getPrevConsultDetails };
+const addConsultation = async (patientId, doctorId, startTime) => {
+    console.log("Creating new Consultation");
+    try{
+        const response = await axios.post(
+            `${urlBase}/consultation/addConsultation`,{
+                patientId,
+                doctorId,
+                startTime
+            },
+            config
+        )
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export {
+    getAllPreviousConsultations,
+    getPrevConsultDetails,
+    addConsultation,
+};

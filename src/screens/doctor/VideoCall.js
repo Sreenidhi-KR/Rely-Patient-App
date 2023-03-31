@@ -9,13 +9,14 @@ const VideoCall = ({ route }) => {
   const { doctor } = route.params;
   const [videoCall, setVideoCall] = useState(true);
   console.log(doctor);
+  console.log(consultationId);
   const connectionData = {
     appId: "5e2ee6c6fc13459caa99cb8c234d42e0",
     channel: doctor.channel_name,
     token: doctor.token,
   };
   const callbacks = {
-    EndCall: () => setVideoCall(false),
+    EndCall: () => {setVideoCall(false)},
   };
   useEffect(() => {
     setBottomBarVisible(false);
