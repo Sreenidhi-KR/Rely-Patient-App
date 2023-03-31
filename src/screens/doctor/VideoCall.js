@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AgoraUIKit from "agora-rn-uikit";
 import { Text, View } from "react-native";
-import { ConsultationDocs } from "../user/consultationDocumentsFAB";
+import { ConsultationDocs } from "../../components/user/consultationDocumentsFAB";
 
 const VideoCall = ({ route }) => {
   const { doctor } = route.params;
