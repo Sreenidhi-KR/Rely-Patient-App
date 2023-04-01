@@ -16,7 +16,7 @@ const Header = () => {
           logout();
         }}
         style={{ marginHorizontal: 10 }}
-        titleStyle={{ color: "black" }}
+        titleStyle={{ color: "black", fontWeight: "bold" }}
         descriptionStyle={{ color: "gray" }}
         title={`Hello Kiran`}
         description={`How are you feeling today !!`}

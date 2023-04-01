@@ -1,9 +1,17 @@
 //import liraries
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, View, StyleSheet, FlatList } from "react-native";
-import { List, Text } from "react-native-paper";
+import {
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import { List, Text, Divider } from "react-native-paper";
+import Header from "../../components/user/Header";
 import routes from "../../navigation/routes";
 import { getAllPreviousConsultations } from "../../service/ConsultationService";
+import { downloadDocument } from "../../service/DocumentService";
 
 // create a component
 const ConsultationScreen = ({ navigation }) => {
@@ -75,45 +83,167 @@ const ConsultationScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
+      <Header />
       {isLoading ? (
         <ActivityIndicator style={styles.indicator} />
       ) : (
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.consult_id}
-          renderItem={({ item }) => (
-            <View style={styles.box}>
-              <List.Item
-                onPress={() => {
-                  console.log("Prev_Consultation");
-                  navigation.navigate(routes.CONSULTATION_DETAILS, {
-                    consultation: item,
-                  });
+        <>
+          <List.Section
+            title="My Consultations"
+            titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
+          ></List.Section>
+          <FlatList
+            scrollEnabled
+            showsVerticalScrollIndicator
+            data={data}
+            keyExtractor={(item) => item.consultId}
+            renderItem={({ item }) => (
+              <View
+                style={{
+                  backgroundColor: "#F5ECFF",
+                  marginHorizontal: 20,
+                  marginVertical: 10,
+                  padding: 10,
+                  borderRadius: 10,
                 }}
-                titleStyle={{
-                  color: "black",
-                  fontSize: 30,
-                  fontFamily: "serif",
-                  marginBottom: 2,
-                }}
-                title={`Dr.${item.doctorName}`}
-                descriptionStyle={{ color: "black" }}
-                description={
-                  <Text
-                    numberOfLines={3}
-                    style={{ color: "black", fontSize: 15 }}
-                  >
-                    {item.specialization}
-                    {"\n"}
-                    {getDateTime(item.startTime).formattedDate1}
-                  </Text>
-                }
-                // description={`13:45-12/01/2023    14:09-12/01/2023`}
-              />
-            </View>
-          )}
-        />
+              >
+                <List.Accordion
+                  theme={{
+                    colors: { background: "#F5ECFF" },
+                  }}
+                  titleStyle={{
+                    color: "#414141",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                  }}
+                  descriptionStyle={{ color: "gray", fontSize: 11 }}
+                  title={`Dr.${item.doctorName}`}
+                  description="12 March  |  11 AM "
+                >
+                  <>
+                    <Divider />
+
+                    <Text
+                      style={{
+                        color: "gray",
+                        fontSize: 11,
+                        fontWeight: "bold",
+                        marginHorizontal: 15,
+                        marginTop: 10,
+                        marginBottom: 5,
+                      }}
+                    >
+                      Documents
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        paddingLeft: 15,
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {item.documentDetailsList.map((document) => {
+                        return (
+                          <TouchableOpacity
+                            onPress={() => {
+                              console.log("Press");
+                              downloadDocument(document.id);
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: "auto",
+                                overflow: "visible",
+                                maxWidth: 150,
+                                borderRadius: 10,
+                                borderColor: "#564264",
+                                borderWidth: 1,
+                                padding: 8,
+                                backgroundColor: "#dac8f4",
+                                margin: 3,
+                              }}
+                            >
+                              <Text
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                                style={{ fontSize: 11, color: "#564264" }}
+                              >
+                                {document.name}
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })}
+
+                      <TouchableOpacity
+                        onPress={() => {
+                          console.log("Press");
+                        }}
+                      >
+                        <View
+                          style={{
+                            width: "auto",
+                            overflow: "visible",
+                            borderRadius: 10,
+                            borderColor: "black",
+                            borderWidth: 1,
+                            padding: 8,
+                            backgroundColor: "#edf8dd",
+                            margin: 3,
+                          }}
+                        >
+                          <Text
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={{ fontSize: 11, color: "black" }}
+                          >
+                            Prescription
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        console.log("Press");
+                      }}
+                    ></TouchableOpacity>
+                  </>
+                </List.Accordion>
+              </View>
+
+              // <View style={styles.box}>
+              //   <List.Item
+              //     onPress={() => {
+              //       console.log("Prev_Consultation");
+              //       navigation.navigate(routes.CONSULTATION_DETAILS, {
+              //         consultation: item,
+              //       });
+              //     }}
+              //     titleStyle={{
+              //       color: "black",
+              //       fontSize: 30,
+              //       fontFamily: "serif",
+              //       marginBottom: 2,
+              //     }}
+              //     title={`Dr.${item.doctorName}`}
+              //     descriptionStyle={{ color: "black" }}
+              //     description={
+              //       <Text
+              //         numberOfLines={3}
+              //         style={{ color: "black", fontSize: 15 }}
+              //       >
+              //         {item.specialization}
+              //         {"\n"}
+              //         {getDateTime(item.startTime).formattedDate1}
+              //       </Text>
+              //     }
+              //     // description={`13:45-12/01/2023    14:09-12/01/2023`}
+              //   />
+              // </View>
+            )}
+          />
+        </>
       )}
     </View>
   );
@@ -133,9 +263,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    //padding: 24,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "white",
     flexDirection: "column",
   },

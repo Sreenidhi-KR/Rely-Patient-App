@@ -37,24 +37,21 @@ const getPrevConsultDetails = async (consultId) => {
 };
 
 const addConsultation = async (patientId, doctorId, startTime) => {
-    console.log("Creating new Consultation");
-    try{
-        const response = await axios.post(
-            `${urlBase}/consultation/addConsultation`,{
-                "patient_id" : patientId,
-                "doctor_id" : doctorId,
-                "start_time" : startTime
-            },
-            config
-        )
-        return response.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-export {
-    getAllPreviousConsultations,
-    getPrevConsultDetails,
-    addConsultation,
+  console.log("Creating new Consultation");
+  try {
+    const response = await axios.post(
+      `${urlBase}/consultation/addConsultation`,
+      {
+        patient_id: patientId,
+        doctor_id: doctorId,
+        start_time: startTime,
+      },
+      config
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
+
+export { getAllPreviousConsultations, getPrevConsultDetails, addConsultation };
