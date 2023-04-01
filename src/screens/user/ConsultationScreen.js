@@ -6,6 +6,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import { List, Text, Divider } from "react-native-paper";
 import Header from "../../components/user/Header";
@@ -78,6 +79,14 @@ const ConsultationScreen = ({ navigation }) => {
     }
   };
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    console.log("Refresh");
+    setRefreshing(false);
+  }, []);
+
   useEffect(() => {
     getPreviousConsultations(patientId);
   }, []);
@@ -95,6 +104,9 @@ const ConsultationScreen = ({ navigation }) => {
           ></List.Section>
           <FlatList
             scrollEnabled
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             showsVerticalScrollIndicator
             data={data}
             keyExtractor={(item) => item.consultId}
@@ -146,6 +158,7 @@ const ConsultationScreen = ({ navigation }) => {
                       {item.documentDetailsList.map((document) => {
                         return (
                           <TouchableOpacity
+                            key={document.id}
                             onPress={() => {
                               console.log("Press");
                               downloadDocument(document.id);

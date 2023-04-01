@@ -41,7 +41,11 @@ function HomeStackRenderer() {
         component={DoctorListScreen}
       />
 
-      <HomeStack.Screen name={routes.VIDEO} component={VideoCall} />
+      <HomeStack.Screen
+        name={routes.VIDEO}
+        component={VideoCall}
+        options={{ headerShown: false }}
+      />
       <HomeStack.Screen
         name={routes.DOCTOR_DETAILS}
         component={DoctorDetaisScreen}

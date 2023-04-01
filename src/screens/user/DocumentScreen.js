@@ -4,6 +4,7 @@ import {
   FlatList,
   Text,
   View,
+  RefreshControl,
 } from "react-native";
 import { List, Button, FAB, Appbar } from "react-native-paper";
 import React, { useState, useEffect } from "react";
@@ -13,11 +14,20 @@ import {
   removeDocument,
   downloadDocument,
 } from "../../service/DocumentService";
+import Header from "../../components/user/Header";
 
 // create a component
 const DocumentScreen = () => {
   const [docs, setDocs] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    console.log("Refresh");
+    setRefreshing(false);
+  }, []);
+
   //onMount load all the documents
   useEffect(() => {
     getDocuments();
@@ -52,11 +62,17 @@ const DocumentScreen = () => {
         <ActivityIndicator />
       ) : (
         <View>
-          <Appbar.Header style={{ backgroundColor: "#F5ECFF" }}>
-            <Appbar.Content title="Documents" titleStyle={{ color: "black" }} />
-          </Appbar.Header>
+          <Header />
+          <List.Section
+            title="Documents"
+            titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
+          ></List.Section>
           <FlatList
             data={docs}
+            centerContent
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             keyExtractor={({ id }) => id}
             renderItem={({ item }) => (
               <View style={styles.box}>
@@ -95,6 +111,7 @@ const DocumentScreen = () => {
       )}
       <FAB
         icon="plus"
+        label="Add Document"
         style={styles.fab}
         onPress={() => {
           docUpload();

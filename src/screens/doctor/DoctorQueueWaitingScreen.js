@@ -1,6 +1,6 @@
 //import liraries
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { Alert, View, Text, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import {
   addAndGetIndexFromQueue,
@@ -17,8 +17,9 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   const { doctor } = route.params;
   const [index, setIndex] = useState(null);
   const patientId = 1;
-  var interval;
+  let interval;
   const { setBottomBarVisible } = useContext(AuthContext);
+  const [joinedQueue, setJoinedQueue] = useState(false);
 
   const refreshPatientIndex = () => {
     getPatientIndexFromQueue(doctor.id, patientId, setIndex);
@@ -28,20 +29,52 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
     removePatientFromQueue(doctor.id, patientId);
   };
 
+  const myalert = (e, unsubscribe) => {
+    console.log("joinedQueue");
+    console.log(joinedQueue);
+
+    e.preventDefault();
+    Alert.alert(
+      "Are you sure you want to leave the Queue",
+      "You will have to rejoin the queue if you leave the screen",
+      [
+        { text: "Don't leave", style: "cancel", onPress: () => {} },
+        {
+          text: "Leave",
+          style: "destructive",
+          onPress: () => {
+            unsubscribe();
+            navigation.dispatch(e.data.action);
+          },
+        },
+      ]
+    );
+  };
+
   useEffect(() => {
     setBottomBarVisible(false);
     addAndGetIndexFromQueue(doctor.id, patientId, setIndex);
 
     interval = setInterval(() => {
       getPatientIndexFromQueue(doctor.id, patientId, setIndex);
-    }, 30000);
+    }, 10000);
+
+    const unsubscribe = navigation.addListener("beforeRemove", (e) => {
+      if (joinedQueue) {
+        return;
+      } else {
+        myalert(e, unsubscribe);
+      }
+    });
 
     return () => {
       setBottomBarVisible(true);
       console.log("Interval Cleared");
       clearInterval(interval);
+      unsubscribe();
+      removePatient();
     };
-  }, []);
+  }, [navigation, joinedQueue]);
 
   return (
     <View style={styles.container}>
@@ -61,13 +94,19 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
           mode="contained"
           style={{ width: 150 }}
           onPress={async () => {
+            setJoinedQueue(true);
             console.log("Interval Cleared");
             clearInterval(interval);
-            
-            var consultationId = await addConsultation(patientId, doctor.id, "2023-03-30T21:46:14.679+00:00")
-            navigation.navigate(routes.VIDEO, {
+            var consultationId = await addConsultation(
+              patientId,
+              doctor.id,
+              patientId,
+              interval,
+              "2023-03-30T21:46:14.679+00:00"
+            );
+            navigation.replace(routes.VIDEO, {
               doctor: doctor,
-              consultationId : consultationId
+              consultationId: consultationId,
             });
           }}
         >
@@ -83,13 +122,8 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
         style={{ width: 150, marginTop: 10 }}
         buttonColor="red"
         textColor="white"
-        onPress={() => {
-          console.log("Interval Cleared");
-          clearInterval(interval);
-          removePatient();
-          navigation.navigate(routes.HOME, {
-            doctor: doctor,
-          });
+        onPress={(e) => {
+          navigation.goBack();
         }}
       >
         Leave Queue
