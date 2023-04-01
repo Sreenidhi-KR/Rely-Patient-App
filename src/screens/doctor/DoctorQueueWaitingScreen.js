@@ -107,6 +107,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
             navigation.replace(routes.VIDEO, {
               doctor: doctor,
               consultationId: consultationId,
+              patientId: patientId,
             });
           }}
         >

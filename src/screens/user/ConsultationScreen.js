@@ -83,7 +83,7 @@ const ConsultationScreen = ({ navigation }) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    console.log("Refresh");
+    getPreviousConsultations(patientId);
     setRefreshing(false);
   }, []);
 

@@ -24,7 +24,7 @@ const DocumentScreen = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    console.log("Refresh");
+    getDocuments();
     setRefreshing(false);
   }, []);
 
@@ -57,67 +57,69 @@ const DocumentScreen = () => {
     await getDocuments();
   }
   return (
-    <View style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <View>
-          <Header />
-          <List.Section
-            title="Documents"
-            titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
-          ></List.Section>
-          <FlatList
-            data={docs}
-            centerContent
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            keyExtractor={({ id }) => id}
-            renderItem={({ item }) => (
-              <View style={styles.box}>
-                <List.Item
-                  title={`${item.name}`}
-                  titleStyle={{ color: "black" }}
-                  right={() => {
-                    return (
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          justifyContent: "flex-end",
-                        }}
-                      >
-                        <Button
-                          icon="download"
-                          onPress={() => {
-                            downloadDocument(item.id);
+    <>
+      <View style={styles.container}>
+        <Header />
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <View>
+            <List.Section
+              title="Documents"
+              titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
+            ></List.Section>
+            <FlatList
+              data={docs}
+              centerContent
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              keyExtractor={({ id }) => id}
+              renderItem={({ item }) => (
+                <View style={styles.box}>
+                  <List.Item
+                    title={`${item.name}`}
+                    titleStyle={{ color: "black" }}
+                    right={() => {
+                      return (
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            justifyContent: "flex-end",
                           }}
-                        ></Button>
-                        <Button
-                          icon="delete"
-                          onPress={() => {
-                            removeDoc(item.id);
-                          }}
-                        ></Button>
-                      </View>
-                    );
-                  }}
-                />
-              </View>
-            )}
-          />
-        </View>
-      )}
-      <FAB
-        icon="plus"
-        label="Add Document"
-        style={styles.fab}
-        onPress={() => {
-          docUpload();
-        }}
-      />
-    </View>
+                        >
+                          <Button
+                            icon="download"
+                            onPress={() => {
+                              downloadDocument(item.id);
+                            }}
+                          ></Button>
+                          <Button
+                            icon="delete"
+                            onPress={() => {
+                              removeDoc(item.id);
+                            }}
+                          ></Button>
+                        </View>
+                      );
+                    }}
+                  />
+                </View>
+              )}
+            />
+          </View>
+        )}
+        <FAB
+          icon="plus"
+          label="Add Document"
+          style={styles.fab}
+          onPress={() => {
+            docUpload();
+          }}
+        />
+      </View>
+    </>
   );
 };
 

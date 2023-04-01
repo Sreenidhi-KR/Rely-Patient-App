@@ -133,6 +133,7 @@ function Router() {
               component={HomeStackRenderer}
               options={{
                 headerShown: false,
+                unmountOnBlur: true,
                 tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons name="home" color={color} size={22} />
                 ),
@@ -143,6 +144,7 @@ function Router() {
               component={DocumentStackRenderer}
               options={{
                 headerShown: true,
+                unmountOnBlur: true,
                 tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons
                     name="file-document"
@@ -157,6 +159,7 @@ function Router() {
               component={ConsultationStackRenderer}
               options={{
                 headerShown: true,
+                unmountOnBlur: true,
                 tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons
                     name="account-group"

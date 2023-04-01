@@ -17,18 +17,19 @@ import {
   removeDocFromConsultation,
 } from "../../service/DocumentService";
 import React, { useState, useEffect } from "react";
-const ConsultationDocsFAB = () => {
+const ConsultationDocsFAB = ({ consultationId }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [inConsultation, setInConsultation] = useState([]);
   const [canBeAdded, setCanBeAdded] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    consultationDocs();
+    getConsultationDocuments(consultationId);
   }, []);
 
-  async function consultationDocs() {
-    let json = await docsForConsultation();
+  async function getConsultationDocuments(consultationId) {
+    setLoading(true);
+    let json = await docsForConsultation(consultationId);
     setInConsultation(json[0]);
     setCanBeAdded(json[1]);
     setLoading(false);
@@ -37,21 +38,25 @@ const ConsultationDocsFAB = () => {
   //After adding docs to consultaton we should reload the files which are in consultation and not in consultaton .
   async function addDocToConsul(docId) {
     setLoading(true);
-    await addDocToConsultation(docId);
-    await consultationDocs();
+    await addDocToConsultation(docId, consultationId);
+    await getConsultationDocuments(consultationId);
+    setLoading(false);
   }
 
   //After removeing docs from consultation we shoudl reload the files
   async function removeDocFromConsul(docId) {
     setLoading(true);
-    await removeDocFromConsultation(docId);
-    await consultationDocs();
+    await removeDocFromConsultation(docId, consultationId);
+    await getConsultationDocuments(consultationId);
+    setLoading(false);
   }
 
   //After upload we should also reolad all the docs in the consultation and not in consultation also
   async function uploadDoc() {
+    setLoading(true);
     await uploadDocument();
-    await consultationDocs();
+    await getConsultationDocuments(consultationId);
+    setLoading(false);
   }
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);

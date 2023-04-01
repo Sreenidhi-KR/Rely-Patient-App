@@ -5,13 +5,12 @@ import RNFetchBlob from "rn-fetch-blob";
 const { fs } = RNFetchBlob;
 import { BASE_URL, token } from "../config";
 const patientId = 1; //Dummy patient Id for now later should be changed
-const consultationId = 1; //Dummy consultatoin id
 
 const urlBase = `${BASE_URL}/api/v1`;
 
 //returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
 
-async function removeDocFromConsultation(docId) {
+async function removeDocFromConsultation(docId, consultationId) {
   const config = {
     method: "GET",
     headers: {
@@ -30,7 +29,7 @@ async function removeDocFromConsultation(docId) {
   }
 }
 
-async function addDocToConsultation(docId) {
+async function addDocToConsultation(docId, consultationId) {
   const config = {
     method: "GET",
     headers: {
@@ -48,7 +47,7 @@ async function addDocToConsultation(docId) {
     console.log(err);
   }
 }
-async function docsForConsultation() {
+async function docsForConsultation(consultationId) {
   const config = {
     method: "GET",
     headers: {
