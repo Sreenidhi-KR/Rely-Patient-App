@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import AgoraUIKit from "agora-rn-uikit";
 import { Alert, Text, View, BackHandler } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
-import { ConsultationDocsFAB } from "../../components/user/ConsultationDocsFAB";
+import { ConsultationDocsFAB } from "../../components/ConsultationDocsFAB";
 import { removePatientFromQueue } from "../../service/DoctorService";
 import routes from "../../navigation/routes";
 import { StackActions } from "@react-navigation/native";
@@ -68,7 +68,7 @@ const VideoCall = ({ navigation, route }) => {
   return inVideoCall ? (
     <View style={{ flex: 1 }}>
       <AgoraUIKit connectionData={connectionData} rtcCallbacks={callbacks} />
-      <ConsultationDocsFAB />
+      <ConsultationDocsFAB consultationId={consultationId} />
     </View>
   ) : (
     <Text setVideoCall={setInVideoCall} onPress={() => setInVideoCall(true)}>

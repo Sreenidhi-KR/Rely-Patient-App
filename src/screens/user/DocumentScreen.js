@@ -14,7 +14,7 @@ import {
   removeDocument,
   downloadDocument,
 } from "../../service/DocumentService";
-import Header from "../../components/user/Header";
+import Header from "../../components/Header";
 
 // create a component
 const DocumentScreen = () => {
@@ -63,7 +63,7 @@ const DocumentScreen = () => {
         {isLoading ? (
           <ActivityIndicator />
         ) : (
-          <View>
+          <View style={styles.wrapper}>
             <List.Section
               title="Documents"
               titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
@@ -86,7 +86,7 @@ const DocumentScreen = () => {
                           style={{
                             flex: 1,
                             flexDirection: "row",
-                            justifyContent: "flex-end",
+                            justifyContent: "space-around",
                           }}
                         >
                           <Button
@@ -113,6 +113,8 @@ const DocumentScreen = () => {
         <FAB
           icon="plus"
           label="Add Document"
+          size="small"
+          variant="primary"
           style={styles.fab}
           onPress={() => {
             docUpload();
@@ -127,14 +129,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    flexDirection: "column",
   },
   box: {
-    height: 100,
-    width: "90%",
-    padding: 10,
     margin: 10,
-    borderRadius: 20,
+    borderRadius: 10,
     backgroundColor: "#F5ECFF",
   },
   fab: {

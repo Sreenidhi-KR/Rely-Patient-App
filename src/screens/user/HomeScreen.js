@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Modal, Portal, List, Avatar } from "react-native-paper";
-import Header from "../../components/user/Header";
-import SpecializationsModal from "../../components/user/SpecializationsModal";
-import SquareTile from "../../components/user/SquareTile";
+import Header from "../../components/Header";
+import SpecializationsModal from "../../components/SpecializationsModal";
+import SquareTile from "../../components/SquareTile";
 import imagePaths from "../../constants/imagePaths";
 import routes from "../../navigation/routes";
 

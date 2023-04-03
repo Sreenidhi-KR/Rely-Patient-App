@@ -39,36 +39,38 @@ const DoctorListScreen = ({ route, navigation }) => {
   }, []);
 
   return (
-    <View style={{ flex: 1, padding: 24, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <FlatList
-          data={data}
-          keyExtractor={({ id }) => id}
-          renderItem={({ item }) => (
-            <View style={styles.box}>
-              <List.Item
-                onPress={() => {
-                  console.log(item.fname);
-                  navigation.navigate(routes.DOCTOR_DETAILS, {
-                    doctor: item,
-                  });
-                }}
-                titleStyle={{ color: "black" }}
-                descriptionStyle={{ color: "gray" }}
-                title={`${item.fname} ${item.lname}`}
-                description={`${item.qualification}`}
-                left={(props) => (
-                  <Image
-                    source={require(`../../../assets/general-doc.png`)}
-                    style={{ width: 55, height: 55 }}
-                  />
-                )}
-              />
-            </View>
-          )}
-        />
+        <View style={styles.wrapper}>
+          <FlatList
+            data={data}
+            keyExtractor={({ id }) => id}
+            renderItem={({ item }) => (
+              <View style={styles.box}>
+                <List.Item
+                  onPress={() => {
+                    console.log(item.fname);
+                    navigation.navigate(routes.DOCTOR_DETAILS, {
+                      doctor: item,
+                    });
+                  }}
+                  titleStyle={{ color: "black" }}
+                  descriptionStyle={{ color: "gray" }}
+                  title={`${item.fname} ${item.lname}`}
+                  description={`${item.qualification}`}
+                  left={(props) => (
+                    <Image
+                      source={require(`../../../assets/general-doc.png`)}
+                      style={{ width: 55, height: 55 }}
+                    />
+                  )}
+                />
+              </View>
+            )}
+          />
+        </View>
       )}
     </View>
   );
@@ -77,14 +79,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    flexDirection: "column",
   },
+  wrapper: {},
   box: {
     height: 100,
-    width: "90%",
     padding: 10,
-    margin: 10,
-    borderRadius: 20,
+    marginHorizontal: 20,
+    marginVertical: 15,
+    borderRadius: 10,
     backgroundColor: "#F5ECFF",
   },
 });

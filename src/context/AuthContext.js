@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
       setUserInfo(res);
       await AsyncStorage.setItem("userInfo", JSON.stringify(res));
     } catch (e) {
-      console.log(`register error ${e}`);
+      throw e;
     } finally {
       setIsLoading(false);
     }
@@ -32,8 +32,8 @@ export const AuthProvider = ({ children }) => {
 
     try {
       await userRegister(name, email, password);
-    } catch (e) {
-      console.log(`register error ${e}`);
+    } catch (error) {
+      throw error;
     } finally {
       setIsLoading(false);
     }

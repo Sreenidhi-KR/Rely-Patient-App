@@ -140,21 +140,6 @@ function Router() {
               }}
             />
             <Tab.Screen
-              name="DocumentStack"
-              component={DocumentStackRenderer}
-              options={{
-                headerShown: true,
-                unmountOnBlur: true,
-                tabBarIcon: ({ color }) => (
-                  <MaterialCommunityIcons
-                    name="file-document"
-                    color={color}
-                    size={22}
-                  />
-                ),
-              }}
-            />
-            <Tab.Screen
               name="ConsultationStack"
               component={ConsultationStackRenderer}
               options={{
@@ -163,6 +148,21 @@ function Router() {
                 tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons
                     name="account-group"
+                    color={color}
+                    size={22}
+                  />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="DocumentStack"
+              component={DocumentStackRenderer}
+              options={{
+                headerShown: true,
+                unmountOnBlur: true,
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons
+                    name="file-document"
                     color={color}
                     size={22}
                   />

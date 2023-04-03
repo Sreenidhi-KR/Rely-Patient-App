@@ -1,14 +1,14 @@
 //import liraries
 import React, { useEffect, useState, useContext } from "react";
 import { Alert, View, Text, StyleSheet } from "react-native";
-import { Button } from "react-native-paper";
+import { ActivityIndicator, Button } from "react-native-paper";
 import {
   addAndGetIndexFromQueue,
   getPatientIndexFromQueue,
   removePatientFromQueue,
 } from "../../service/DoctorService";
 import routes from "../../navigation/routes";
-import SquareTile from "../../components/user/SquareTile";
+import SquareTile from "../../components/SquareTile";
 import { AuthContext } from "../../context/AuthContext";
 import { addConsultation } from "../../service/ConsultationService";
 
@@ -20,6 +20,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   let interval;
   const { setBottomBarVisible } = useContext(AuthContext);
   const [joinedQueue, setJoinedQueue] = useState(false);
+  const [isLoading, setLoading] = useState();
 
   const refreshPatientIndex = () => {
     getPatientIndexFromQueue(doctor.id, patientId, setIndex);
@@ -53,7 +54,14 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     setBottomBarVisible(false);
-    addAndGetIndexFromQueue(doctor.id, patientId, setIndex);
+
+    const callapi = async () => {
+      setLoading(true);
+      await addAndGetIndexFromQueue(doctor.id, patientId, setIndex);
+      setLoading(false);
+    };
+
+    callapi();
 
     interval = setInterval(() => {
       getPatientIndexFromQueue(doctor.id, patientId, setIndex);
@@ -72,22 +80,25 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
       console.log("Interval Cleared");
       clearInterval(interval);
       unsubscribe();
-      removePatient();
     };
   }, [navigation, joinedQueue]);
 
   return (
     <View style={styles.container}>
       <View style={styles.squareTiles}>
-        <SquareTile
-          imgSrc={null}
-          imgAlt={index}
-          color={"#F5EDF8"}
-          text={"Position in Queue"}
-          onPress={() => {
-            refreshPatientIndex();
-          }}
-        />
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <SquareTile
+            imgSrc={null}
+            imgAlt={index}
+            color={"#F5EDF8"}
+            text={"Position in Queue"}
+            onPress={() => {
+              refreshPatientIndex();
+            }}
+          />
+        )}
       </View>
       {index == 1 ? (
         <Button

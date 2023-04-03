@@ -9,14 +9,15 @@ import {
   RefreshControl,
 } from "react-native";
 import { List, Text, Divider } from "react-native-paper";
-import Header from "../../components/user/Header";
+import Header from "../../components/Header";
 import routes from "../../navigation/routes";
 import { getAllPreviousConsultations } from "../../service/ConsultationService";
 import { downloadDocument } from "../../service/DocumentService";
 
 // create a component
 const ConsultationScreen = ({ navigation }) => {
-  const [isLoading, setLoading] = useState(true);
+  //const [isLoading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = React.useState(true);
   const [data, setData] = useState([]);
   const patientId = 1;
   const startTime = "09:00 28/01/2022";
@@ -67,6 +68,7 @@ const ConsultationScreen = ({ navigation }) => {
 
   const getPreviousConsultations = async (patientId) => {
     try {
+      setRefreshing(true);
       const json = await getAllPreviousConsultations(patientId);
       console.log("Json msg");
       console.log(json);
@@ -75,11 +77,9 @@ const ConsultationScreen = ({ navigation }) => {
       console.log("error");
       console.error(error);
     } finally {
-      setLoading(false);
+      setRefreshing(false);
     }
   };
-
-  const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -88,13 +88,19 @@ const ConsultationScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    getPreviousConsultations(patientId);
+    const unsubscribe = navigation.addListener("focus", () => {
+      console.log("REEEEF");
+      getPreviousConsultations(patientId);
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
   }, []);
 
   return (
     <View style={styles.container}>
       <Header />
-      {isLoading ? (
+      {refreshing ? (
         <ActivityIndicator style={styles.indicator} />
       ) : (
         <>

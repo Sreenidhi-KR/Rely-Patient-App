@@ -3,7 +3,8 @@
 import React, { Component, useContext, useEffect } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { List } from "react-native-paper";
-import { AuthContext } from "../../context/AuthContext";
+import imagePaths from "../constants/imagePaths";
+import { AuthContext } from "../context/AuthContext";
 
 // create a component
 const Header = () => {
@@ -22,7 +23,7 @@ const Header = () => {
         description={`How are you feeling today !!`}
         left={(props) => (
           <Image
-            source={require(`../../../assets/man.png`)}
+            source={imagePaths.avatar_man}
             style={{ width: 50, height: 50 }}
           />
         )}
