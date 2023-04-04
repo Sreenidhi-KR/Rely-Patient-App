@@ -33,7 +33,7 @@ function HomeStackRenderer() {
   const { patientInfo } = useContext(AuthContext);
   return (
     <HomeStack.Navigator>
-      {!patientInfo.patientId ? (
+      {patientInfo == null || patientInfo.patientId == undefined ? (
         <HomeStack.Screen
           name={routes.SELECT_PROFILE}
           component={SelectProfileScreen}

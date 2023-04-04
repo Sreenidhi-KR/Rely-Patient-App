@@ -35,7 +35,7 @@ const SelectProfileScreen = () => {
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <View>
+        <View style={{ marginTop: 30 }}>
           <List.Section
             title="Choose Profile"
             titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     height: 170,
     flexWrap: "wrap",
     alignItems: "flex-start",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
   },
 });
 

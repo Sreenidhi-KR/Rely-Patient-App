@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 5,
     paddingHorizontal: 14,
+    backgroundColor: "white",
   },
   link: {
     color: "#6600cc",

@@ -91,6 +91,7 @@ const ConsultationDocsFAB = ({ consultationId }) => {
                 <Text
                   style={{
                     fontSize: 20,
+                    color: "black",
                   }}
                 >
                   Documents sent to doctor
@@ -127,7 +128,9 @@ const ConsultationDocsFAB = ({ consultationId }) => {
                             >
                               {`X   `}
                             </Text>
-                            <Text>{document.name}</Text>
+                            <Text style={{ color: "black" }}>
+                              {document.name}
+                            </Text>
                           </Text>
                         </View>
                       </TouchableOpacity>
@@ -147,6 +150,7 @@ const ConsultationDocsFAB = ({ consultationId }) => {
                 <Text
                   style={{
                     fontSize: 20,
+                    color: "black",
                   }}
                 >
                   Documents Available

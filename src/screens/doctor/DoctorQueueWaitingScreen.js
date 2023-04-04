@@ -42,6 +42,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
           style: "destructive",
           onPress: () => {
             unsubscribe();
+            removePatient();
             navigation.dispatch(e.data.action);
           },
         },
