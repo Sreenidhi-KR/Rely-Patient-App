@@ -7,20 +7,23 @@ import {
   RefreshControl,
 } from "react-native";
 import { List, Button, FAB, Appbar } from "react-native-paper";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   uploadDocument,
-  getAllDocuments,
+  getAllDocumentsList,
   removeDocument,
   downloadDocument,
 } from "../../service/DocumentService";
 import Header from "../../components/Header";
+import { AuthContext } from "../../context/AuthContext";
 
 // create a component
 const DocumentScreen = () => {
   const [docs, setDocs] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
+  const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
+  const patientId = patientInfo.patientId;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -34,14 +37,14 @@ const DocumentScreen = () => {
   }, []);
 
   async function getDocuments() {
-    data = await getAllDocuments();
+    data = await getAllDocumentsList(patientId);
     setDocs(data);
     setLoading(false);
   }
 
   async function docUpload() {
     setLoading(true);
-    await uploadDocument();
+    await uploadDocument(patientId);
     await getDocuments();
   }
 

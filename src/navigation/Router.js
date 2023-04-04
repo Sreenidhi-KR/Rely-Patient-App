@@ -20,7 +20,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { AuthContext } from "../context/AuthContext";
 import LoginScreen from "../screens/auth/LoginScreen";
 import RegisterScreen from "../screens/auth/RegisterScreen";
-import ProfilesScreen from "../screens/auth/ProfilesScreen";
+import SelectProfileScreen from "../screens/auth/SelectProfileScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -35,8 +35,8 @@ function HomeStackRenderer() {
     <HomeStack.Navigator>
       {!patientInfo.patientId ? (
         <HomeStack.Screen
-          name="Profiles"
-          component={ProfilesScreen}
+          name={routes.SELECT_PROFILE}
+          component={SelectProfileScreen}
           options={{ headerShown: false }}
         />
       ) : null}
@@ -98,8 +98,7 @@ function ConsultationStackRenderer() {
 }
 
 function Router() {
-  const { userInfo, bottomBarVisible, splashLoading, patientInfo } =
-    useContext(AuthContext);
+  const { userInfo, bottomBarVisible, splashLoading } = useContext(AuthContext);
 
   return (
     <NavigationContainer>

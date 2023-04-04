@@ -4,7 +4,6 @@ import { Buffer } from "buffer";
 import RNFetchBlob from "rn-fetch-blob";
 const { fs } = RNFetchBlob;
 import { BASE_URL, getConfig, getToken } from "../config";
-const patientId = 1; //Dummy patient Id for now later should be changed
 
 const urlBase = `${BASE_URL}/api/v1`;
 
@@ -33,14 +32,14 @@ async function addDocToConsultation(documentId, consultationId) {
     console.log(err);
   }
 }
-async function docsForConsultation(consultationId) {
+async function docsForConsultation(consultationId, patientId) {
   try {
     let response = await axios.get(
       `${urlBase}/consultation/getAllDocumentsByCid/${consultationId}`,
       await getConfig()
     );
     let inConsultation = response.data;
-    let allDocs = await getAllDocumentsList();
+    let allDocs = await getAllDocumentsList(patientId);
     let canBeAdded = allDocs.filter(
       (obj2) => !inConsultation.some((obj1) => obj1.id === obj2.id)
     );
@@ -102,7 +101,7 @@ async function removeDocument(docId) {
   }
 }
 
-async function getAllDocumentsList() {
+async function getAllDocumentsList(patientId) {
   try {
     let response = await axios.get(
       `${urlBase}/document/getAll/${patientId}`,
@@ -115,7 +114,7 @@ async function getAllDocumentsList() {
   }
 }
 
-async function uploadDocument() {
+async function uploadDocument(patientId) {
   const config = {
     method: "POST",
     headers: {
@@ -149,7 +148,7 @@ async function uploadDocument() {
 
 export {
   uploadDocument,
-  getAllDocumentsList as getAllDocuments,
+  getAllDocumentsList,
   removeDocument,
   downloadDocument,
   docsForConsultation,

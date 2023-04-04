@@ -11,12 +11,16 @@ import {
   addDocToConsultation,
   removeDocFromConsultation,
 } from "../service/DocumentService";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
 const ConsultationDocsFAB = ({ consultationId }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [inConsultation, setInConsultation] = useState([]);
   const [canBeAdded, setCanBeAdded] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
+  const patientId = patientInfo.patientId;
 
   useEffect(() => {
     getConsultationDocuments(consultationId);
@@ -24,7 +28,7 @@ const ConsultationDocsFAB = ({ consultationId }) => {
 
   async function getConsultationDocuments(consultationId) {
     setLoading(true);
-    let json = await docsForConsultation(consultationId);
+    let json = await docsForConsultation(consultationId, patientId);
     setInConsultation(json[0]);
     setCanBeAdded(json[1]);
     setLoading(false);
@@ -49,7 +53,7 @@ const ConsultationDocsFAB = ({ consultationId }) => {
   //After upload we should also reolad all the docs in the consultation and not in consultation also
   async function uploadDoc() {
     setLoading(true);
-    await uploadDocument();
+    await uploadDocument(patientId);
     await getConsultationDocuments(consultationId);
     setLoading(false);
   }

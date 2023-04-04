@@ -16,9 +16,9 @@ import { addConsultation } from "../../service/ConsultationService";
 const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   const { doctor } = route.params;
   const [index, setIndex] = useState(null);
-  const patientId = 1;
   let interval;
-  const { setBottomBarVisible } = useContext(AuthContext);
+  const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
+  const patientId = patientInfo.patientId;
   const [joinedQueue, setJoinedQueue] = useState(false);
   const [isLoading, setLoading] = useState();
 

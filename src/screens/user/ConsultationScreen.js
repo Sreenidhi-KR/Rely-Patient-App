@@ -1,5 +1,5 @@
 //import liraries
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   ActivityIndicator,
   View,
@@ -13,13 +13,15 @@ import Header from "../../components/Header";
 import routes from "../../navigation/routes";
 import { getAllPreviousConsultations } from "../../service/ConsultationService";
 import { downloadDocument } from "../../service/DocumentService";
+import { AuthContext } from "../../context/AuthContext";
 
 // create a component
 const ConsultationScreen = ({ navigation }) => {
   //const [isLoading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = React.useState(true);
   const [data, setData] = useState([]);
-  const patientId = 1;
+  const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
+  const patientId = patientInfo.patientId;
   const startTime = "09:00 28/01/2022";
 
   const getDateTime = (starttime) => {
