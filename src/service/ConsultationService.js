@@ -1,21 +1,14 @@
 import axios from "axios";
-import { BASE_URL, token } from "../config";
+import { BASE_URL, getToken, getConfig } from "../config";
 
 const urlBase = `${BASE_URL}/api/v1`;
-
-const config = {
-  headers: {
-    "ngrok-skip-browser-warning": "true",
-    Authorization: `Bearer ${token}`,
-  },
-};
 
 const getAllPreviousConsultations = async (patientId) => {
   console.log("Get All Previous Consultations");
   try {
     const response = await axios.get(
       `${urlBase}/consultation/getPrevConsultations/${patientId}`,
-      config
+      await getConfig()
     );
     return response.data;
   } catch (error) {
@@ -28,7 +21,7 @@ const getPrevConsultDetails = async (consultId) => {
   try {
     const response = await axios.get(
       `${urlBase}/consultation/getAllDocumentsByCid/${consultId}`,
-      config
+      await getConfig()
     );
     return response.data;
   } catch (error) {
@@ -46,7 +39,7 @@ const addConsultation = async (patientId, doctorId, startTime) => {
         doctor_id: doctorId,
         start_time: startTime,
       },
-      config
+      await getConfig()
     );
     return response.data;
   } catch (error) {

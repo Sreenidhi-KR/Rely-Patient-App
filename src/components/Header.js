@@ -1,15 +1,12 @@
 //import liraries
 
-import React, { Component, useContext, useEffect } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import React, { useEffect } from "react";
+import { Image, View } from "react-native";
 import { List } from "react-native-paper";
 import imagePaths from "../constants/imagePaths";
-import { AuthContext } from "../context/AuthContext";
 
 // create a component
 const Header = () => {
-  const { logout } = useContext(AuthContext);
-
   return (
     <View>
       <List.Item

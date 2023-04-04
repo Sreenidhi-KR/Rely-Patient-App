@@ -31,9 +31,6 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   };
 
   const myalert = (e, unsubscribe) => {
-    console.log("joinedQueue");
-    console.log(joinedQueue);
-
     e.preventDefault();
     Alert.alert(
       "Are you sure you want to leave the Queue",
@@ -111,8 +108,6 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
             var consultationId = await addConsultation(
               patientId,
               doctor.id,
-              patientId,
-              interval,
               "2023-03-30T21:46:14.679+00:00"
             );
             navigation.replace(routes.VIDEO, {

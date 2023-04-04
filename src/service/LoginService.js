@@ -3,13 +3,6 @@ import { BASE_URL, token } from "../config";
 
 const urlBase = `${BASE_URL}/api/auth`;
 
-const config = {
-  headers: {
-    "ngrok-skip-browser-warning": "true",
-    Authorization: `Bearer ${token}`,
-  },
-};
-
 const userLogin = async (username, password) => {
   console.log("userLogin - login service");
   const response = await axios.post(`${urlBase}/signin`, {

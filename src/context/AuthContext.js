@@ -9,6 +9,8 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
+  const [patientInfo, setPatientInfo] = useState({});
+
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
   const [bottomBarVisible, setBottomBarVisible] = useState(true);
@@ -51,6 +53,7 @@ export const AuthProvider = ({ children }) => {
       setSplashLoading(true);
       let userInfo = await AsyncStorage.getItem("userInfo");
       userInfo = JSON.parse(userInfo);
+      console.log("isLoggedIn");
       console.log(userInfo);
       if (userInfo) {
         setUserInfo(userInfo);
@@ -77,6 +80,8 @@ export const AuthProvider = ({ children }) => {
         logout,
         bottomBarVisible,
         setBottomBarVisible,
+        patientInfo,
+        setPatientInfo,
       }}
     >
       {children}
