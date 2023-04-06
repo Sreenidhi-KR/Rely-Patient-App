@@ -22,32 +22,35 @@ const ConsultationScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
   const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
   const patientId = patientInfo.patientId;
-  const startTime = "09:00 28/01/2022";
 
   const getDateTime = (starttime) => {
     const dateObj = new Date(starttime);
+    // console.log("dateObj", dateObj);
 
     const options = {
-      month: "long",
-      year: "numeric",
+      year: 'numeric',
+      day: 'numeric',
+      month: 'long',
       hour: "numeric",
       minute: "numeric",
-      dateStyle: "short",
     };
 
-    const dateString = dateObj.toLocaleString("en-US", options);
-
+    const dateString = dateObj.toLocaleString("en-IN", options);
+    // console.log("dateString", dateString);
     const d = dateString.split(/[' ']/);
-    const weekday = d[0];
     const monthname = d[1];
-    const year = d[4];
-    const t = d[3].split(/[':']/);
-    const time = t[0] + ":" + t[1];
+    const year = d[2];
+    const t = d[4].split(/[':']/); 
+    const temp = t[0]==0||t[0]==12? 12 : t[0]%12; 
+    const time = temp+ ":" +t[1];
+    const ap = ((t[0]!=0 && t[0]>11) ? "PM" : "AM");
+
     const day = dateObj.getDate();
     const ordinalIndicator = getOrdinalIndicator(day);
     const formattedDay = `${day}${ordinalIndicator}`;
 
-    const formattedDate1 = `${formattedDay}-${monthname}`;
+    const formattedDate1 = `${formattedDay} ${monthname} | ${time} ${ap}`;
+    // console.log(formattedDate1);
     const formattedDate2 = `${formattedDate1}-${year}-${time}`;
 
     function getOrdinalIndicator(day) {
@@ -139,7 +142,7 @@ const ConsultationScreen = ({ navigation }) => {
                   }}
                   descriptionStyle={{ color: "gray", fontSize: 11 }}
                   title={`Dr.${item.doctorName}`}
-                  description="12 March  |  11 AM "
+                  description= {getDateTime(`${item.startTime}`).formattedDate1}
                 >
                   <>
                     <Divider />

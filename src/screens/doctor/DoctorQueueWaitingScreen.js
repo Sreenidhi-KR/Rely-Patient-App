@@ -105,11 +105,12 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
           onPress={async () => {
             setJoinedQueue(true);
             console.log("Interval Cleared");
+            const currentDateTime = new Date().toISOString();
             clearInterval(interval);
             var consultationId = await addConsultation(
               patientId,
               doctor.id,
-              "2023-03-30T21:46:14.679+00:00"
+              currentDateTime,
             );
             navigation.replace(routes.VIDEO, {
               doctor: doctor,
