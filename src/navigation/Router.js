@@ -20,6 +20,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { AuthContext } from "../context/AuthContext";
 import LoginScreen from "../screens/auth/LoginScreen";
 import RegisterScreen from "../screens/auth/RegisterScreen";
+import SelectProfileScreen from "../screens/auth/SelectProfileScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -29,8 +30,17 @@ const DocumentStack = createNativeStackNavigator();
 const ConsultationStack = createNativeStackNavigator();
 
 function HomeStackRenderer() {
+  const { patientInfo } = useContext(AuthContext);
   return (
     <HomeStack.Navigator>
+      {patientInfo == null || patientInfo.patientId == undefined ? (
+        <HomeStack.Screen
+          name={routes.SELECT_PROFILE}
+          component={SelectProfileScreen}
+          options={{ headerShown: false }}
+        />
+      ) : null}
+
       <HomeStack.Screen
         name={routes.HOME}
         component={HomeScreen}
@@ -41,7 +51,11 @@ function HomeStackRenderer() {
         component={DoctorListScreen}
       />
 
-      <HomeStack.Screen name={routes.VIDEO} component={VideoCall} />
+      <HomeStack.Screen
+        name={routes.VIDEO}
+        component={VideoCall}
+        options={{ headerShown: false }}
+      />
       <HomeStack.Screen
         name={routes.DOCTOR_DETAILS}
         component={DoctorDetaisScreen}
@@ -129,22 +143,9 @@ function Router() {
               component={HomeStackRenderer}
               options={{
                 headerShown: false,
+                unmountOnBlur: true,
                 tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons name="home" color={color} size={22} />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="DocumentStack"
-              component={DocumentStackRenderer}
-              options={{
-                headerShown: true,
-                tabBarIcon: ({ color }) => (
-                  <MaterialCommunityIcons
-                    name="file-document"
-                    color={color}
-                    size={22}
-                  />
                 ),
               }}
             />
@@ -153,9 +154,25 @@ function Router() {
               component={ConsultationStackRenderer}
               options={{
                 headerShown: true,
+                unmountOnBlur: true,
                 tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons
                     name="account-group"
+                    color={color}
+                    size={22}
+                  />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="DocumentStack"
+              component={DocumentStackRenderer}
+              options={{
+                headerShown: true,
+                unmountOnBlur: true,
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons
+                    name="file-document"
                     color={color}
                     size={22}
                   />

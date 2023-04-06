@@ -1,14 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
-import { BASE_URL } from "../config";
 import { userLogin, userRegister } from "../service/LoginService";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
+  const [patientInfo, setPatientInfo] = useState({});
+
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
   const [bottomBarVisible, setBottomBarVisible] = useState(true);
@@ -21,7 +20,7 @@ export const AuthProvider = ({ children }) => {
       setUserInfo(res);
       await AsyncStorage.setItem("userInfo", JSON.stringify(res));
     } catch (e) {
-      console.log(`register error ${e}`);
+      throw e;
     } finally {
       setIsLoading(false);
     }
@@ -32,8 +31,8 @@ export const AuthProvider = ({ children }) => {
 
     try {
       await userRegister(name, email, password);
-    } catch (e) {
-      console.log(`register error ${e}`);
+    } catch (error) {
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -51,6 +50,7 @@ export const AuthProvider = ({ children }) => {
       setSplashLoading(true);
       let userInfo = await AsyncStorage.getItem("userInfo");
       userInfo = JSON.parse(userInfo);
+      console.log("isLoggedIn");
       console.log(userInfo);
       if (userInfo) {
         setUserInfo(userInfo);
@@ -77,6 +77,8 @@ export const AuthProvider = ({ children }) => {
         logout,
         bottomBarVisible,
         setBottomBarVisible,
+        patientInfo,
+        setPatientInfo,
       }}
     >
       {children}

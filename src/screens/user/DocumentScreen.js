@@ -4,34 +4,47 @@ import {
   FlatList,
   Text,
   View,
+  RefreshControl,
 } from "react-native";
 import { List, Button, FAB, Appbar } from "react-native-paper";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   uploadDocument,
-  getAllDocuments,
+  getAllDocumentsList,
   removeDocument,
   downloadDocument,
 } from "../../service/DocumentService";
+import Header from "../../components/Header";
+import { AuthContext } from "../../context/AuthContext";
 
 // create a component
 const DocumentScreen = () => {
   const [docs, setDocs] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
+  const patientId = patientInfo.patientId;
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getDocuments();
+    setRefreshing(false);
+  }, []);
+
   //onMount load all the documents
   useEffect(() => {
     getDocuments();
   }, []);
 
   async function getDocuments() {
-    data = await getAllDocuments();
+    data = await getAllDocumentsList(patientId);
     setDocs(data);
     setLoading(false);
   }
 
   async function docUpload() {
     setLoading(true);
-    await uploadDocument();
+    await uploadDocument(patientId);
     await getDocuments();
   }
 
@@ -47,60 +60,71 @@ const DocumentScreen = () => {
     await getDocuments();
   }
   return (
-    <View style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <View>
-          <Appbar.Header style={{ backgroundColor: "#F5ECFF" }}>
-            <Appbar.Content title="Documents" titleStyle={{ color: "black" }} />
-          </Appbar.Header>
-          <FlatList
-            data={docs}
-            keyExtractor={({ id }) => id}
-            renderItem={({ item }) => (
-              <View style={styles.box}>
-                <List.Item
-                  title={`${item.name}`}
-                  titleStyle={{ color: "black" }}
-                  right={() => {
-                    return (
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          justifyContent: "flex-end",
-                        }}
-                      >
-                        <Button
-                          icon="download"
-                          onPress={() => {
-                            downloadDocument(item.id);
+    <>
+      <View style={styles.container}>
+        <Header />
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <View style={styles.wrapper}>
+            <List.Section
+              title="Documents"
+              titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
+            ></List.Section>
+            <FlatList
+              data={docs}
+              centerContent
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              keyExtractor={({ id }) => id}
+              renderItem={({ item }) => (
+                <View style={styles.box}>
+                  <List.Item
+                    title={`${item.name}`}
+                    titleStyle={{ color: "black" }}
+                    right={() => {
+                      return (
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            justifyContent: "space-around",
                           }}
-                        ></Button>
-                        <Button
-                          icon="delete"
-                          onPress={() => {
-                            removeDoc(item.id);
-                          }}
-                        ></Button>
-                      </View>
-                    );
-                  }}
-                />
-              </View>
-            )}
-          />
-        </View>
-      )}
-      <FAB
-        icon="plus"
-        style={styles.fab}
-        onPress={() => {
-          docUpload();
-        }}
-      />
-    </View>
+                        >
+                          <Button
+                            icon="download"
+                            onPress={() => {
+                              downloadDocument(item.id);
+                            }}
+                          ></Button>
+                          <Button
+                            icon="delete"
+                            onPress={() => {
+                              removeDoc(item.id);
+                            }}
+                          ></Button>
+                        </View>
+                      );
+                    }}
+                  />
+                </View>
+              )}
+            />
+          </View>
+        )}
+        <FAB
+          icon="plus"
+          label="Add Document"
+          size="small"
+          variant="primary"
+          style={styles.fab}
+          onPress={() => {
+            docUpload();
+          }}
+        />
+      </View>
+    </>
   );
 };
 
@@ -108,14 +132,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    flexDirection: "column",
   },
   box: {
-    height: 100,
-    width: "90%",
-    padding: 10,
     margin: 10,
-    borderRadius: 20,
+    borderRadius: 10,
     backgroundColor: "#F5ECFF",
   },
   fab: {

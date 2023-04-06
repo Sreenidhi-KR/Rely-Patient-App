@@ -1,19 +1,15 @@
 import axios from "axios";
-import { BASE_URL, token } from "../config";
+import { BASE_URL, getConfig } from "../config";
 
 const urlBase = `${BASE_URL}/api/v1`;
-
-const config = {
-  headers: {
-    "ngrok-skip-browser-warning": "true",
-    Authorization: `Bearer ${token}`,
-  },
-};
 
 const getAllDoctors = async () => {
   console.log("Get ALL Doctors");
   try {
-    const response = await axios.get(`${urlBase}/doctor/getAllDoctors`, config);
+    const response = await axios.get(
+      `${urlBase}/doctor/getAllDoctors`,
+      await getConfig()
+    );
     return response.data;
   } catch (err) {
     console.log(err);
@@ -29,7 +25,7 @@ const addPatientToQueue = async (doctorId, patientId) => {
   try {
     const response = await axios.get(
       `${urlBase}/dqueue/addPatient/${doctorId}/${patientId}`,
-      config
+      await getConfig()
     );
   } catch (err) {
     console.log(err);
@@ -41,7 +37,7 @@ const removePatientFromQueue = async (doctorId, patientId) => {
   try {
     const response = await axios.get(
       `${urlBase}/dqueue/removePatient/${doctorId}/${patientId}`,
-      config
+      await getConfig()
     );
   } catch (err) {
     console.log(err);
@@ -53,7 +49,7 @@ const getPatientIndexFromQueue = async (doctorId, patientId, setIndex) => {
   try {
     const response = await axios.get(
       `${urlBase}/dqueue/getPatientIndex/${doctorId}/${patientId}`,
-      config
+      await getConfig()
     );
     setIndex(response.data);
     return response.data;
@@ -66,11 +62,11 @@ const addAndGetIndexFromQueue = async (doctorId, patientId, setIndex) => {
   try {
     await axios.get(
       `${urlBase}/dqueue/addPatient/${doctorId}/${patientId}`,
-      config
+      await getConfig()
     );
     const response = await axios.get(
       `${urlBase}/dqueue/getPatientIndex/${doctorId}/${patientId}`,
-      config
+      await getConfig()
     );
     setIndex(response.data);
     return response.data;

@@ -1,6 +1,20 @@
-const BASE_URL = "https://dfd4-103-156-19-229.in.ngrok.io";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const token =
-  "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZXN0IiwiaWF0IjoxNjgwMjU3OTg1LCJleHAiOjE2ODAzNDQzODV9.qaU41wZao-rCEH19xyYGm_7-mF2PnDAD31-JdgMyVPrIGyTuLuH1tAY1NUhnz37l-OO0zY1tkoJz9u5eL2kk3Q";
+const BASE_URL = "https://af2f-119-161-98-68.in.ngrok.io";
 
-export { BASE_URL, token };
+const getToken = async () => {
+  let userInfo = await AsyncStorage.getItem("userInfo");
+  userInfo = JSON.parse(userInfo);
+  return userInfo == null ? null : userInfo.accessToken;
+};
+
+const getConfig = async () => {
+  return {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${await getToken()}`,
+    },
+  };
+};
+
+export { BASE_URL, getToken, getConfig };

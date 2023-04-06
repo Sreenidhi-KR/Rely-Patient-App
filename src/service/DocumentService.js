@@ -3,26 +3,17 @@ import axios from "axios";
 import { Buffer } from "buffer";
 import RNFetchBlob from "rn-fetch-blob";
 const { fs } = RNFetchBlob;
-import { BASE_URL, token } from "../config";
-const patientId = 1; //Dummy patient Id for now later should be changed
-const consultationId = 1; //Dummy consultatoin id
+import { BASE_URL, getConfig, getToken } from "../config";
 
 const urlBase = `${BASE_URL}/api/v1`;
 
 //returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
 
-async function removeDocFromConsultation(docId) {
-  const config = {
-    method: "GET",
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
-    },
-  };
+async function removeDocFromConsultation(documentId, consultationId) {
   try {
     await axios.get(
-      `${urlBase}/consultation/removeDocumentByCid_Docuid/${consultationId}/${docId}`,
-      config
+      `${urlBase}/consultation/removeDocumentByCid_Docuid/${consultationId}/${documentId}`,
+      await getConfig()
     );
     console.log("Document removed from  consultation");
   } catch (err) {
@@ -30,39 +21,25 @@ async function removeDocFromConsultation(docId) {
   }
 }
 
-async function addDocToConsultation(docId) {
-  const config = {
-    method: "GET",
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
-    },
-  };
+async function addDocToConsultation(documentId, consultationId) {
   try {
     await axios.get(
-      `${urlBase}/consultation/addDocumentByCid_Docuid/${consultationId}/${docId}`,
-      config
+      `${urlBase}/consultation/addDocumentByCid_Docuid/${consultationId}/${documentId}`,
+      await getConfig()
     );
     console.log("Document added to consultation");
   } catch (err) {
     console.log(err);
   }
 }
-async function docsForConsultation() {
-  const config = {
-    method: "GET",
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
-    },
-  };
+async function docsForConsultation(consultationId, patientId) {
   try {
     let response = await axios.get(
       `${urlBase}/consultation/getAllDocumentsByCid/${consultationId}`,
-      config
+      await getConfig()
     );
     let inConsultation = response.data;
-    let allDocs = await getAllDocuments();
+    let allDocs = await getAllDocumentsList(patientId);
     let canBeAdded = allDocs.filter(
       (obj2) => !inConsultation.some((obj1) => obj1.id === obj2.id)
     );
@@ -72,19 +49,19 @@ async function docsForConsultation() {
   }
 }
 
-async function downloadDocument(docId) {
+async function downloadDocument(documentId) {
   const config = {
     method: "GET",
     "Content-Type": "multipart/form-data",
     headers: {
       "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${await getToken()}`,
       Accept: "application/json",
     },
   };
   try {
     let response = await axios.get(
-      `${urlBase}/document/download/${docId}`,
+      `${urlBase}/document/download/${documentId}`,
       config
     );
     const pdfstr = response.data;
@@ -114,35 +91,21 @@ async function downloadDocument(docId) {
 }
 
 async function removeDocument(docId) {
-  const config = {
-    method: "DELETE",
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
-    },
-  };
   try {
     let response = await axios.delete(
       `${urlBase}/document/delete/${docId}`,
-      config
+      await getConfig()
     );
   } catch (err) {
     console.log(err);
   }
 }
 
-async function getAllDocuments() {
-  const config = {
-    method: "GET",
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
-    },
-  };
+async function getAllDocumentsList(patientId) {
   try {
     let response = await axios.get(
       `${urlBase}/document/getAll/${patientId}`,
-      config
+      await getConfig()
     );
 
     return response.data;
@@ -151,12 +114,12 @@ async function getAllDocuments() {
   }
 }
 
-async function uploadDocument() {
+async function uploadDocument(patientId) {
   const config = {
     method: "POST",
     headers: {
       "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${await getToken()}`,
       "Content-Type": "multipart/form-data",
     },
   };
@@ -185,7 +148,7 @@ async function uploadDocument() {
 
 export {
   uploadDocument,
-  getAllDocuments,
+  getAllDocumentsList,
   removeDocument,
   downloadDocument,
   docsForConsultation,
