@@ -24,7 +24,12 @@ const Header = () => {
         }`}
         description={`How are you feeling today !!`}
         left={(props) => (
-          <TouchableOpacity onPress={() => logout()}>
+          <TouchableOpacity
+            onPress={() => {
+              setPatientInfo({});
+              logout();
+            }}
+          >
             <Image
               source={imagePaths.avatar_man}
               style={{ width: 50, height: 50 }}

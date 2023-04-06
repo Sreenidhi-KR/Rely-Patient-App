@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet, Image } from "react-native";
 
 import Spinner from "react-native-loading-spinner-overlay";
 import { TextInput, Button, Snackbar } from "react-native-paper";
 import MySnackBar from "../../components/MySnackBar";
+import imagePaths from "../../constants/imagePaths";
 import { AuthContext } from "../../context/AuthContext";
 
 const LoginScreen = ({ navigation }) => {
@@ -26,6 +27,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Spinner visible={isLoading} />
+      <Image source={imagePaths.logo} style={{ width: 300, height: 200 }} />
       <View style={styles.wrapper}>
         <TextInput
           mode="outlined"
@@ -33,19 +35,21 @@ const LoginScreen = ({ navigation }) => {
           value={userName}
           placeholder="Enter Username"
           onChangeText={(text) => setUserName(text)}
+          textColor="black"
         />
         <TextInput
           mode="outlined"
           style={styles.input}
           value={password}
           placeholder="Enter password"
+          textColor="black"
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
         />
         <Button
           style={styles.button}
           mode="outlined"
-          textColor="black"
+          textColor="white"
           onPress={() => {
             startLogin(userName, password);
           }}
@@ -54,7 +58,6 @@ const LoginScreen = ({ navigation }) => {
         </Button>
         <View style={{ flexDirection: "row", marginTop: 20 }}>
           <Text>Don't have an account? </Text>
-
           <TouchableOpacity onPress={() => navigation.navigate("Register")}>
             <Text style={styles.link}>Register</Text>
           </TouchableOpacity>
@@ -77,6 +80,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   wrapper: {
+    marginTop: 50,
     width: "80%",
   },
   input: {
@@ -87,10 +91,10 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingVertical: 3,
-    backgroundColor: "#dac8f4",
+    backgroundColor: "#5e17eb",
   },
   link: {
-    color: "#6600cc",
+    color: "#5317eb",
   },
 });
 

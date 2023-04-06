@@ -1,12 +1,18 @@
-import React from "react";
-import { ActivityIndicator, View } from "react-native";
+import React, { useEffect } from "react";
+import { ActivityIndicator, Text, View, Image } from "react-native";
+import imagePaths from "../../constants/imagePaths";
 
 const SplashScreen = () => {
   return (
     <View
-      style={{ flex: 1, justifyContent: "center", backgroundColor: "#06bcee" }}
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "white",
+      }}
     >
-      <ActivityIndicator size="large" color="#ffffff" />
+      <Image source={imagePaths.logobg} style={{ width: 400, height: 200 }} />
     </View>
   );
 };

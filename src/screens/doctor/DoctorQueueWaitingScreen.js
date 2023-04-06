@@ -63,7 +63,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
 
     interval = setInterval(() => {
       getPatientIndexFromQueue(doctor.id, patientId, setIndex);
-    }, 10000);
+    }, 2000);
 
     const unsubscribe = navigation.addListener("beforeRemove", (e) => {
       if (joinedQueue) {

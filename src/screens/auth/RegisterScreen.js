@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet, Image } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import Spinner from "react-native-loading-spinner-overlay";
 import { AuthContext } from "../../context/AuthContext";
 import MySnackBar from "../../components/MySnackBar";
-
+import imagePaths from "../../constants/imagePaths";
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -31,11 +31,13 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Spinner visible={isLoading} />
+      <Image source={imagePaths.logo} style={{ width: 300, height: 200 }} />
       <View style={styles.wrapper}>
         <TextInput
           mode="outlined"
           style={styles.input}
           value={name}
+          textColor="black"
           placeholder="Enter name"
           onChangeText={(text) => setName(text)}
         />
@@ -44,6 +46,7 @@ const RegisterScreen = ({ navigation }) => {
           mode="outlined"
           style={styles.input}
           value={email}
+          textColor="black"
           placeholder="Enter email"
           onChangeText={(text) => setEmail(text)}
         />
@@ -52,6 +55,7 @@ const RegisterScreen = ({ navigation }) => {
           mode="outlined"
           style={styles.input}
           value={password}
+          textColor="black"
           placeholder="Enter password"
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
@@ -60,7 +64,7 @@ const RegisterScreen = ({ navigation }) => {
         <Button
           style={styles.button}
           mode="outlined"
-          textColor="black"
+          textColor="white"
           onPress={() => {
             startRegister(name, email, password);
           }}
@@ -96,7 +100,7 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingVertical: 3,
-    backgroundColor: "#dac8f4",
+    backgroundColor: "#5e17eb",
   },
   input: {
     marginBottom: 20,
@@ -105,7 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   link: {
-    color: "#6600cc",
+    color: "#5e17eb",
   },
 });
 

@@ -41,22 +41,24 @@ const SelectProfileScreen = () => {
             titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
           ></List.Section>
           <View style={styles.squareTiles}>
-            {profiles.map((patient) => {
-              return (
-                <SquareTile
-                  key={patient.id}
-                  imgSrc={imagePaths.avatar_man}
-                  color={"#ECF9E3"}
-                  text={patient.fname}
-                  onPress={() => {
-                    setPatientInfo({
-                      patientId: patient.id,
-                      patientName: patient.fname,
-                    });
-                  }}
-                />
-              );
-            })}
+            {profiles
+              ? profiles.map((patient) => {
+                  return (
+                    <SquareTile
+                      key={patient.id}
+                      imgSrc={imagePaths.avatar_man}
+                      color={"#ECF9E3"}
+                      text={patient.fname}
+                      onPress={() => {
+                        setPatientInfo({
+                          patientId: patient.id,
+                          patientName: patient.fname,
+                        });
+                      }}
+                    />
+                  );
+                })
+              : null}
           </View>
         </View>
       )}
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
   squareTiles: {
     margin: 10,
     flexDirection: "row",
-    height: 170,
+    height: 175,
     flexWrap: "wrap",
     alignItems: "flex-start",
     justifyContent: "flex-start",

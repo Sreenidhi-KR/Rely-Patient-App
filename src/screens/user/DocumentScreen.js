@@ -93,12 +93,14 @@ const DocumentScreen = () => {
                           }}
                         >
                           <Button
+                            textColor="gray"
                             icon="download"
                             onPress={() => {
                               downloadDocument(item.id);
                             }}
                           ></Button>
                           <Button
+                            textColor="gray"
                             icon="delete"
                             onPress={() => {
                               removeDoc(item.id);
@@ -136,7 +138,7 @@ const styles = StyleSheet.create({
   box: {
     margin: 10,
     borderRadius: 10,
-    backgroundColor: "#F5ECFF",
+    backgroundColor: "#ECF9E3",
   },
   fab: {
     position: "absolute",
