@@ -7,7 +7,9 @@ const MySnackBar = ({ showSnackbar, setShowSnackbar, snackBarText }) => {
     <Snackbar
       visible={showSnackbar}
       duration={4000}
-      style={{}}
+      style={{
+        backgroundColor: "#5e17eb",
+      }}
       wrapperStyle={{}}
       onDismiss={() => {
         setShowSnackbar(false);

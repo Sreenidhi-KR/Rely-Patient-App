@@ -13,6 +13,7 @@ import {
 } from "../service/DocumentService";
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const ConsultationDocsFAB = ({ consultationId }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -83,124 +84,121 @@ const ConsultationDocsFAB = ({ consultationId }) => {
               margin: 20,
             }}
           >
-            {isLoading ? (
-              <ActivityIndicator />
-            ) : (
-              <View>
-                {/* View all the documents that are in the consultation */}
-                <Text
-                  style={{
-                    fontSize: 20,
-                    color: "black",
-                  }}
-                >
-                  Documents sent to doctor
-                </Text>
-                <Text style={styles.subTitle}>Touch to remove</Text>
-                <View style={styles.chipContainer}>
-                  {inConsultation.map((document) => {
-                    return (
-                      <TouchableOpacity
-                        key={document.id}
-                        onPress={() => {
-                          removeDocFromConsul(document.id);
+            <View>
+              {/* View all the documents that are in the consultation */}
+              <Spinner visible={isLoading} />
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "black",
+                }}
+              >
+                Documents sent to doctor
+              </Text>
+              <Text style={styles.subTitle}>Touch to remove</Text>
+              <View style={styles.chipContainer}>
+                {inConsultation.map((document) => {
+                  return (
+                    <TouchableOpacity
+                      key={document.id}
+                      onPress={() => {
+                        removeDocFromConsul(document.id);
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.chip,
+                          backgroundColor: "#edf8dd",
                         }}
                       >
-                        <View
-                          style={{
-                            ...styles.chip,
-                            backgroundColor: "#edf8dd",
-                          }}
+                        <Text
+                          numberOfLines={2}
+                          overflow="scroll"
+                          ellipsizeMode="tail"
+                          style={{ fontSize: 11, color: "#564264" }}
                         >
                           <Text
-                            numberOfLines={2}
-                            overflow="scroll"
-                            ellipsizeMode="tail"
-                            style={{ fontSize: 11, color: "#564264" }}
-                          >
-                            <Text
-                              style={{
-                                fontSize: 11,
-                                color: "red",
-                                fontWeight: "bold",
-                                alignSelf: "flex-end",
-                              }}
-                            >
-                              {`X   `}
-                            </Text>
-                            <Text style={{ color: "black" }}>
-                              {document.name}
-                            </Text>
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-
-                {/* View all the documents that are not yet in the consultation */}
-
-                <Divider
-                  style={{
-                    color: "black",
-                    marginVertical: 10,
-                  }}
-                />
-
-                <Text
-                  style={{
-                    fontSize: 20,
-                    color: "black",
-                  }}
-                >
-                  Documents Available
-                </Text>
-                <Text style={styles.subTitle}>Touch to add</Text>
-                <View style={styles.chipContainer}>
-                  {canBeAdded.map((document) => {
-                    return (
-                      <TouchableOpacity
-                        key={document.id}
-                        onPress={() => {
-                          console.log("Press");
-                          addDocToConsul(document.id);
-                        }}
-                      >
-                        <View style={styles.chip}>
-                          <Text
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
                             style={{
                               fontSize: 11,
-                              overflow: "hidden",
-
-                              color: "#564264",
+                              color: "red",
+                              fontWeight: "bold",
+                              alignSelf: "flex-end",
                             }}
                           >
-                            {`${document.name}`}
+                            {`X   `}
                           </Text>
-                        </View>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-                <Divider
-                  style={{
-                    color: "black",
-                    marginVertical: 15,
-                  }}
-                />
-                <Button
-                  icon="upload"
-                  onPress={() => {
-                    uploadDoc();
-                    setLoading(true);
-                  }}
-                >
-                  Upload New Document
-                </Button>
+                          <Text style={{ color: "black" }}>
+                            {document.name}
+                          </Text>
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
-            )}
+
+              {/* View all the documents that are not yet in the consultation */}
+
+              <Divider
+                style={{
+                  color: "black",
+                  marginVertical: 10,
+                }}
+              />
+
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "black",
+                }}
+              >
+                Documents Available
+              </Text>
+              <Text style={styles.subTitle}>Touch to add</Text>
+              <View style={styles.chipContainer}>
+                {canBeAdded.map((document) => {
+                  return (
+                    <TouchableOpacity
+                      key={document.id}
+                      onPress={() => {
+                        console.log("Press");
+                        addDocToConsul(document.id);
+                      }}
+                    >
+                      <View style={styles.chip}>
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={{
+                            fontSize: 11,
+                            overflow: "hidden",
+
+                            color: "#564264",
+                          }}
+                        >
+                          {`${document.name}`}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+              <Divider
+                style={{
+                  color: "black",
+                  marginVertical: 15,
+                }}
+              />
+              <Button
+                icon="upload"
+                onPress={() => {
+                  uploadDoc();
+                  setLoading(true);
+                }}
+              >
+                Upload New Document
+              </Button>
+            </View>
           </Modal>
         </Portal>
       </View>

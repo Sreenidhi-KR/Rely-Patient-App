@@ -63,7 +63,6 @@ const RegisterScreen = ({ navigation }) => {
 
         <Button
           style={styles.button}
-          mode="outlined"
           textColor="white"
           onPress={() => {
             startRegister(name, email, password);

@@ -48,7 +48,6 @@ const LoginScreen = ({ navigation }) => {
         />
         <Button
           style={styles.button}
-          mode="outlined"
           textColor="white"
           onPress={() => {
             startLogin(userName, password);
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#5e17eb",
   },
   link: {
-    color: "#5317eb",
+    color: "#5e17eb",
   },
 });
 

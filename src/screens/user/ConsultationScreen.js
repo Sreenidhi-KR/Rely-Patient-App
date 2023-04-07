@@ -14,6 +14,7 @@ import routes from "../../navigation/routes";
 import { getAllPreviousConsultations } from "../../service/ConsultationService";
 import { downloadDocument } from "../../service/DocumentService";
 import { AuthContext } from "../../context/AuthContext";
+import Spinner from "react-native-loading-spinner-overlay";
 
 // create a component
 const ConsultationScreen = ({ navigation }) => {
@@ -102,170 +103,164 @@ const ConsultationScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header />
-      {refreshing ? (
-        <ActivityIndicator style={styles.indicator} />
-      ) : (
-        <>
-          <List.Section
-            title="My Consultations"
-            titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
-          ></List.Section>
-          <FlatList
-            scrollEnabled
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            showsVerticalScrollIndicator
-            data={data}
-            keyExtractor={(item) => item.consultId}
-            renderItem={({ item }) => (
-              <View
-                style={{
-                  backgroundColor: "#F5ECFF",
-                  marginHorizontal: 20,
-                  marginVertical: 10,
-                  padding: 10,
-                  borderRadius: 10,
+      <>
+        <Spinner visible={refreshing} />
+        <List.Section
+          title="My Consultations"
+          titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
+        ></List.Section>
+        <FlatList
+          scrollEnabled
+          showsVerticalScrollIndicator
+          data={data}
+          keyExtractor={(item) => item.consultId}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                backgroundColor: "#F5ECFF",
+                marginHorizontal: 20,
+                marginVertical: 10,
+                padding: 10,
+                borderRadius: 10,
+              }}
+            >
+              <List.Accordion
+                theme={{
+                  colors: { background: "#F5ECFF" },
                 }}
+                titleStyle={{
+                  color: "#414141",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+                descriptionStyle={{ color: "gray", fontSize: 11 }}
+                title={`Dr.${item.doctorName}`}
+                description="12 March  |  11 AM "
               >
-                <List.Accordion
-                  theme={{
-                    colors: { background: "#F5ECFF" },
-                  }}
-                  titleStyle={{
-                    color: "#414141",
-                    fontSize: 20,
-                    fontWeight: "bold",
-                  }}
-                  descriptionStyle={{ color: "gray", fontSize: 11 }}
-                  title={`Dr.${item.doctorName}`}
-                  description="12 March  |  11 AM "
-                >
-                  <>
-                    <Divider />
+                <>
+                  <Divider />
 
-                    <Text
-                      style={{
-                        color: "gray",
-                        fontSize: 11,
-                        fontWeight: "bold",
-                        marginHorizontal: 15,
-                        marginTop: 10,
-                        marginBottom: 5,
-                      }}
-                    >
-                      Documents
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        paddingLeft: 15,
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {item.documentDetailsList.map((document) => {
-                        return (
-                          <TouchableOpacity
-                            key={document.id}
-                            onPress={() => {
-                              console.log("Press");
-                              downloadDocument(document.id);
-                            }}
-                          >
-                            <View
-                              style={{
-                                width: "auto",
-                                overflow: "visible",
-                                maxWidth: 150,
-                                borderRadius: 10,
-                                borderColor: "#564264",
-                                borderWidth: 1,
-                                padding: 8,
-                                backgroundColor: "#dac8f4",
-                                margin: 3,
-                              }}
-                            >
-                              <Text
-                                numberOfLines={1}
-                                ellipsizeMode="tail"
-                                style={{ fontSize: 11, color: "#564264" }}
-                              >
-                                {document.name}
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-                        );
-                      })}
-
-                      <TouchableOpacity
-                        onPress={() => {
-                          console.log("Press");
-                        }}
-                      >
-                        <View
-                          style={{
-                            width: "auto",
-                            overflow: "visible",
-                            borderRadius: 10,
-                            borderColor: "black",
-                            borderWidth: 1,
-                            padding: 8,
-                            backgroundColor: "#edf8dd",
-                            margin: 3,
+                  <Text
+                    style={{
+                      color: "gray",
+                      fontSize: 11,
+                      fontWeight: "bold",
+                      marginHorizontal: 15,
+                      marginTop: 10,
+                      marginBottom: 5,
+                    }}
+                  >
+                    Documents
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      paddingLeft: 15,
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {item.documentDetailsList.map((document) => {
+                      return (
+                        <TouchableOpacity
+                          key={document.id}
+                          onPress={() => {
+                            console.log("Press");
+                            downloadDocument(document.id);
                           }}
                         >
-                          <Text
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                            style={{ fontSize: 11, color: "black" }}
+                          <View
+                            style={{
+                              width: "auto",
+                              overflow: "visible",
+                              maxWidth: 150,
+                              borderRadius: 10,
+                              borderColor: "#564264",
+                              borderWidth: 1,
+                              padding: 8,
+                              backgroundColor: "#dac8f4",
+                              margin: 3,
+                            }}
                           >
-                            Prescription
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
+                            <Text
+                              numberOfLines={1}
+                              ellipsizeMode="tail"
+                              style={{ fontSize: 11, color: "#564264" }}
+                            >
+                              {document.name}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })}
+
                     <TouchableOpacity
                       onPress={() => {
                         console.log("Press");
                       }}
-                    ></TouchableOpacity>
-                  </>
-                </List.Accordion>
-              </View>
+                    >
+                      <View
+                        style={{
+                          width: "auto",
+                          overflow: "visible",
+                          borderRadius: 10,
+                          borderColor: "black",
+                          borderWidth: 1,
+                          padding: 8,
+                          backgroundColor: "#edf8dd",
+                          margin: 3,
+                        }}
+                      >
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={{ fontSize: 11, color: "black" }}
+                        >
+                          Prescription
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log("Press");
+                    }}
+                  ></TouchableOpacity>
+                </>
+              </List.Accordion>
+            </View>
 
-              // <View style={styles.box}>
-              //   <List.Item
-              //     onPress={() => {
-              //       console.log("Prev_Consultation");
-              //       navigation.navigate(routes.CONSULTATION_DETAILS, {
-              //         consultation: item,
-              //       });
-              //     }}
-              //     titleStyle={{
-              //       color: "black",
-              //       fontSize: 30,
-              //       fontFamily: "serif",
-              //       marginBottom: 2,
-              //     }}
-              //     title={`Dr.${item.doctorName}`}
-              //     descriptionStyle={{ color: "black" }}
-              //     description={
-              //       <Text
-              //         numberOfLines={3}
-              //         style={{ color: "black", fontSize: 15 }}
-              //       >
-              //         {item.specialization}
-              //         {"\n"}
-              //         {getDateTime(item.startTime).formattedDate1}
-              //       </Text>
-              //     }
-              //     // description={`13:45-12/01/2023    14:09-12/01/2023`}
-              //   />
-              // </View>
-            )}
-          />
-        </>
-      )}
+            // <View style={styles.box}>
+            //   <List.Item
+            //     onPress={() => {
+            //       console.log("Prev_Consultation");
+            //       navigation.navigate(routes.CONSULTATION_DETAILS, {
+            //         consultation: item,
+            //       });
+            //     }}
+            //     titleStyle={{
+            //       color: "black",
+            //       fontSize: 30,
+            //       fontFamily: "serif",
+            //       marginBottom: 2,
+            //     }}
+            //     title={`Dr.${item.doctorName}`}
+            //     descriptionStyle={{ color: "black" }}
+            //     description={
+            //       <Text
+            //         numberOfLines={3}
+            //         style={{ color: "black", fontSize: 15 }}
+            //       >
+            //         {item.specialization}
+            //         {"\n"}
+            //         {getDateTime(item.startTime).formattedDate1}
+            //       </Text>
+            //     }
+            //     // description={`13:45-12/01/2023    14:09-12/01/2023`}
+            //   />
+            // </View>
+          )}
+        />
+      </>
     </View>
   );
 };
