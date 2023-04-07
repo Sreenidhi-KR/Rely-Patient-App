@@ -129,13 +129,14 @@ const styles = StyleSheet.create({
   box: {
     margin: 10,
     borderRadius: 10,
-    backgroundColor: "#F5ECFF",
+    backgroundColor: "#F3EDF5",
   },
   fab: {
     position: "absolute",
     margin: 16,
     right: 0,
     bottom: 0,
+    backgroundColor: "#E8DDF8",
   },
 });
 //make this component available to the app

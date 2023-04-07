@@ -117,7 +117,7 @@ const ConsultationScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <View
               style={{
-                backgroundColor: "#F5ECFF",
+                backgroundColor: "#F3EDF5",
                 marginHorizontal: 20,
                 marginVertical: 10,
                 padding: 10,
@@ -126,7 +126,7 @@ const ConsultationScreen = ({ navigation }) => {
             >
               <List.Accordion
                 theme={{
-                  colors: { background: "#F5ECFF" },
+                  colors: { background: "#F3EDF5" },
                 }}
                 titleStyle={{
                   color: "#414141",
@@ -177,7 +177,7 @@ const ConsultationScreen = ({ navigation }) => {
                               borderColor: "#564264",
                               borderWidth: 1,
                               padding: 8,
-                              backgroundColor: "#dac8f4",
+                              backgroundColor: "#E8DDF8",
                               margin: 3,
                             }}
                           >
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 15,
     borderRadius: 20,
-    backgroundColor: "#F5ECFF",
+    backgroundColor: "#F3EDF5",
   },
 });
 
