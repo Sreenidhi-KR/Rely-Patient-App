@@ -130,6 +130,9 @@ function Router() {
             labeled={false}
             barStyle={{
               display: bottomBarVisible ? null : "none",
+              backgroundColor: "white",
+              borderTopColor: "#FDFCFD",
+              borderWidth: 0.8,
             }}
             screenOptions={{
               headerShadowVisible: false,

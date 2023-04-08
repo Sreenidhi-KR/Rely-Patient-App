@@ -108,6 +108,8 @@ const DocumentScreen = () => {
         </View>
         <FAB
           icon="plus"
+          textColor="black"
+          mode="flat"
           label="Add Document"
           size="small"
           variant="primary"
@@ -129,14 +131,13 @@ const styles = StyleSheet.create({
   box: {
     margin: 10,
     borderRadius: 10,
-    backgroundColor: "#F3EDF5",
+    backgroundColor: "#F7F8FF",
   },
   fab: {
     position: "absolute",
     margin: 16,
     right: 0,
     bottom: 0,
-    backgroundColor: "#E8DDF8",
   },
 });
 //make this component available to the app

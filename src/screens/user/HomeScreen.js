@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
         />
         <SquareTile
           imgSrc={imagePaths.specialist_consultation}
-          color="#E8DDF8"
+          color="#F7F8FF"
           text={"Specialist Consulatation"}
           onPress={showModal}
         />
