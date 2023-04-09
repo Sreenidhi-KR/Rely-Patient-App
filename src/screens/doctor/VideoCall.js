@@ -60,6 +60,7 @@ const VideoCall = ({ navigation, route }) => {
     });
 
     return () => {
+      removePatientFromQueue(doctor.id, patientId);
       setBottomBarVisible(true);
       unsubscribe();
     };

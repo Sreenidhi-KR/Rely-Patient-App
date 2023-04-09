@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }) => {
   const isLoggedIn = async () => {
     try {
       setSplashLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       let userInfo = await AsyncStorage.getItem("userInfo");
       userInfo = JSON.parse(userInfo);
       console.log("isLoggedIn");

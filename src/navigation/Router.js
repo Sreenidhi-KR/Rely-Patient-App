@@ -1,5 +1,5 @@
-import React, { Fragment, useContext } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { Fragment, useContext, useEffect } from "react";
+import { NavigationContainer, Image } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import routes from "./routes";
 import {
@@ -21,6 +21,7 @@ import { AuthContext } from "../context/AuthContext";
 import LoginScreen from "../screens/auth/LoginScreen";
 import RegisterScreen from "../screens/auth/RegisterScreen";
 import SelectProfileScreen from "../screens/auth/SelectProfileScreen";
+import imagePaths from "../constants/imagePaths";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -103,11 +104,13 @@ function Router() {
   return (
     <NavigationContainer>
       {splashLoading ? (
-        <Stack.Screen
-          name="Splash Screen"
-          component={SplashScreen}
-          options={{ headerShown: false }}
-        />
+        <Stack.Navigator>
+          <Stack.Screen
+            name="SplashScreen"
+            component={SplashScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
       ) : !userInfo.accessToken ? (
         <Stack.Navigator>
           <Stack.Screen
@@ -127,6 +130,9 @@ function Router() {
             labeled={false}
             barStyle={{
               display: bottomBarVisible ? null : "none",
+              backgroundColor: "white",
+              borderTopColor: "#FDFCFD",
+              borderWidth: 0.8,
             }}
             screenOptions={{
               headerShadowVisible: false,

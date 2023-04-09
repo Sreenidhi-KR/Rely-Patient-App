@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
         />
         <SquareTile
           imgSrc={imagePaths.specialist_consultation}
-          color={"#F9E3E3"}
+          color="#F7F8FF"
           text={"Specialist Consulatation"}
           onPress={showModal}
         />
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   squareTiles: {
     flexDirection: "row",
     width: "100%",
-    height: "30%",
+    height: "28%",
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "center",

@@ -4,7 +4,6 @@ import {
   FlatList,
   Text,
   View,
-  RefreshControl,
 } from "react-native";
 import { List, Button, FAB, Appbar } from "react-native-paper";
 import React, { useState, useEffect, useContext } from "react";
@@ -16,20 +15,14 @@ import {
 } from "../../service/DocumentService";
 import Header from "../../components/Header";
 import { AuthContext } from "../../context/AuthContext";
+import Spinner from "react-native-loading-spinner-overlay";
 
 // create a component
 const DocumentScreen = () => {
   const [docs, setDocs] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = React.useState(false);
-  const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
+  const { patientInfo } = useContext(AuthContext);
   const patientId = patientInfo.patientId;
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    getDocuments();
-    setRefreshing(false);
-  }, []);
 
   //onMount load all the documents
   useEffect(() => {
@@ -63,58 +56,60 @@ const DocumentScreen = () => {
     <>
       <View style={styles.container}>
         <Header />
-        {isLoading ? (
-          <ActivityIndicator />
-        ) : (
-          <View style={styles.wrapper}>
-            <List.Section
-              title="Documents"
-              titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
-            ></List.Section>
-            <FlatList
-              data={docs}
-              centerContent
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
-              keyExtractor={({ id }) => id}
-              renderItem={({ item }) => (
-                <View style={styles.box}>
-                  <List.Item
-                    title={`${item.name}`}
-                    titleStyle={{ color: "black" }}
-                    right={() => {
-                      return (
-                        <View
-                          style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            justifyContent: "space-around",
-                          }}
-                        >
+        <Spinner visible={isLoading} />
+        <View style={styles.wrapper}>
+          <List.Section
+            title="Documents"
+            titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
+          ></List.Section>
+          <FlatList
+            scrollEnabled
+            showsVerticalScrollIndicator
+            data={docs}
+            centerContent
+            keyExtractor={({ id }) => id}
+            renderItem={({ item }) => (
+              <View style={styles.box}>
+                <List.Item
+                  title={`${item.name}`}
+                  titleStyle={{ color: "black" }}
+                  right={() => {
+                    return (
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        <View style={{ flexDirection: "row" }}>
                           <Button
+                            textColor="gray"
                             icon="download"
                             onPress={() => {
                               downloadDocument(item.id);
                             }}
                           ></Button>
                           <Button
+                            textColor="gray"
                             icon="delete"
                             onPress={() => {
                               removeDoc(item.id);
                             }}
                           ></Button>
                         </View>
-                      );
-                    }}
-                  />
-                </View>
-              )}
-            />
-          </View>
-        )}
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+            )}
+          />
+        </View>
         <FAB
           icon="plus"
+          textColor="black"
+          mode="flat"
           label="Add Document"
           size="small"
           variant="primary"
@@ -136,7 +131,7 @@ const styles = StyleSheet.create({
   box: {
     margin: 10,
     borderRadius: 10,
-    backgroundColor: "#F5ECFF",
+    backgroundColor: "#F7F8FF",
   },
   fab: {
     position: "absolute",
