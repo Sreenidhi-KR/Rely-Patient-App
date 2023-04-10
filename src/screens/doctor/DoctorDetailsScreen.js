@@ -13,11 +13,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <View style={styles.image}>
         <Image
-          source={
-            imageUrl
-              ? { uri: imageUrl }
-              : require(`../../../assets/general-doc.png`)
-          }
+          source={require(`../../../assets/general-doc.png`)}
           style={{ width: 100, height: 100, marginRight: 50 }}
         />
         <View style={styles.details}>
