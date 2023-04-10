@@ -12,29 +12,86 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.image}>
-          <Image
-              source={imageUrl ? {uri: imageUrl} : require(`../../../assets/general-doc.png`)}
-              style={{ width: 100, height: 100 , marginRight:50 }}/>
-          <View style={styles.details}>
-            <Text style={{fontSize:24, fontStyle:"bold"}}>Dr.{doctor.fname} {doctor.lname}</Text>
-            <Text style={styles.text}>{doctor.qualification}</Text>
-            <Text style={styles.text}>{doctor.email}</Text>
-            <Text style={styles.text}>Sex: {doctor.sex}    Age:{doctor.age}</Text> 
-            <View style={styles.detail}>
-            <Chip style={styles.textdec} compact>{doctor.specialization}</Chip>
-            <Chip style={styles.textdec} compact>Rating: {doctor.rating}/5</Chip>
+        <Image
+          source={
+            imageUrl
+              ? { uri: imageUrl }
+              : require(`../../../assets/general-doc.png`)
+          }
+          style={{ width: 100, height: 100, marginRight: 50 }}
+        />
+        <View style={styles.details}>
+          <Text style={{ fontSize: 24, fontStyle: "bold" }}>
+            Dr.{doctor.fname} {doctor.lname}
+          </Text>
+          <Text style={styles.text}>{doctor.qualification}</Text>
+          <Text style={styles.text}>{doctor.email}</Text>
+          <Text style={styles.text}>
+            Sex: {doctor.sex} | Age:{doctor.age}
+          </Text>
+          <View style={styles.detail}>
+            <Chip
+              textStyle={{ color: "white", fontSize: 13 }}
+              style={styles.textdec}
+              compact
+            >
+              {doctor.specialization}
+            </Chip>
+            <Chip
+              textStyle={{ color: "white", fontSize: 13 }}
+              style={styles.textdec}
+              compact
+            >
+              Rating: {doctor.rating}/5
+            </Chip>
           </View>
-          </View>
+        </View>
       </View>
+
       <View style={styles.description}>
-        <Text style={{fontSize: 16, fontFamily: "Sans-sherif", textAlign: "justify"}}>{doctor.description}</Text>
+        <Text style={{ fontSize: 18 }}>About Doctor</Text>
+        <Text
+          style={{
+            color: "grey",
+            fontSize: 15,
+            textAlign: "justify",
+          }}
+        >
+          {doctor.description}
+        </Text>
       </View>
       <View style={styles.info}>
-        <Text style={{fontSize: 16, fontFamily: "Sans-sherif", textAlign: "justify"}}>{doctor.clinic_address}{'\n'}</Text>
-        <Text style={{fontSize: 16, fontFamily: "Sans-sherif", textAlign: "justify", lineHeight: 15}}>Location: {doctor.city}, {doctor.state}</Text>
-        <Text style={{fontSize: 16, fontFamily: "Sans-sherif"}}>Timings: {doctor.available_timings}</Text>
+        <Text style={{ fontSize: 18 }}>Clinic Address</Text>
+        <Text
+          style={{
+            fontSize: 15,
+            color: "grey",
+            textAlign: "justify",
+          }}
+        >
+          {doctor.clinic_address}
+          {"\n"}
+        </Text>
+        <Text style={{ fontSize: 18 }}>Location</Text>
+        <Text
+          style={{
+            fontSize: 15,
+            textAlign: "justify",
+            lineHeight: 15,
+            color: "grey",
+          }}
+        >
+          {doctor.city}, {doctor.state}
+          {"\n"}
+        </Text>
+        <Text style={{ fontSize: 18 }}>Timings</Text>
+        <Text style={{ fontSize: 15, color: "grey" }}>
+          {doctor.available_timings}
+          {"\n"}
+        </Text>
       </View>
-      <Button style={styles.button}
+      <Button
+        style={styles.button}
         mode="contained"
         onPress={() => {
           console.log(doctor.id);
@@ -43,7 +100,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
           });
         }}
       >
-        Join For Consultation
+        Join Consultation
       </Button>
     </View>
   );
@@ -56,13 +113,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     // alignItems: "center",
     backgroundColor: "white",
-    
   },
-  image:{
-    flexDirection:"row",
+  image: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    margin:10,
+    margin: 10,
     backgroundColor: "#F5ECFF",
     borderRadius: 10,
     padding: 20,
@@ -70,25 +126,23 @@ const styles = StyleSheet.create({
   details: {
     flexDirection: "column",
   },
-  detail:{
+  detail: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 10,
   },
   text: {
-    fontSize:14,
-    fontStyle:"bold", 
+    fontSize: 13,
+    color: "grey",
   },
   textdec: {
-     backgroundColor: "#cfa1f7",
-     fontSize: 14,
-     fontStyle: "bold",
-     color: "black",
-     marginEnd: 15,
+    backgroundColor: "#cfa1f7",
+    fontSize: 14,
+    color: "black",
+    marginEnd: 15,
   },
   description: {
     justifyContent: "center",
-    alignItems: "center",
     marginTop: "1%",
     marginHorizontal: "1%",
     padding: "5%",
@@ -96,12 +150,12 @@ const styles = StyleSheet.create({
   button: {
     marginTop: "15%",
     alignItems: "center",
-    marginHorizontal: 100
+    marginHorizontal: 100,
   },
   info: {
     marginHorizontal: "6%",
-    justifyContent: "space-evenly"
-  }
+    justifyContent: "space-evenly",
+  },
 });
 
 //make this component available to the app
