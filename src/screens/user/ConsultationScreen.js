@@ -29,9 +29,9 @@ const ConsultationScreen = ({ navigation }) => {
     // console.log("dateObj", dateObj);
 
     const options = {
-      year: 'numeric',
-      day: 'numeric',
-      month: 'long',
+      year: "numeric",
+      day: "numeric",
+      month: "long",
       hour: "numeric",
       minute: "numeric",
     };
@@ -41,10 +41,10 @@ const ConsultationScreen = ({ navigation }) => {
     const d = dateString.split(/[' ']/);
     const monthname = d[1];
     const year = d[2];
-    const t = d[4].split(/[':']/); 
-    const temp = t[0]==0||t[0]==12? 12 : t[0]%12; 
-    const time = temp+ ":" +t[1];
-    const ap = ((t[0]!=0 && t[0]>11) ? "PM" : "AM");
+    const t = d[4].split(/[':']/);
+    const temp = t[0] == 0 || t[0] == 12 ? 12 : t[0] % 12;
+    const time = temp + ":" + t[1];
+    const ap = t[0] != 0 && t[0] > 11 ? "PM" : "AM";
 
     const day = dateObj.getDate();
     const ordinalIndicator = getOrdinalIndicator(day);
@@ -127,22 +127,21 @@ const ConsultationScreen = ({ navigation }) => {
                 borderRadius: 10,
               }}
             >
-       
-                <List.Accordion
-                  theme={{
-                    colors: { background: "#F5ECFF" },
-                  }}
-                  titleStyle={{
-                    color: "#414141",
-                    fontSize: 20,
-                    fontWeight: "bold",
-                  }}
-                  descriptionStyle={{ color: "gray", fontSize: 11 }}
-                  title={`Dr.${item.doctorName}`}
-                  description= {getDateTime(`${item.startTime}`).formattedDate1}
-                >
-                  <>
-                    <Divider />
+              <List.Accordion
+                theme={{
+                  colors: { background: "#F7F8FF" },
+                }}
+                titleStyle={{
+                  color: "#414141",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+                descriptionStyle={{ color: "gray", fontSize: 11 }}
+                title={`Dr.${item.doctorName}`}
+                description={getDateTime(`${item.startTime}`).formattedDate1}
+              >
+                <>
+                  <Divider />
 
                   <Text
                     style={{
