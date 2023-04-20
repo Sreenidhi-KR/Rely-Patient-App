@@ -44,21 +44,32 @@ const removePatientFromQueue = async (doctorId, patientId) => {
   }
 };
 
-const getPatientIndexFromQueue = async (doctorId, patientId, setIndex) => {
+const getPatientIndexFromQueue = async (
+  doctorId,
+  patientId,
+  setIndex,
+  setAccept
+) => {
   console.log("getPatientIndexFromQueue");
   try {
     const response = await axios.get(
       `${urlBase}/dqueue/getPatientIndex/${doctorId}/${patientId}`,
       await getConfig()
     );
-    setIndex(response.data);
+    setIndex(response.data.index);
+    setAccept(response.data.accept);
     return response.data;
   } catch (err) {
     console.log(err);
   }
 };
 
-const addAndGetIndexFromQueue = async (doctorId, patientId, setIndex) => {
+const addAndGetIndexFromQueue = async (
+  doctorId,
+  patientId,
+  setIndex,
+  setAccept
+) => {
   try {
     await axios.get(
       `${urlBase}/dqueue/addPatient/${doctorId}/${patientId}`,
@@ -68,7 +79,8 @@ const addAndGetIndexFromQueue = async (doctorId, patientId, setIndex) => {
       `${urlBase}/dqueue/getPatientIndex/${doctorId}/${patientId}`,
       await getConfig()
     );
-    setIndex(response.data);
+    setIndex(response.data.index);
+    setAccept(response.data.accept);
     return response.data;
   } catch (err) {
     console.log(err);
