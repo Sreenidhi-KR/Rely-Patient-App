@@ -26,8 +26,8 @@ const Header = () => {
         left={(props) => (
           <TouchableOpacity
             onPress={() => {
-              setPatientInfo({});
-              logout();
+              // setPatientInfo({});
+              // logout();
             }}
           >
             <Image

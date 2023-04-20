@@ -12,6 +12,7 @@ import {
   getAllDocumentsList,
   removeDocument,
   downloadDocument,
+  viewDocument,
 } from "../../service/DocumentService";
 import Header from "../../components/Header";
 import { AuthContext } from "../../context/AuthContext";
@@ -27,11 +28,13 @@ const DocumentScreen = () => {
   //onMount load all the documents
   useEffect(() => {
     getDocuments();
-  }, []);
+  });
 
   async function getDocuments() {
     data = await getAllDocumentsList(patientId);
-    setDocs(data);
+    if (data.length != docs.length) {
+      setDocs(data);
+    }
     setLoading(false);
   }
 
@@ -45,6 +48,12 @@ const DocumentScreen = () => {
     setLoading(true);
     await removeDocument(docId);
     await getDocuments();
+  }
+
+  async function viewDoc(docId) {
+    let base64pdf = await viewDocument(docId);
+    //should render the base64 as pdf
+    console.log("Document will be rendered");
   }
 
   async function downloadDoc(docId) {
@@ -79,25 +88,30 @@ const DocumentScreen = () => {
                         style={{
                           flex: 1,
                           flexDirection: "row",
-                          justifyContent: "flex-start",
+                          justifyContent: "flex-end",
                         }}
                       >
-                        <View style={{ flexDirection: "row" }}>
-                          <Button
+                        <Button
+                          textColor="gray"
+                          icon="download"
+                          onPress={() => {
+                            downloadDocument(item.id);
+                          }}
+                        ></Button>
+                        {/* <Button
                             textColor="gray"
-                            icon="download"
+                            icon="file-cloud"
                             onPress={() => {
-                              downloadDocument(item.id);
+                              viewDoc(item.id);
                             }}
-                          ></Button>
-                          <Button
-                            textColor="gray"
-                            icon="delete"
-                            onPress={() => {
-                              removeDoc(item.id);
-                            }}
-                          ></Button>
-                        </View>
+                          ></Button> */}
+                        <Button
+                          textColor="gray"
+                          icon="delete"
+                          onPress={() => {
+                            removeDoc(item.id);
+                          }}
+                        ></Button>
                       </View>
                     );
                   }}

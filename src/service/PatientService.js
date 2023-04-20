@@ -1,9 +1,24 @@
 import axios from "axios";
-import { BASE_URL, token } from "../config";
-const urlBase = `${BASE_URL}/api/v1`;
+import { BASE_URL, getConfig } from "../config";
+const urlBase = `${BASE_URL}/api/v1/user`;
 
 //Patient is the js object containing all the fields required by the patient
 async function addPatient(patient, userId) {
+  try {
+    console.log(`${urlBase}/addPatient/${userId}`);
+    let response = await axios.post(
+      `${urlBase}/addPatient/${userId}`,
+      patient,
+      await getConfig()
+    );
+    console.log("patient added sucessfully");
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+//Patient is the js object containing all the fields required by the patient
+async function editPatient(patient, patientId) {
   const config = {
     method: "POST",
     headers: {
@@ -14,7 +29,7 @@ async function addPatient(patient, userId) {
 
   try {
     let response = await axios.post(
-      `${urlBase}/addPatient/${userId}`,
+      `${urlBase}/editPatient/${patientId}`,
       patient,
       config
     );
@@ -63,4 +78,4 @@ async function removePatient(patientId) {
   }
 }
 
-export { addPatient, getPatients, removePatient };
+export { addPatient, getPatients, removePatient, editPatient };

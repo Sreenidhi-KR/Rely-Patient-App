@@ -18,20 +18,23 @@ import Spinner from "react-native-loading-spinner-overlay";
 const ConsultationDocsFAB = ({ consultationId }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [inConsultation, setInConsultation] = useState([]);
-  const [canBeAdded, setCanBeAdded] = useState([]);
+  const [canBeAdded, setCanBeAdded] = useState([]); // canBeAdded is all the documents that are not yet in the consultation
+  const [canBeAdded2, setCanBeAdded2] = useState([]); // canBeAdded2 is all the prescriptions that are not yet in the consultation
   const [isLoading, setLoading] = useState(true);
   const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
   const patientId = patientInfo.patientId;
 
   useEffect(() => {
     getConsultationDocuments(consultationId);
-  }, []);
+  }, [modalVisible]);
+  //whenever modalVisibility changes get all the documents
 
   async function getConsultationDocuments(consultationId) {
     setLoading(true);
     let json = await docsForConsultation(consultationId, patientId);
-    setInConsultation(json[0]);
-    setCanBeAdded(json[1]);
+    setInConsultation(json[0]); // prescriptions+documents in consultation
+    setCanBeAdded(json[1]); // documents not in consultation
+    setCanBeAdded2(json[2]); // prescriptions not in consultation
     setLoading(false);
   }
 
@@ -183,6 +186,54 @@ const ConsultationDocsFAB = ({ consultationId }) => {
                   );
                 })}
               </View>
+
+              {/* View all the prescriptions that are not yet in the consultation */}
+
+              <Divider
+                style={{
+                  color: "black",
+                  marginVertical: 10,
+                }}
+              />
+
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "black",
+                }}
+              >
+                Prescriptions Available
+              </Text>
+              <Text style={styles.subTitle}>Touch to add</Text>
+              <View style={styles.chipContainer}>
+                {canBeAdded2.map((document) => {
+                  return (
+                    <TouchableOpacity
+                      key={document.id}
+                      onPress={() => {
+                        console.log("Press");
+                        addDocToConsul(document.id);
+                      }}
+                    >
+                      <View style={styles.chip}>
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={{
+                            fontSize: 11,
+                            overflow: "hidden",
+
+                            color: "#564264",
+                          }}
+                        >
+                          {`${document.name}`}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+
               <Divider
                 style={{
                   color: "black",
