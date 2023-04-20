@@ -45,7 +45,10 @@ const VideoCall = ({ navigation, route }) => {
           onPress: () => {
             unsubscribe();
             console.log(e.data);
-            navigation.replace(routes.HOME);
+            navigation.reset({
+              index: 0,
+              routes: [{ name: routes.DOCTOR_REVIEW }],
+            });
           },
         },
       ]

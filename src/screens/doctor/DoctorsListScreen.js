@@ -56,9 +56,22 @@ const DoctorListScreen = ({ route, navigation }) => {
                       doctor: item,
                     });
                   }}
-                  titleStyle={{ color: "black" }}
-                  descriptionStyle={{ color: "gray" }}
-                  title={`${item.fname} ${item.lname}`}
+                  descriptionStyle={{
+                    color: "gray",
+                    fontSize: 10,
+                    fontWeight: "300",
+                  }}
+                  title={
+                    <Text
+                      style={{
+                        color: "black",
+                        fontSize: 18,
+                        fontWeight: "500",
+                      }}
+                    >
+                      {`${item.fname} ${item.lname}`}
+                    </Text>
+                  }
                   description={`${item.qualification}`}
                   left={(props) => (
                     <Image
@@ -66,6 +79,13 @@ const DoctorListScreen = ({ route, navigation }) => {
                       style={{ width: 55, height: 55 }}
                     />
                   )}
+                  right={(props) =>
+                    item.online_status ? (
+                      <Text style={{ alignSelf: "center" }}>🟢 </Text>
+                    ) : (
+                      <Text style={{ alignSelf: "center" }}>🔴</Text>
+                    )
+                  }
                 />
               </View>
             )}
