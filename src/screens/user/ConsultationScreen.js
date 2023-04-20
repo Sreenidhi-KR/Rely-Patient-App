@@ -43,7 +43,7 @@ const ConsultationScreen = ({ navigation }) => {
     const year = d[2];
     const t = d[3].split(/[':']/);
     const temp = t[0] == 0 || t[0] == 12 ? 12 : t[0] % 12;
-    const time = temp + ":" +t[1];
+    const time = temp + ":" + t[1];
     // console.log("time: ",t);
     const ap = t[0] != 0 && t[0] > 11 ? "PM" : "AM";
 
@@ -193,27 +193,28 @@ const ConsultationScreen = ({ navigation }) => {
                           </TouchableOpacity>
                         );
                       })}
-
-                      <TouchableOpacity
-                        onPress={() => {
-                          console.log("Press");
-                        }}
-                      >
-                        <View
-                          style={{
-                            ...styles.myChip,
-                            backgroundColor: "#edf8dd",
+                      {item.prescription ? (
+                        <TouchableOpacity
+                          onPress={() => {
+                            downloadDocument(prescription);
                           }}
                         >
-                          <Text
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                            style={{ fontSize: 11, color: "black" }}
+                          <View
+                            style={{
+                              ...styles.myChip,
+                              backgroundColor: "#edf8dd",
+                            }}
                           >
-                            Prescription
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
+                            <Text
+                              numberOfLines={1}
+                              ellipsizeMode="tail"
+                              style={{ fontSize: 11, color: "black" }}
+                            >
+                              Prescription
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      ) : null}
                     </View>
                     {/* <Divider
                     style={{ marginVertical: 10, backgroundColor: "#564264" }}

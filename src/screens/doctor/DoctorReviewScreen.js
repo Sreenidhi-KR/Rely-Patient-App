@@ -8,7 +8,6 @@ import { updateDoctorRating } from "../../service/DoctorService";
 
 // create a component
 const DoctorReviewScreen = ({ navigation, route }) => {
-  
   const [starRating, setStarRating] = useState(0);
   const [visible, setVisible] = React.useState(true);
   const { doctor } = route.params;
@@ -23,7 +22,7 @@ const DoctorReviewScreen = ({ navigation, route }) => {
         <Modal
           visible={visible}
           onDismiss={() => {
-            navigation.navigate(routes.HOME);
+            navigation.replace(routes.HOME);
           }}
           contentContainerStyle={styles.containerStyle}
         >
@@ -98,7 +97,7 @@ const DoctorReviewScreen = ({ navigation, route }) => {
                 console.log("Submite review");
                 setVisible(false);
                 updateRating();
-                navigation.navigate(routes.HOME);
+                navigation.replace(routes.HOME);
               }}
             >
               Submit
