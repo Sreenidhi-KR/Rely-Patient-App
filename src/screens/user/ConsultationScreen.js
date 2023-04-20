@@ -43,7 +43,7 @@ const ConsultationScreen = ({ navigation }) => {
     const year = d[2];
     const t = d[4].split(/[':']/);
     const temp = t[0] == 0 || t[0] == 12 ? 12 : t[0] % 12;
-    const time = temp;
+    const time = temp + ":" +t[1];
     const ap = t[0] != 0 && t[0] > 11 ? "PM" : "AM";
 
     const day = dateObj.getDate();

@@ -4,11 +4,19 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { ActivityIndicator, Button, Portal, Modal } from "react-native-paper";
 import routes from "../../navigation/routes";
 import { MaterialIcons } from "@expo/vector-icons";
+import { updateDoctorRating } from "../../service/DoctorService";
 
 // create a component
-const DoctorReviewScreen = ({ navigation }) => {
+const DoctorReviewScreen = ({ navigation, route }) => {
+  
   const [starRating, setStarRating] = useState(0);
   const [visible, setVisible] = React.useState(true);
+  const { doctor } = route.params;
+
+  const updateRating = () => {
+    updateDoctorRating(doctor.id, starRating);
+  };
+
   return (
     <View style={styles.container}>
       <Portal>
@@ -89,6 +97,7 @@ const DoctorReviewScreen = ({ navigation }) => {
               onPress={() => {
                 console.log("Submite review");
                 setVisible(false);
+                updateRating();
                 navigation.navigate(routes.HOME);
               }}
             >

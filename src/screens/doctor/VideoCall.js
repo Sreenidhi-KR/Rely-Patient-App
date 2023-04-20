@@ -47,7 +47,7 @@ const VideoCall = ({ navigation, route }) => {
             console.log(e.data);
             navigation.reset({
               index: 0,
-              routes: [{ name: routes.DOCTOR_REVIEW }],
+              routes: [{ name: routes.DOCTOR_REVIEW,  params: {doctor} }],
             });
           },
         },

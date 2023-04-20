@@ -75,10 +75,22 @@ const addAndGetIndexFromQueue = async (doctorId, patientId, setIndex) => {
   }
 };
 
+const updateDoctorRating = async(doctorId, starRating) => {
+  try {
+    const response = await axios.get(
+      `${urlBase}/doctor/removePatient/updateDoctorRating/${doctorId}/${starRating}`,
+      await getConfig()
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export {
   getAllDoctors,
   addPatientToQueue,
   removePatientFromQueue,
   getPatientIndexFromQueue,
   addAndGetIndexFromQueue,
+  updateDoctorRating,
 };
