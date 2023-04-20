@@ -89,12 +89,13 @@ const addAndGetIndexFromQueue = async (
 
 const updateDoctorRating = async(doctorId, starRating) => {
   try {
+    console.log(`${urlBase}/doctor/updateDoctorRating/${doctorId}/${starRating}`)
     const response = await axios.get(
-      `${urlBase}/doctor/removePatient/updateDoctorRating/${doctorId}/${starRating}`,
+      `${urlBase}/doctor/updateDoctorRating/${doctorId}/${starRating}`,
       await getConfig()
     );
   } catch (err) {
-    console.log(err);
+    console.log("rating",err);
   }
 };
 
