@@ -12,6 +12,7 @@ import {
   DoctorDetaisScreen,
   SplashScreen,
   ConsultationDetailsScreen,
+  DoctorReviewScreen,
 } from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
@@ -64,6 +65,10 @@ function HomeStackRenderer() {
       <HomeStack.Screen
         name={routes.DOCTOR_WAITING}
         component={DoctorQueueWaitingScreen}
+      />
+      <HomeStack.Screen
+        name={routes.DOCTOR_REVIEW}
+        component={DoctorReviewScreen}
       />
     </HomeStack.Navigator>
   );

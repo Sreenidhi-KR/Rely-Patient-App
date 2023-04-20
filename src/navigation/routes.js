@@ -8,4 +8,5 @@ export default {
   DOCTOR_WAITING: "DoctorWaiting",
   CONSULTATION_DETAILS: "ConsultationDetails",
   SELECT_PROFILE: "SelectProfile",
+  DOCTOR_REVIEW: "DoctorReview",
 };

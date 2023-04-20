@@ -1,7 +1,7 @@
 //import liraries
 import React, { useEffect, useState, useContext } from "react";
 import { Alert, View, Text, StyleSheet } from "react-native";
-import { ActivityIndicator, Button } from "react-native-paper";
+import { ActivityIndicator, Button, Portal, Modal } from "react-native-paper";
 import {
   addAndGetIndexFromQueue,
   getPatientIndexFromQueue,
@@ -20,6 +20,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
   const patientId = patientInfo.patientId;
   const [joinedQueue, setJoinedQueue] = useState(false);
+  const [leftQueue, setLeftQueue] = useState(false);
   const [isLoading, setLoading] = useState();
 
   const refreshPatientIndex = () => {
@@ -30,7 +31,16 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
     removePatientFromQueue(doctor.id, patientId);
   };
 
+  const dialogDismiss = () => {
+    console.log("dismiidew");
+    setLeftQueue(true);
+    navigation.navigate(routes.HOME);
+  };
+
   const myalert = (e, unsubscribe) => {
+    if (leftQueue) {
+      return;
+    }
     e.preventDefault();
     Alert.alert(
       "Are you sure you want to leave the Queue",
@@ -43,7 +53,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
           onPress: () => {
             unsubscribe();
             removePatient();
-            navigation.dispatch(e.data.action);
+            navigation.navigate(routes.HOME);
           },
         },
       ]
@@ -53,20 +63,22 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   useEffect(() => {
     setBottomBarVisible(false);
 
-    const callapi = async () => {
-      setLoading(true);
-      await addAndGetIndexFromQueue(doctor.id, patientId, setIndex);
-      setLoading(false);
-    };
+    if (!leftQueue) {
+      const callGetIndex = async () => {
+        setLoading(true);
+        await addAndGetIndexFromQueue(doctor.id, patientId, setIndex);
+        setLoading(false);
+      };
 
-    callapi();
+      callGetIndex();
 
-    interval = setInterval(() => {
-      getPatientIndexFromQueue(doctor.id, patientId, setIndex);
-    }, 2000);
+      interval = setInterval(() => {
+        getPatientIndexFromQueue(doctor.id, patientId, setIndex);
+      }, 2000);
+    }
 
     const unsubscribe = navigation.addListener("beforeRemove", (e) => {
-      if (joinedQueue) {
+      if (joinedQueue || leftQueue) {
         return;
       } else {
         myalert(e, unsubscribe);
@@ -79,14 +91,14 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
       clearInterval(interval);
       unsubscribe();
     };
-  }, [navigation, joinedQueue]);
+  }, [navigation, joinedQueue, leftQueue]);
 
   return (
     <View style={styles.container}>
       <View style={styles.squareTiles}>
         {isLoading ? (
           <ActivityIndicator />
-        ) : (
+        ) : index == -1 ? null : (
           <SquareTile
             imgSrc={null}
             imgAlt={index}
@@ -104,13 +116,13 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
           style={{ width: 150 }}
           onPress={async () => {
             setJoinedQueue(true);
-            console.log("Interval Cleared");
+
             const currentDateTime = new Date().toISOString();
             clearInterval(interval);
             var consultationId = await addConsultation(
               patientId,
               doctor.id,
-              currentDateTime,
+              currentDateTime
             );
             navigation.replace(routes.VIDEO, {
               doctor: doctor,
@@ -126,17 +138,32 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
           <Text> Please wait for your turn </Text>
         </View>
       )}
-      <Button
-        mode="contained"
-        style={{ width: 150, marginTop: 10 }}
-        buttonColor="red"
-        textColor="white"
-        onPress={(e) => {
-          navigation.goBack();
-        }}
-      >
-        Leave Queue
-      </Button>
+      {index < 0 ? null : (
+        <Button
+          mode="contained"
+          style={{ width: 150, marginTop: 10 }}
+          buttonColor="red"
+          textColor="white"
+          onPress={(e) => {
+            navigation.navigate(routes.HOME);
+          }}
+        >
+          Leave Queue
+        </Button>
+      )}
+
+      <Portal>
+        <Modal
+          visible={index == -1}
+          onDismiss={dialogDismiss}
+          contentContainerStyle={styles.containerStyle}
+        >
+          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 50 }}>
+            Doctor has gone offline <Text>Sorry for the inconvience</Text>{" "}
+            <Text>Please consult an another doctor</Text>
+          </Text>
+        </Modal>
+      </Portal>
     </View>
   );
 };
@@ -158,6 +185,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
+  },
+  containerStyle: {
+    alignSelf: "center",
+    backgroundColor: "white",
+    padding: 20,
+    height: "30%",
+    width: "75%",
+    margin: 10,
   },
 });
 

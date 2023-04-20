@@ -86,18 +86,29 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
           {"\n"}
         </Text>
       </View>
-      <Button
-        style={styles.button}
-        mode="contained"
-        onPress={() => {
-          console.log(doctor.id);
-          navigation.navigate(routes.DOCTOR_WAITING, {
-            doctor: doctor,
-          });
-        }}
-      >
-        Join Consultation
-      </Button>
+      {doctor.online_status ? (
+        <Button
+          style={styles.button}
+          mode="contained"
+          onPress={() => {
+            console.log(doctor.id);
+            navigation.navigate(routes.DOCTOR_WAITING, {
+              doctor: doctor,
+            });
+          }}
+        >
+          Join Consultation
+        </Button>
+      ) : (
+        <Button
+          style={styles.buttonOffline}
+          mode="contained"
+          onPress={() => {}}
+          textColor="black"
+        >
+          Doctor Offline
+        </Button>
+      )}
     </View>
   );
 };
@@ -147,6 +158,12 @@ const styles = StyleSheet.create({
     marginTop: "15%",
     alignItems: "center",
     marginHorizontal: 100,
+  },
+  buttonOffline: {
+    marginTop: "15%",
+    alignItems: "center",
+    marginHorizontal: 100,
+    backgroundColor: "#EBEBE4",
   },
   info: {
     marginHorizontal: "6%",
