@@ -11,11 +11,13 @@ import routes from "../../navigation/routes";
 import SquareTile from "../../components/SquareTile";
 import { AuthContext } from "../../context/AuthContext";
 import { addConsultation } from "../../service/ConsultationService";
+import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 
 // create a component
 const DoctorQueueWaitingScreen = ({ navigation, route }) => {
-  const { doctor } = route.params;
+  const { doctor, followUp } = route.params;
   const [index, setIndex] = useState(null);
+  const [accept, setAccept] = useState(null);
   let interval;
   const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
   const patientId = patientInfo.patientId;
@@ -66,14 +68,19 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
     if (!leftQueue) {
       const callGetIndex = async () => {
         setLoading(true);
-        await addAndGetIndexFromQueue(doctor.id, patientId, setIndex);
+        await addAndGetIndexFromQueue(
+          doctor.id,
+          patientId,
+          setIndex,
+          setAccept
+        );
         setLoading(false);
       };
 
       callGetIndex();
 
       interval = setInterval(() => {
-        getPatientIndexFromQueue(doctor.id, patientId, setIndex);
+        getPatientIndexFromQueue(doctor.id, patientId, setIndex, setAccept);
       }, 2000);
     }
 
@@ -110,29 +117,52 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
           />
         )}
       </View>
-      {index == 1 ? (
-        <Button
-          mode="contained"
-          style={{ width: 150 }}
-          onPress={async () => {
-            setJoinedQueue(true);
+      {index == 1 && accept ? (
+        <>
+          <CountdownCircleTimer
+            size={50}
+            isPlaying
+            duration={20}
+            colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+            colorsTime={[7, 5, 2, 0]}
+            onComplete={async () => {
+              await removePatientFromQueue(doctor.id, patientId);
+              setLeftQueue(true);
+              navigation.navigate(routes.HOME);
+            }}
+          >
+            {({ remainingTime }) => <Text>{remainingTime}</Text>}
+          </CountdownCircleTimer>
 
-            const currentDateTime = new Date().toISOString();
-            clearInterval(interval);
-            var consultationId = await addConsultation(
-              patientId,
-              doctor.id,
-              currentDateTime
-            );
-            navigation.replace(routes.VIDEO, {
-              doctor: doctor,
-              consultationId: consultationId,
-              patientId: patientId,
-            });
-          }}
-        >
-          Join Video Call
-        </Button>
+          <Text style={{ marginVertical: 15 }}>
+            Please join the video call before timer ends
+          </Text>
+
+          <Button
+            mode="contained"
+            style={{ width: 150 }}
+            onPress={async () => {
+              setJoinedQueue(true);
+
+              const currentDateTime = new Date().toISOString();
+              clearInterval(interval);
+              var consultationId = await addConsultation(
+                patientId,
+                doctor.id,
+                currentDateTime,
+                followUp
+              );
+              navigation.replace(routes.VIDEO, {
+                doctor: doctor,
+                consultationId: consultationId,
+                patientId: patientId,
+                followUp,
+              });
+            }}
+          >
+            Join Video Call
+          </Button>
+        </>
       ) : (
         <View>
           <Text> Please wait for your turn </Text>
