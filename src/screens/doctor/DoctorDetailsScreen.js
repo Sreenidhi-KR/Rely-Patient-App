@@ -119,9 +119,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
           size="small"
           color="black"
           style={styles.fab_offline}
-          onPress={() => {
-            docUpload();
-          }}
+          onPress={() => {}}
         />
       )}
     </View>
