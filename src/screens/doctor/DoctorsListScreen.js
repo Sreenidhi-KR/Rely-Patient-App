@@ -21,7 +21,7 @@ const randomRGB = () => {
 const DoctorListScreen = ({ route, navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const { specialization } = route.params;
+  const { specialization, followUp } = route.params;
 
   const getDoctors = async () => {
     try {
@@ -51,9 +51,9 @@ const DoctorListScreen = ({ route, navigation }) => {
               <View style={styles.box}>
                 <List.Item
                   onPress={() => {
-                    console.log(item.fname);
                     navigation.navigate(routes.DOCTOR_DETAILS, {
                       doctor: item,
+                      followUp,
                     });
                   }}
                   descriptionStyle={{
