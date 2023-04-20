@@ -41,9 +41,10 @@ const ConsultationScreen = ({ navigation }) => {
     const d = dateString.split(/[' ']/);
     const monthname = d[1];
     const year = d[2];
-    const t = d[4].split(/[':']/);
+    const t = d[3].split(/[':']/);
     const temp = t[0] == 0 || t[0] == 12 ? 12 : t[0] % 12;
-    const time = temp;
+    const time = temp + ":" +t[1];
+    // console.log("time: ",t);
     const ap = t[0] != 0 && t[0] > 11 ? "PM" : "AM";
 
     const day = dateObj.getDate();
