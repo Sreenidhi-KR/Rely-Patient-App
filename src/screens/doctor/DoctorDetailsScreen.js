@@ -23,7 +23,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
           <Text style={styles.text}>{doctor.qualification}</Text>
           <Text style={styles.text}>{doctor.email}</Text>
           <Text style={styles.text}>
-            Sex: {doctor.sex} | Age:{doctor.age}
+            Sex: {doctor.sex} | Age: {doctor.age}
           </Text>
           <View style={styles.detail}>
             <Chip
@@ -38,7 +38,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
               style={styles.textdec}
               compact
             >
-              Rating: {doctor.rating}/5
+              Rating: {(doctor.rating).toFixed(1)}/5
             </Chip>
           </View>
         </View>
