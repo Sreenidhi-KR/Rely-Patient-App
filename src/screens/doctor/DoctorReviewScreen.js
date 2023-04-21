@@ -12,6 +12,7 @@ const DoctorReviewScreen = ({ navigation, route }) => {
   const [visible, setVisible] = React.useState(true);
   const { doctor } = route.params;
 
+
   const updateRating = async () => {
     await updateDoctorRating(doctor.id, starRating);
   };
