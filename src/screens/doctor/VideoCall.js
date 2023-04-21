@@ -10,7 +10,8 @@ import { StackActions } from "@react-navigation/native";
 const VideoCall = ({ navigation, route }) => {
   const { setBottomBarVisible } = useContext(AuthContext);
   const { doctor, consultationId, patientId } = route.params;
-  const [inVideoCall, setInVideoCall] = useState(true);
+  //const [inVideoCall, setInVideoCall] = useState(true);
+  var finish = false;
   console.log(doctor);
   console.log(consultationId);
   const connectionData = {
@@ -22,14 +23,15 @@ const VideoCall = ({ navigation, route }) => {
   const callbacks = {
     EndCall: () => {
       console.log("END CALL");
-      setInVideoCall(false);
+      finish = true;
+      //setInVideoCall(false);
       removePatientFromQueue(doctor.id, patientId);
       navigation.replace(routes.HOME);
     },
   };
 
   const myalert = (e, unsubscribe) => {
-    if (!inVideoCall) {
+    if (finish) {
       return;
     }
     e.preventDefault();
@@ -45,7 +47,10 @@ const VideoCall = ({ navigation, route }) => {
           onPress: () => {
             unsubscribe();
             console.log(e.data);
-            navigation.replace(routes.HOME);
+            navigation.reset({
+              index: 0,
+              routes: [{ name: routes.DOCTOR_REVIEW,  params: {doctor} }],
+            });
           },
         },
       ]
@@ -53,6 +58,9 @@ const VideoCall = ({ navigation, route }) => {
   };
 
   useEffect(() => {
+    if (finish) {
+      return;
+    }
     setBottomBarVisible(false);
 
     const unsubscribe = navigation.addListener("beforeRemove", (e) => {
@@ -64,17 +72,13 @@ const VideoCall = ({ navigation, route }) => {
       setBottomBarVisible(true);
       unsubscribe();
     };
-  }, [navigation, inVideoCall]);
+  }, [navigation, finish]);
 
-  return inVideoCall ? (
+  return (
     <View style={{ flex: 1 }}>
       <AgoraUIKit connectionData={connectionData} rtcCallbacks={callbacks} />
       <ConsultationDocsFAB consultationId={consultationId} />
     </View>
-  ) : (
-    <Text setVideoCall={setInVideoCall} onPress={() => setInVideoCall(true)}>
-      Start Call
-    </Text>
   );
 };
 

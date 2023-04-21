@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component, useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { ActivityIndicator, List, Button } from "react-native-paper";
+import { ActivityIndicator, Button, List } from "react-native-paper";
 import SquareTile from "../../components/SquareTile";
 import { AuthContext } from "../../context/AuthContext";
 import { getProfilesForUser } from "../../service/UserService";
@@ -11,7 +11,8 @@ import routes from "../../navigation/routes";
 import { updateBlock } from "typescript";
 // create a component
 const SelectProfileScreen = ({ navigation }) => {
-  const { setBottomBarVisible, setPatientInfo } = useContext(AuthContext);
+  const { setBottomBarVisible, setPatientInfo, logout } =
+    useContext(AuthContext);
   const [profiles, setProfiles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [update, setUpdate] = useState(1);
@@ -53,26 +54,35 @@ const SelectProfileScreen = ({ navigation }) => {
             titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
           ></List.Section>
           <View style={styles.squareTiles}>
-            {profiles
-              ? profiles.map((patient) => {
-                  return (
-                    <>
-                      <SquareTile
-                        key={patient.id}
-                        imgSrc={imagePaths.avatar_man}
-                        color={"#ECF9E3"}
-                        text={patient.fname}
-                        onPress={() => {
-                          setPatientInfo({
-                            patientId: patient.id,
-                            patientName: patient.fname,
-                          });
-                        }}
-                      />
-                    </>
-                  );
-                })
-              : null}
+            {profiles ? (
+              profiles.map((patient) => {
+                return (
+                  <>
+                    <SquareTile
+                      key={patient.id}
+                      imgSrc={imagePaths.avatar_man}
+                      color={"#ECF9E3"}
+                      text={patient.fname}
+                      onPress={() => {
+                        setPatientInfo({
+                          patientId: patient.id,
+                          patientName: patient.fname,
+                        });
+                      }}
+                    />
+                  </>
+                );
+              })
+            ) : (
+              <Button
+                onPress={() => {
+                  setPatientInfo({});
+                  logout();
+                }}
+              >
+                Logout
+              </Button>
+            )}
             {profiles.length < 4 ? (
               <SquareTile
                 imgSrc={imagePaths.add_Patient}

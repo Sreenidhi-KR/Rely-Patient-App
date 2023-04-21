@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { List, Button, FAB, Appbar } from "react-native-paper";
+import { List, Button, FAB } from "react-native-paper";
 import React, { useState, useEffect, useContext } from "react";
 import {
   uploadDocument,

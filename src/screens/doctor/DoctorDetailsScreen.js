@@ -1,12 +1,12 @@
 //import liraries
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import { Button, Chip } from "react-native-paper";
+import { Button, Chip, FAB } from "react-native-paper";
 import routes from "../../navigation/routes";
 
 // create a component
 const DoctorDetailsScreen = ({ navigation, route }) => {
-  const { doctor } = route.params;
+  const { doctor, followUp } = route.params;
   console.log(doctor);
   const imageUrl = doctor.photo_url;
   return (
@@ -86,18 +86,42 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
           {"\n"}
         </Text>
       </View>
-      <Button
-        style={styles.button}
-        mode="contained"
-        onPress={() => {
-          console.log(doctor.id);
-          navigation.navigate(routes.DOCTOR_WAITING, {
-            doctor: doctor,
-          });
-        }}
-      >
-        Join Consultation
-      </Button>
+      {doctor.online_status ? (
+        // <Button
+        //   style={styles.button}
+        //   mode="contained"
+        //   onPress={() => {
+        //     console.log(doctor.id);
+        //     navigation.navigate(routes.DOCTOR_WAITING, {
+        //       doctor: doctor,
+        //     });
+        //   }}
+        // >
+        //   Join Consultation
+        // </Button>
+        <FAB
+          mode="flat"
+          label="Join Consultation"
+          size="small"
+          color="white"
+          style={styles.fab}
+          onPress={() => {
+            navigation.navigate(routes.DOCTOR_WAITING, {
+              doctor: doctor,
+              followUp,
+            });
+          }}
+        />
+      ) : (
+        <FAB
+          mode="flat"
+          label="Doctor Offline"
+          size="small"
+          color="black"
+          style={styles.fab_offline}
+          onPress={() => {}}
+        />
+      )}
     </View>
   );
 };
@@ -109,6 +133,20 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     // alignItems: "center",
     backgroundColor: "white",
+  },
+  fab_offline: {
+    position: "absolute",
+    margin: 16,
+    backgroundColor: "#EBEBE4",
+    right: 0,
+    bottom: 0,
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    backgroundColor: "#cfa1f7",
+    right: 0,
+    bottom: 0,
   },
   image: {
     flexDirection: "row",
@@ -143,11 +181,7 @@ const styles = StyleSheet.create({
     marginHorizontal: "1%",
     padding: "5%",
   },
-  button: {
-    marginTop: "15%",
-    alignItems: "center",
-    marginHorizontal: 100,
-  },
+
   info: {
     marginHorizontal: "6%",
     justifyContent: "space-evenly",

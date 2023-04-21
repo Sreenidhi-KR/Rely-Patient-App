@@ -29,8 +29,8 @@ const getPrevConsultDetails = async (consultId) => {
   }
 };
 
-const addConsultation = async (patientId, doctorId, startTime) => {
-  console.log("Creating new Consultation");
+const addConsultation = async (patientId, doctorId, startTime, followUp) => {
+  console.log("Creating new Consultation", followUp);
   try {
     const response = await axios.post(
       `${urlBase}/consultation/addConsultation`,
@@ -38,6 +38,7 @@ const addConsultation = async (patientId, doctorId, startTime) => {
         patient_id: patientId,
         doctor_id: doctorId,
         start_time: startTime,
+        followup_id: followUp,
       },
       await getConfig()
     );

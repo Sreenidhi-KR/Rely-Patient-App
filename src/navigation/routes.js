@@ -9,4 +9,5 @@ export default {
   CONSULTATION_DETAILS: "ConsultationDetails",
   SELECT_PROFILE: "SelectProfile",
   ADD_PROFILE: "addProfile",
+  DOCTOR_REVIEW: "DoctorReview",
 };

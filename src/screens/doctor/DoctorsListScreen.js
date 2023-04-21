@@ -21,7 +21,7 @@ const randomRGB = () => {
 const DoctorListScreen = ({ route, navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const { specialization } = route.params;
+  const { specialization, followUp } = route.params;
 
   const getDoctors = async () => {
     try {
@@ -51,14 +51,27 @@ const DoctorListScreen = ({ route, navigation }) => {
               <View style={styles.box}>
                 <List.Item
                   onPress={() => {
-                    console.log(item.fname);
                     navigation.navigate(routes.DOCTOR_DETAILS, {
                       doctor: item,
+                      followUp,
                     });
                   }}
-                  titleStyle={{ color: "black" }}
-                  descriptionStyle={{ color: "gray" }}
-                  title={`${item.fname} ${item.lname}`}
+                  descriptionStyle={{
+                    color: "gray",
+                    fontSize: 10,
+                    fontWeight: "300",
+                  }}
+                  title={
+                    <Text
+                      style={{
+                        color: "black",
+                        fontSize: 18,
+                        fontWeight: "500",
+                      }}
+                    >
+                      {`${item.fname} ${item.lname}`}
+                    </Text>
+                  }
                   description={`${item.qualification}`}
                   left={(props) => (
                     <Image
@@ -66,6 +79,13 @@ const DoctorListScreen = ({ route, navigation }) => {
                       style={{ width: 55, height: 55 }}
                     />
                   )}
+                  right={(props) =>
+                    item.online_status ? (
+                      <Text style={{ alignSelf: "center" }}>🟢 </Text>
+                    ) : (
+                      <Text style={{ alignSelf: "center" }}>🔴</Text>
+                    )
+                  }
                 />
               </View>
             )}
