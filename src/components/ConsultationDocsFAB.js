@@ -18,8 +18,8 @@ import Spinner from "react-native-loading-spinner-overlay";
 const ConsultationDocsFAB = ({ consultationId }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [inConsultation, setInConsultation] = useState([]);
-  const [canBeAdded, setCanBeAdded] = useState([]); // canBeAdded is all the documents that are not yet in the consultation
-  const [canBeAdded2, setCanBeAdded2] = useState([]); // canBeAdded2 is all the prescriptions that are not yet in the consultation
+  const [documents, setDocuments] = useState([]); // canBeAdded is all the documents that are not yet in the consultation
+  const [prescriptions, setPrescriptions] = useState([]); // canBeAdded2 is all the prescriptions that are not yet in the consultation
   const [isLoading, setLoading] = useState(true);
   const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
   const patientId = patientInfo.patientId;
@@ -33,8 +33,8 @@ const ConsultationDocsFAB = ({ consultationId }) => {
     setLoading(true);
     let json = await docsForConsultation(consultationId, patientId);
     setInConsultation(json[0]); // prescriptions+documents in consultation
-    setCanBeAdded(json[1]); // documents not in consultation
-    setCanBeAdded2(json[2]); // prescriptions not in consultation
+    setDocuments(json[1]); // documents not in consultation
+    setPrescriptions(json[2]); // prescriptions not in consultation
     setLoading(false);
   }
 
@@ -159,7 +159,7 @@ const ConsultationDocsFAB = ({ consultationId }) => {
               </Text>
               <Text style={styles.subTitle}>Touch to add</Text>
               <View style={styles.chipContainer}>
-                {canBeAdded.map((document) => {
+                {documents.map((document) => {
                   return (
                     <TouchableOpacity
                       key={document.id}
@@ -206,7 +206,7 @@ const ConsultationDocsFAB = ({ consultationId }) => {
               </Text>
               <Text style={styles.subTitle}>Touch to add</Text>
               <View style={styles.chipContainer}>
-                {canBeAdded2.map((document) => {
+                {prescriptions.map((document) => {
                   return (
                     <TouchableOpacity
                       key={document.id}
