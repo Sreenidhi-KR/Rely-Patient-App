@@ -1,14 +1,28 @@
 //import liraries
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Button, Chip, FAB } from "react-native-paper";
 import routes from "../../navigation/routes";
+import { getAllPatientsFromDqueue } from "../../service/DoctorService";
 
 // create a component
 const DoctorDetailsScreen = ({ navigation, route }) => {
   const { doctor, followUp } = route.params;
   console.log(doctor);
   const imageUrl = doctor.photo_url;
+  const[currentlength,setCurrentLength] = useState(10);
+  const isFull = ((currentlength+1) > doctor.limit);
+
+  const getQueueLength = async () => {
+    var size= await getAllPatientsFromDqueue(doctor.id)
+    var length=size.length;
+    setCurrentLength(length);
+   };
+
+   useEffect(() => {
+      getQueueLength()
+    },[]);
+
   return (
     <View style={styles.container}>
       <View style={styles.image}>
@@ -87,6 +101,16 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
         </Text>
       </View>
       {doctor.online_status ? (
+      isFull ? (
+        <FAB
+          mode="flat"
+          label="Doctor Full"
+          size="small"
+          color="black"
+          style={styles.fab_offline}
+          onPress={() => {}}
+        />
+      ):(
         // <Button
         //   style={styles.button}
         //   mode="contained"
@@ -112,6 +136,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
             });
           }}
         />
+      )
       ) : (
         <FAB
           mode="flat"

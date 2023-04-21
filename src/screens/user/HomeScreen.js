@@ -41,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
           text={"Quick Consulatation"}
           onPress={async () => {
             const doc = await getQuickDoctor(); 
-            console.log("Quick Doctor :", doc)
+            navigation.navigate(routes.DOCTOR_WAITING, {doctor: doc});
           if(doc==undefined)
              console.log("No Doctor is available currently")
         }

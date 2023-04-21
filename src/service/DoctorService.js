@@ -99,6 +99,18 @@ const updateDoctorRating = async(doctorId, starRating) => {
   }
 };
 
+const getAllPatientsFromDqueue = async(doctorId) => {
+  try{
+    const response = await axios.get(
+      `${urlBase}/dqueue/getPatients/${doctorId}`,
+      await getConfig()
+    );
+    console.log("GetALLPATIENTSFROMDQUEUE", response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
 export {
   getAllDoctors,
   addPatientToQueue,
@@ -106,4 +118,5 @@ export {
   getPatientIndexFromQueue,
   addAndGetIndexFromQueue,
   updateDoctorRating,
+  getAllPatientsFromDqueue,
 };
