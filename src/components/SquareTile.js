@@ -24,7 +24,7 @@ const SquareTile = ({ imgSrc, imgAlt, color, text, onPress }) => {
           <Text style={{ fontSize: 50 }}>{imgAlt}</Text>
         )}
 
-        <View style={{ width: 150, alignItems: "center" }}>
+        <View style={{ maxWidth: 200, alignItems: "center", minWidth: 150 }}>
           <Text style={{ fontSize: 12 }}>{text}</Text>
         </View>
       </View>
