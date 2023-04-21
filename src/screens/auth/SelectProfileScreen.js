@@ -16,6 +16,15 @@ const SelectProfileScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [update, setUpdate] = useState(1);
 
+  //to prevent user coming from home screen back to choosing profile, going back without selecting a valid profile
+  React.useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        e.preventDefault();
+      }),
+    [navigation]
+  );
+
   const getProfiles = async () => {
     const patients = await getProfilesForUser();
     if (patients.length != profiles.length) {
