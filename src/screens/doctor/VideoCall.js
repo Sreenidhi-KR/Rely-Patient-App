@@ -1,19 +1,32 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import AgoraUIKit from "agora-rn-uikit";
-import { Alert, Text, View, BackHandler } from "react-native";
+import {
+  AppState,
+  Alert,
+  Text,
+  View,
+  Portal,
+  Modal,
+  StyleSheet,
+} from "react-native";
 import { AuthContext } from "../../context/AuthContext";
 import { ConsultationDocsFAB } from "../../components/ConsultationDocsFAB";
-import { removePatientFromQueue } from "../../service/DoctorService";
 import routes from "../../navigation/routes";
-import { StackActions } from "@react-navigation/native";
+
+import {
+  getPatientIndexFromQueue,
+  removePatientFromQueue,
+} from "../../service/DoctorService";
 
 const VideoCall = ({ navigation, route }) => {
   const { setBottomBarVisible } = useContext(AuthContext);
   const { doctor, consultationId, patientId } = route.params;
-  //const [inVideoCall, setInVideoCall] = useState(true);
+  const [index, setIndex] = useState(null);
+  const [accept, setAccept] = useState(null);
+  let interval;
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   var finish = false;
-  console.log(doctor);
-  console.log(consultationId);
   const connectionData = {
     appId: "5e2ee6c6fc13459caa99cb8c234d42e0",
     channel: doctor.channel_name,
@@ -24,7 +37,6 @@ const VideoCall = ({ navigation, route }) => {
     EndCall: () => {
       console.log("END CALL");
       finish = true;
-      //setInVideoCall(false);
       removePatientFromQueue(doctor.id, patientId);
       navigation.replace(routes.HOME);
     },
@@ -49,7 +61,7 @@ const VideoCall = ({ navigation, route }) => {
             console.log(e.data);
             navigation.reset({
               index: 0,
-              routes: [{ name: routes.DOCTOR_REVIEW,  params: {doctor} }],
+              routes: [{ name: routes.DOCTOR_REVIEW, params: { doctor } }],
             });
           },
         },
@@ -67,10 +79,40 @@ const VideoCall = ({ navigation, route }) => {
       myalert(e, unsubscribe);
     });
 
+    interval = setInterval(async () => {
+      const res = await getPatientIndexFromQueue(
+        doctor.id,
+        patientId,
+        setIndex,
+        setAccept
+      );
+      if (res.index == -1) {
+        finish = true;
+        removePatientFromQueue(doctor.id, patientId);
+        navigation.replace(routes.DOCTOR_REVIEW, { doctor });
+      }
+    }, 2000);
+
+    // const subscription = AppState.addEventListener("change", (nextAppState) => {
+    //   if (
+    //     appState.current.match(/inactive|background/) &&
+    //     nextAppState === "active"
+    //   ) {
+    //     console.log("App has come to the foreground!");
+    //   }
+
+    //   appState.current = nextAppState;
+    //   setAppStateVisible(appState.current);
+    //   console.log("AppState", appState.current);
+    // });
+
     return () => {
       removePatientFromQueue(doctor.id, patientId);
       setBottomBarVisible(true);
       unsubscribe();
+      //subscription.remove();
+      console.log("Interval Cleared");
+      clearInterval(interval);
     };
   }, [navigation, finish]);
 
@@ -81,5 +123,32 @@ const VideoCall = ({ navigation, route }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    fontSize: 25,
+  },
+  squareTiles: {
+    flexDirection: "row",
+    width: "100%",
+    height: "30%",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  containerStyle: {
+    alignSelf: "center",
+    backgroundColor: "white",
+    padding: 20,
+    height: "30%",
+    width: "75%",
+    margin: 10,
+  },
+});
 
 export default VideoCall;

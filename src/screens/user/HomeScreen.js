@@ -14,6 +14,7 @@ import SpecializationsModal from "../../components/SpecializationsModal";
 import SquareTile from "../../components/SquareTile";
 import imagePaths from "../../constants/imagePaths";
 import routes from "../../navigation/routes";
+import { getQuickDoctor } from "../../service/ConsultationService";
 
 const HomeScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
@@ -37,9 +38,15 @@ const HomeScreen = ({ navigation }) => {
         <SquareTile
           imgSrc={imagePaths.quick_consultation}
           color={"#ECF9E3"}
-          text={"Quick Consulatation"}
-          onPress={() => {}}
+          text={"    Quick Consulatation    "}
+          onPress={async () => {
+            const doc = await getQuickDoctor();
+            navigation.navigate(routes.DOCTOR_WAITING, { doctor: doc });
+            if (doc == undefined)
+              console.log("No Doctor is available currently");
+          }}
         />
+
         <SquareTile
           imgSrc={imagePaths.specialist_consultation}
           color="#F7F8FF"
@@ -55,7 +62,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    flexDirection: "column",
   },
   modalStyle: {
     backgroundColor: "white",
@@ -66,8 +72,7 @@ const styles = StyleSheet.create({
   },
   squareTiles: {
     flexDirection: "row",
-    width: "100%",
-    height: "28%",
+    height: 200,
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "center",

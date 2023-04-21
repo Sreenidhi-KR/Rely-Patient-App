@@ -12,8 +12,8 @@ const DoctorReviewScreen = ({ navigation, route }) => {
   const [visible, setVisible] = React.useState(true);
   const { doctor } = route.params;
 
-  const updateRating = () => {
-    updateDoctorRating(doctor.id, starRating);
+  const updateRating = async () => {
+    await updateDoctorRating(doctor.id, starRating);
   };
 
   return (
@@ -92,7 +92,7 @@ const DoctorReviewScreen = ({ navigation, route }) => {
             <Button
               disabled={starRating <= 0}
               mode="contained"
-              style={{ marginTop: 50, paddingHorizontal: 50 }}
+              style={{ marginTop: 50, width: 200 }}
               onPress={() => {
                 console.log("Submite review");
                 setVisible(false);

@@ -48,4 +48,17 @@ const addConsultation = async (patientId, doctorId, startTime, followUp) => {
   }
 };
 
-export { getAllPreviousConsultations, getPrevConsultDetails, addConsultation };
+const getQuickDoctor = async () => {
+  console.log("Get Doctor with least patients for Quick Consultation");
+  try {
+    const response = await axios.get(
+      `${urlBase}/dqueue/getQuickDoctor`,
+      await getConfig()
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { getAllPreviousConsultations, getPrevConsultDetails, addConsultation, getQuickDoctor };

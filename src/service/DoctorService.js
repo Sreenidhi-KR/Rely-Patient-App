@@ -58,6 +58,7 @@ const getPatientIndexFromQueue = async (
     );
     setIndex(response.data.index);
     setAccept(response.data.accept);
+
     return response.data;
   } catch (err) {
     console.log(err);
@@ -87,18 +88,29 @@ const addAndGetIndexFromQueue = async (
   }
 };
 
-const updateDoctorRating = async(doctorId, starRating) => {
+const updateDoctorRating = async (doctorId, starRating) => {
   try {
-    console.log(`${urlBase}/doctor/updateDoctorRating/${doctorId}/${starRating}`)
     const response = await axios.get(
       `${urlBase}/doctor/updateDoctorRating/${doctorId}/${starRating}`,
       await getConfig()
     );
   } catch (err) {
-    console.log("rating",err);
+    console.log("rating", err);
   }
 };
 
+const getAllPatientsFromDqueue = async(doctorId) => {
+  try{
+    const response = await axios.get(
+      `${urlBase}/dqueue/getPatients/${doctorId}`,
+      await getConfig()
+    );
+    console.log("GetALLPATIENTSFROMDQUEUE", response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
 export {
   getAllDoctors,
   addPatientToQueue,
@@ -106,4 +118,5 @@ export {
   getPatientIndexFromQueue,
   addAndGetIndexFromQueue,
   updateDoctorRating,
+  getAllPatientsFromDqueue,
 };
