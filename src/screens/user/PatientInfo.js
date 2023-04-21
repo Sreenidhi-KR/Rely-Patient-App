@@ -55,7 +55,7 @@ const PatientInfo = ({ navigation }) => {
         abdm_no: abdmNo,
         photo_url: "None",
         relationship: relationship,
-        age: null,
+        // age: null,
         dob: dob,
       };
       console.log(patient);

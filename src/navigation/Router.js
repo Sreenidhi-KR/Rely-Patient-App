@@ -14,6 +14,7 @@ import {
   ConsultationDetailsScreen,
   PatientInfo,
   DoctorReviewScreen,
+  PatientViewInfo,
 } from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
@@ -78,6 +79,11 @@ function HomeStackRenderer() {
       <HomeStack.Screen
         name={routes.DOCTOR_REVIEW}
         component={DoctorReviewScreen}
+      />
+
+      <HomeStack.Screen
+        name={routes.VIEW_PROFILE}
+        component={PatientViewInfo}
       />
     </HomeStack.Navigator>
   );

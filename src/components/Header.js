@@ -26,6 +26,7 @@ const Header = () => {
         left={(props) => (
           <TouchableOpacity
             onPress={() => {
+              navigation.navigate(routes.VIEW_PROFILE);
               // setPatientInfo({});
               // logout();
             }}

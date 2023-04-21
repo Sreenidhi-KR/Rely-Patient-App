@@ -39,8 +39,8 @@ const DocumentScreen = () => {
   }
 
   async function docUpload() {
-    setLoading(true);
     await uploadDocument(patientId);
+    setLoading(true);
     await getDocuments();
   }
 

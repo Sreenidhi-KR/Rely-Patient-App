@@ -8,5 +8,5 @@ export { default as DoctorQueueWaitingScreen } from "./doctor/DoctorQueueWaiting
 export { default as SplashScreen } from "./auth/SplashScreen";
 export { default as ConsultationDetailsScreen } from "./consultation/ConsultationDetailsScreen";
 export { default as PatientInfo } from "./user/PatientInfo";
-
+export { default as PatientViewInfo } from "./user/PatientViewInfo";
 export { default as DoctorReviewScreen } from "./doctor/DoctorReviewScreen";

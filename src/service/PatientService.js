@@ -19,40 +19,23 @@ async function addPatient(patient, userId) {
 
 //Patient is the js object containing all the fields required by the patient
 async function editPatient(patient, patientId) {
-  const config = {
-    method: "POST",
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
   try {
     let response = await axios.post(
       `${urlBase}/editPatient/${patientId}`,
       patient,
-      config
+      await getConfig()
     );
-    console.log("patient added sucessfully");
   } catch (err) {
     console.log(err);
   }
 }
 
 async function getPatients(userId) {
-  const config = {
-    method: "GET",
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
-    },
-  };
   try {
     let response = await axios.get(
-      `${urlBase}/user/getPatients/${userId}`,
-      config
+      `${urlBase}/getPatients/${userId}`,
+      await getConfig()
     );
-    console.log("data fetched sucessfully:", response.data);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -60,17 +43,10 @@ async function getPatients(userId) {
 }
 
 async function removePatient(patientId) {
-  const config = {
-    method: "DELETE",
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
-    },
-  };
   try {
     let response = await axios.delete(
-      `${urlBase}/user/deletePatient/${patientId}`,
-      config
+      `${urlBase}/deletePatient/${patientId}`,
+      await getConfig()
     );
     console.log("patient removed sucessfully");
   } catch (err) {

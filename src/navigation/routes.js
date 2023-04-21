@@ -10,4 +10,5 @@ export default {
   SELECT_PROFILE: "SelectProfile",
   ADD_PROFILE: "addProfile",
   DOCTOR_REVIEW: "DoctorReview",
+  VIEW_PROFILE: "View Profile",
 };
