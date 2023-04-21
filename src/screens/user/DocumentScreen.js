@@ -13,6 +13,7 @@ import {
   getAllDocumentsList,
   removeDocument,
   downloadDocument,
+  viewDocument,
 } from "../../service/DocumentService";
 import Header from "../../components/Header";
 import { AuthContext } from "../../context/AuthContext";
@@ -37,8 +38,11 @@ const DocumentScreen = () => {
   }, []);
 
   async function getDocuments() {
+    setLoading(true);
     data = await getAllDocumentsList(patientId);
-    setDocs(data);
+    if (data.length != docs.length) {
+      setDocs(data);
+    }
     setLoading(false);
   }
 
@@ -54,11 +58,24 @@ const DocumentScreen = () => {
     await getDocuments();
   }
 
+  async function viewDoc(docId) {
+    let base64pdf = await viewDocument(docId);
+    //should render the base64 as pdf
+    console.log("Document will be rendered");
+  }
+
+  async function downloadDoc(docId) {
+    setLoading(true);
+    await downloadDocument(item.id);
+    await getDocuments();
+  }
+
   return (
     <>
       <View style={styles.container}>
         <Header />
         <Spinner visible={isLoading} />
+
         <List.Section
           title="Documents"
           titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
@@ -94,6 +111,7 @@ const DocumentScreen = () => {
                             downloadDocument(item.id);
                           }}
                         ></Button>
+
                         <Button
                           textColor="gray"
                           icon="delete"

@@ -11,8 +11,9 @@ import {
   DoctorQueueWaitingScreen,
   DoctorDetaisScreen,
   SplashScreen,
-  ConsultationDetailsScreen,
   DoctorReviewScreen,
+  PatientViewInfo,
+  AddProfile,
 } from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
@@ -36,11 +37,19 @@ function HomeStackRenderer() {
   return (
     <HomeStack.Navigator>
       {patientInfo == null || patientInfo.patientId == undefined ? (
-        <HomeStack.Screen
-          name={routes.SELECT_PROFILE}
-          component={SelectProfileScreen}
-          options={{ headerShown: false }}
-        />
+        <>
+          <HomeStack.Screen
+            name={routes.SELECT_PROFILE}
+            component={SelectProfileScreen}
+            options={{ headerShown: false }}
+          />
+
+          <HomeStack.Screen
+            name={routes.ADD_PROFILE}
+            component={AddProfile}
+            options={{ headerShown: false }}
+          />
+        </>
       ) : null}
 
       <HomeStack.Screen
@@ -69,6 +78,11 @@ function HomeStackRenderer() {
       <HomeStack.Screen
         name={routes.DOCTOR_REVIEW}
         component={DoctorReviewScreen}
+      />
+
+      <HomeStack.Screen
+        name={routes.VIEW_PROFILE}
+        component={PatientViewInfo}
       />
     </HomeStack.Navigator>
   );
