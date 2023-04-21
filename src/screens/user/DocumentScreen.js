@@ -4,6 +4,7 @@ import {
   FlatList,
   Text,
   View,
+  RefreshControl,
 } from "react-native";
 import { List, Button, FAB } from "react-native-paper";
 import React, { useState, useEffect, useContext } from "react";
@@ -17,14 +18,20 @@ import Header from "../../components/Header";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 
-// create a component
 const DocumentScreen = () => {
   const [docs, setDocs] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const { patientInfo } = useContext(AuthContext);
   const patientId = patientInfo.patientId;
 
-  //onMount load all the documents
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await getDocuments();
+    setRefreshing(false);
+  }, []);
+
   useEffect(() => {
     getDocuments();
   }, []);
@@ -47,78 +54,74 @@ const DocumentScreen = () => {
     await getDocuments();
   }
 
-  async function downloadDoc(docId) {
-    setLoading(true);
-    await downloadDocument(item.id);
-    await getDocuments();
-  }
   return (
     <>
       <View style={styles.container}>
         <Header />
         <Spinner visible={isLoading} />
-        <View style={styles.wrapper}>
-          <List.Section
-            title="Documents"
-            titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
-          ></List.Section>
-          <FlatList
-            scrollEnabled
-            showsVerticalScrollIndicator
-            data={docs}
-            centerContent
-            keyExtractor={({ id }) => id}
-            renderItem={({ item }) => (
-              <View style={styles.box}>
-                <List.Item
-                  title={`${item.name}`}
-                  titleStyle={{ color: "black" }}
-                  right={() => {
-                    return (
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          justifyContent: "flex-start",
-                        }}
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <Button
-                            textColor="gray"
-                            icon="download"
-                            onPress={() => {
-                              downloadDocument(item.id);
-                            }}
-                          ></Button>
-                          <Button
-                            textColor="gray"
-                            icon="delete"
-                            onPress={() => {
-                              removeDoc(item.id);
-                            }}
-                          ></Button>
-                        </View>
+        <List.Section
+          title="Documents"
+          titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
+        ></List.Section>
+        <FlatList
+          scrollEnabled
+          showsVerticalScrollIndicator
+          data={docs}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          centerContent
+          keyExtractor={({ id }) => id}
+          renderItem={({ item }) => (
+            <View style={styles.box}>
+              <List.Item
+                title={`${item.name}`}
+                titleStyle={{ color: "black" }}
+                right={() => {
+                  return (
+                    <View
+                      style={{
+                        flex: 1,
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                      }}
+                    >
+                      <View style={{ flexDirection: "row" }}>
+                        <Button
+                          textColor="gray"
+                          icon="download"
+                          onPress={() => {
+                            downloadDocument(item.id);
+                          }}
+                        ></Button>
+                        <Button
+                          textColor="gray"
+                          icon="delete"
+                          onPress={() => {
+                            removeDoc(item.id);
+                          }}
+                        ></Button>
                       </View>
-                    );
-                  }}
-                />
-              </View>
-            )}
-          />
-        </View>
-        <FAB
-          icon="plus"
-          textColor="black"
-          mode="flat"
-          label="Add Document"
-          size="small"
-          variant="primary"
-          style={styles.fab}
-          onPress={() => {
-            docUpload();
-          }}
+                    </View>
+                  );
+                }}
+              />
+            </View>
+          )}
         />
       </View>
+      <FAB
+        icon="plus"
+        textColor="black"
+        mode="flat"
+        label="Add Document"
+        size="small"
+        variant="primary"
+        style={styles.fab}
+        onPress={() => {
+          docUpload();
+        }}
+      />
     </>
   );
 };

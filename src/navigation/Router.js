@@ -94,11 +94,6 @@ function ConsultationStackRenderer() {
         component={ConsultationScreen}
         options={{ headerShown: false }}
       />
-      <ConsultationStack.Screen
-        name={routes.CONSULTATION_DETAILS}
-        component={ConsultationDetailsScreen}
-        options={{ headerShown: false }}
-      />
     </ConsultationStack.Navigator>
   );
 }
