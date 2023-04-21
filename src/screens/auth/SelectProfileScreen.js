@@ -11,37 +11,30 @@ import routes from "../../navigation/routes";
 import { updateBlock } from "typescript";
 // create a component
 const SelectProfileScreen = ({ navigation }) => {
-  const { setBottomBarVisible, setPatientInfo, logout } =
+  const { setBottomBarVisible, setPatientInfo, logout, isUpdate, setUpdate } =
     useContext(AuthContext);
   const [profiles, setProfiles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [update, setUpdate] = useState(1);
-
-  //to prevent user coming from home screen back to choosing profile, going back without selecting a valid profile
-  React.useEffect(
-    () =>
-      navigation.addListener("beforeRemove", (e) => {
-        e.preventDefault();
-      }),
-    [navigation]
-  );
-
-  const getProfiles = async () => {
-    const patients = await getProfilesForUser();
-    if (patients.length != profiles.length) {
-      setProfiles(patients);
-    }
-    setIsLoading(false);
-  };
 
   useEffect(() => {
     getProfiles();
     setBottomBarVisible(false);
-
+    navigation.addListener("beforeRemove", (e) => {
+      e.preventDefault();
+    });
+    if (isUpdate == true) {
+      setUpdate(false);
+    }
     return () => {
       setBottomBarVisible(true);
     };
-  });
+  }, [isUpdate, navigation]);
+
+  const getProfiles = async () => {
+    const patients = await getProfilesForUser();
+    setProfiles(patients);
+    setIsLoading(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -89,6 +82,7 @@ const SelectProfileScreen = ({ navigation }) => {
                 color={"#ECF9E3"}
                 text="New Patient Profile"
                 onPress={() => {
+                  setUpdate(true);
                   navigation.navigate(routes.ADD_PROFILE);
                 }}
               />

@@ -12,6 +12,8 @@ export const AuthProvider = ({ children }) => {
   const [splashLoading, setSplashLoading] = useState(false);
   const [bottomBarVisible, setBottomBarVisible] = useState(true);
 
+  const [isUpdate, setUpdate] = useState(false); //for adding new aptient profiles
+
   const login = async (name, password) => {
     setIsLoading(true);
 
@@ -80,6 +82,8 @@ export const AuthProvider = ({ children }) => {
         setBottomBarVisible,
         patientInfo,
         setPatientInfo,
+        setUpdate,
+        isUpdate,
       }}
     >
       {children}

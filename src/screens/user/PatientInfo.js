@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,8 +13,9 @@ import DatePicker from "react-native-date-picker";
 import { addPatient } from "../../service/PatientService";
 import routes from "../../navigation/routes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { AuthContext } from "../../context/AuthContext";
 const PatientInfo = ({ navigation }) => {
+  const { isUpdate, setUpdate } = useContext(AuthContext);
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [dob, setDob] = useState(new Date());
@@ -59,6 +60,7 @@ const PatientInfo = ({ navigation }) => {
       };
       console.log(patient);
       addPatient(patient, userId);
+      setUpdate(true);
       navigation.navigate(routes.SELECT_PROFILE);
     }
   }
