@@ -11,10 +11,9 @@ import {
   DoctorQueueWaitingScreen,
   DoctorDetaisScreen,
   SplashScreen,
-  ConsultationDetailsScreen,
-  PatientInfo,
   DoctorReviewScreen,
   PatientViewInfo,
+  AddProfile,
 } from "../screens/";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
@@ -47,7 +46,7 @@ function HomeStackRenderer() {
 
           <HomeStack.Screen
             name={routes.ADD_PROFILE}
-            component={PatientInfo}
+            component={AddProfile}
             options={{ headerShown: false }}
           />
         </>

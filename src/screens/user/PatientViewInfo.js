@@ -8,6 +8,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../../context/AuthContext";
 import routes from "../../navigation/routes";
+import { ActivityIndicator } from "react-native-paper";
 
 const PatientViewInfo = ({ navigation }) => {
   const { logout, patientInfo, setPatientInfo } = useContext(AuthContext);
@@ -46,9 +47,9 @@ const PatientViewInfo = ({ navigation }) => {
   }
 
   async function deletePatient() {
-    removePatient(patientInfo.patientId);
+    await removePatient(patientInfo.patientId);
     setPatientInfo({});
-    navigation.navigate(routes.SELECT_PROFILE);
+    navigation.replace(routes.SELECT_PROFILE);
   }
 
   async function modifyPatient() {
@@ -64,7 +65,8 @@ const PatientViewInfo = ({ navigation }) => {
       sex,
     };
     let id = patientInfo.patientId;
-    editPatient(patient, patientInfo.patientId);
+    setUserData(null);
+    await editPatient(patient, patientInfo.patientId);
     getPatient();
     setPatientInfo({
       patientId: id,
@@ -202,10 +204,16 @@ const PatientViewInfo = ({ navigation }) => {
           />
           <Button title={"Delete Profile"} onPress={() => deletePatient()} />
 
-          <Button title={"Logout"} onPress={() => logout()} />
+          <Button
+            title={"Logout"}
+            onPress={() => {
+              setPatientInfo({});
+              logout();
+            }}
+          />
         </View>
       ) : (
-        <Text>Loading user data...</Text>
+        <ActivityIndicator />
       )}
     </View>
   );

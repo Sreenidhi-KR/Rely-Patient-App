@@ -6,12 +6,11 @@ import SquareTile from "../../components/SquareTile";
 import { AuthContext } from "../../context/AuthContext";
 import { getProfilesForUser } from "../../service/UserService";
 import imagePaths from "../../constants/imagePaths";
-import PatientInfo from "../user/PatientInfo";
+import AddProfile from "../user/AddProfile";
 import routes from "../../navigation/routes";
-import { updateBlock } from "typescript";
 // create a component
-const SelectProfileScreen = ({ navigation }) => {
-  const { setBottomBarVisible, setPatientInfo, logout, isUpdate, setUpdate } =
+const SelectProfileScreen = ({ navigation, route }) => {
+  const { setBottomBarVisible, setPatientInfo, logout } =
     useContext(AuthContext);
   const [profiles, setProfiles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,13 +21,11 @@ const SelectProfileScreen = ({ navigation }) => {
     navigation.addListener("beforeRemove", (e) => {
       e.preventDefault();
     });
-    if (isUpdate == true) {
-      setUpdate(false);
-    }
+
     return () => {
       setBottomBarVisible(true);
     };
-  }, [isUpdate, navigation]);
+  }, [navigation]);
 
   const getProfiles = async () => {
     const patients = await getProfilesForUser();
@@ -80,10 +77,9 @@ const SelectProfileScreen = ({ navigation }) => {
               <SquareTile
                 imgSrc={imagePaths.add_Patient}
                 color={"#ECF9E3"}
-                text="New Patient Profile"
+                text="Add Patient Profile"
                 onPress={() => {
-                  setUpdate(true);
-                  navigation.navigate(routes.ADD_PROFILE);
+                  navigation.navigate(routes.ADD_PROFILE, { setProfiles });
                 }}
               />
             ) : null}

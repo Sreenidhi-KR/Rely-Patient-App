@@ -35,9 +35,10 @@ const DocumentScreen = () => {
 
   useEffect(() => {
     getDocuments();
-  });
+  }, []);
 
   async function getDocuments() {
+    setLoading(true);
     data = await getAllDocumentsList(patientId);
     if (data.length != docs.length) {
       setDocs(data);
@@ -46,8 +47,8 @@ const DocumentScreen = () => {
   }
 
   async function docUpload() {
-    await uploadDocument(patientId);
     setLoading(true);
+    await uploadDocument(patientId);
     await getDocuments();
   }
 
@@ -56,7 +57,6 @@ const DocumentScreen = () => {
     await removeDocument(docId);
     await getDocuments();
   }
-
 
   async function viewDoc(docId) {
     let base64pdf = await viewDocument(docId);
@@ -69,7 +69,7 @@ const DocumentScreen = () => {
     await downloadDocument(item.id);
     await getDocuments();
   }
-  
+
   return (
     <>
       <View style={styles.container}>
