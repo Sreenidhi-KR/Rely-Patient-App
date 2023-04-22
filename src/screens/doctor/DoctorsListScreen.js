@@ -6,22 +6,24 @@ import {
   Text,
   View,
   Image,
+  RefreshControl,
 } from "react-native";
 import { List, Avatar } from "react-native-paper";
 import routes from "../../navigation/routes";
 import { getAllDoctors } from "../../service/DoctorService";
 
-const randomRGB = () => {
-  const red = Math.floor(Math.random() * 256);
-  const green = Math.floor(Math.random() * 256);
-  const blue = Math.floor(Math.random() * 256);
-  return `rgb(${red},${green},${blue})`;
-};
-
 const DoctorListScreen = ({ route, navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const { specialization, followUp } = route.params;
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await getDoctors();
+    setRefreshing(false);
+  }, []);
 
   const getDoctors = async () => {
     try {
@@ -47,6 +49,9 @@ const DoctorListScreen = ({ route, navigation }) => {
           <FlatList
             data={data}
             keyExtractor={({ id }) => id}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             renderItem={({ item }) => (
               <View style={styles.box}>
                 <List.Item

@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
         <SquareTile
           imgSrc={imagePaths.quick_consultation}
           color={"#ECF9E3"}
-          text={"Quick Consulatation"}
+          text={"    Quick Consulatation    "}
           onPress={async () => {
             const doc = await getQuickDoctor();
             if (doc.length == 0) {
@@ -76,6 +76,7 @@ const HomeScreen = ({ navigation }) => {
             }
           }}
         />
+
         <SquareTile
           imgSrc={imagePaths.specialist_consultation}
           color="#F7F8FF"
@@ -99,7 +100,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    flexDirection: "column",
   },
   modalStyle: {
     backgroundColor: "white",
@@ -110,8 +110,7 @@ const styles = StyleSheet.create({
   },
   squareTiles: {
     flexDirection: "row",
-    width: "100%",
-    height: "28%",
+    height: 200,
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "center",
