@@ -15,6 +15,7 @@ import SquareTile from "../../components/SquareTile";
 import imagePaths from "../../constants/imagePaths";
 import routes from "../../navigation/routes";
 import { getQuickDoctor } from "../../service/ConsultationService";
+import { verticalScale } from "../../constants/metrics";
 
 const HomeScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
@@ -38,7 +39,7 @@ const HomeScreen = ({ navigation }) => {
         <SquareTile
           imgSrc={imagePaths.quick_consultation}
           color={"#ECF9E3"}
-          text={"    Quick Consulatation    "}
+          text={"Quick Consulatation"}
           onPress={async () => {
             const doc = await getQuickDoctor();
             navigation.navigate(routes.DOCTOR_WAITING, { doctor: doc });
@@ -46,7 +47,6 @@ const HomeScreen = ({ navigation }) => {
               console.log("No Doctor is available currently");
           }}
         />
-
         <SquareTile
           imgSrc={imagePaths.specialist_consultation}
           color="#F7F8FF"
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   squareTiles: {
     flexDirection: "row",
-    height: 200,
+    height: verticalScale(200),
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "center",
