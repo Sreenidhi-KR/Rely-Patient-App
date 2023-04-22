@@ -8,6 +8,7 @@ import { getProfilesForUser } from "../../service/UserService";
 import imagePaths from "../../constants/imagePaths";
 import AddProfile from "../user/AddProfile";
 import routes from "../../navigation/routes";
+import { verticalScale } from "../../constants/metrics";
 // create a component
 const SelectProfileScreen = ({ navigation, route }) => {
   const { setBottomBarVisible, setPatientInfo, logout } =
@@ -90,7 +91,6 @@ const SelectProfileScreen = ({ navigation, route }) => {
   );
 };
 
-// define your styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -99,9 +99,9 @@ const styles = StyleSheet.create({
   squareTiles: {
     margin: 10,
     flexDirection: "row",
-    height: 175,
+    height: verticalScale(180),
     flexWrap: "wrap",
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "flex-start",
   },
 });

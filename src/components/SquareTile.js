@@ -3,7 +3,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 const SquareTile = ({ imgSrc, imgAlt, color, text, onPress }) => {
   return (
-    <TouchableOpacity onPress={() => onPress()}>
+    <TouchableOpacity
+      style={{ width: "100%", flex: 1, flexBasis: "50%", maxWidth: "50%" }}
+      onPress={() => onPress()}
+    >
       <View
         style={{
           padding: 10,
@@ -24,7 +27,7 @@ const SquareTile = ({ imgSrc, imgAlt, color, text, onPress }) => {
           <Text style={{ fontSize: 50 }}>{imgAlt}</Text>
         )}
 
-        <View style={{ maxWidth: 200, alignItems: "center", minWidth: 150 }}>
+        <View style={{ alignItems: "center" }}>
           <Text style={{ fontSize: 12 }}>{text}</Text>
         </View>
       </View>

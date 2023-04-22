@@ -11,6 +11,7 @@ import {
 import { List, Avatar } from "react-native-paper";
 import routes from "../../navigation/routes";
 import { getAllDoctors } from "../../service/DoctorService";
+import { verticalScale } from "../../constants/metrics";
 
 const DoctorListScreen = ({ route, navigation }) => {
   const [isLoading, setLoading] = useState(true);
@@ -107,9 +108,11 @@ const styles = StyleSheet.create({
   },
   wrapper: {},
   box: {
-    height: 100,
+    height: verticalScale(100),
     padding: 10,
     marginHorizontal: 20,
+
+    justifyContent: "center",
     marginVertical: 15,
     borderRadius: 10,
     backgroundColor: "#F7F8FF",

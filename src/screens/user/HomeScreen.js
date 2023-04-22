@@ -19,6 +19,7 @@ import imagePaths from "../../constants/imagePaths";
 import routes from "../../navigation/routes";
 import { getFollowUp, getQuickDoctor } from "../../service/ConsultationService";
 import { AuthContext } from "../../context/AuthContext";
+import { verticalScale } from "../../constants/metrics";
 
 const HomeScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
@@ -58,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
         <SquareTile
           imgSrc={imagePaths.quick_consultation}
           color={"#ECF9E3"}
-          text={"    Quick Consulatation    "}
+          text={"Quick Consulatation"}
           onPress={async () => {
             const doc = await getQuickDoctor();
             if (doc.length == 0) {
@@ -68,7 +69,6 @@ const HomeScreen = ({ navigation }) => {
             }
           }}
         />
-
         <SquareTile
           imgSrc={imagePaths.specialist_consultation}
           color="#F7F8FF"
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   squareTiles: {
     flexDirection: "row",
-    height: 200,
+    height: verticalScale(200),
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "center",
