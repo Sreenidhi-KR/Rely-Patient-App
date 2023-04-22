@@ -4,7 +4,8 @@ import { Buffer } from "buffer";
 import RNFetchBlob from "rn-fetch-blob";
 const { fs } = RNFetchBlob;
 import { BASE_URL, getConfig, getToken } from "../config";
-
+import Pdf from "react-native-pdf";
+import View from "react-native-paper";
 const urlBase = `${BASE_URL}/api/v1`;
 
 //returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
@@ -40,10 +41,15 @@ async function docsForConsultation(consultationId, patientId) {
     );
     let inConsultation = response.data;
     let allDocs = await getAllDocumentsList(patientId);
+    let allPrescriptions = await getAllPrescriptionsList(patientId);
     let canBeAdded = allDocs.filter(
       (obj2) => !inConsultation.some((obj1) => obj1.id === obj2.id)
     );
-    return [inConsultation, canBeAdded];
+    let canBeAdded2 = allPrescriptions.filter(
+      (obj2) => !inConsultation.some((obj1) => obj1.id === obj2.id)
+    );
+
+    return [inConsultation, canBeAdded, canBeAdded2];
   } catch (err) {
     console.log(err);
   }
@@ -90,6 +96,25 @@ async function downloadDocument(documentId) {
   }
 }
 
+async function viewDocument(documentId) {
+  const config = {
+    method: "GET",
+    "Content-Type": "multipart/form-data",
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${await getToken()}`,
+      Accept: "application/json",
+    },
+  };
+
+  let response = await axios.get(
+    `${urlBase}/document/download/${documentId}`,
+    config
+  );
+  const pdfstr = response.data;
+  return pdfstr;
+}
+
 async function removeDocument(docId) {
   try {
     let response = await axios.delete(
@@ -107,7 +132,20 @@ async function getAllDocumentsList(patientId) {
       `${urlBase}/document/getAll/${patientId}`,
       await getConfig()
     );
+    console.log("patient id is:", patientId);
+    console.log("documents fetched are:", response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
 
+async function getAllPrescriptionsList(patientId) {
+  try {
+    let response = await axios.get(
+      `${urlBase}/document/getAllPrescriptions/${patientId}`,
+      await getConfig()
+    );
     return response.data;
   } catch (err) {
     console.log(err);
@@ -154,4 +192,5 @@ export {
   docsForConsultation,
   addDocToConsultation,
   removeDocFromConsultation,
+  viewDocument,
 };

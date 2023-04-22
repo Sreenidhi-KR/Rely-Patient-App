@@ -10,18 +10,18 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
   const { doctor, followUp } = route.params;
   console.log(doctor);
   const imageUrl = doctor.photo_url;
-  const[currentlength,setCurrentLength] = useState(10);
-  const isFull = ((currentlength+1) > doctor.limit);
+  const [currentlength, setCurrentLength] = useState(10);
+  const isFull = currentlength + 1 > doctor.limit;
 
   const getQueueLength = async () => {
-    var size= await getAllPatientsFromDqueue(doctor.id)
-    var length=size.length;
+    var size = await getAllPatientsFromDqueue(doctor.id);
+    var length = size.length;
     setCurrentLength(length);
-   };
+  };
 
-   useEffect(() => {
-      getQueueLength()
-    },[]);
+  useEffect(() => {
+    getQueueLength();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -52,7 +52,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
               style={styles.textdec}
               compact
             >
-              Rating: {(doctor.rating).toFixed(1)}/5
+              Rating: {doctor.rating.toFixed(1)}/5
             </Chip>
           </View>
         </View>
@@ -101,42 +101,30 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
         </Text>
       </View>
       {doctor.online_status ? (
-      isFull ? (
-        <FAB
-          mode="flat"
-          label="Doctor Full"
-          size="small"
-          color="black"
-          style={styles.fab_offline}
-          onPress={() => {}}
-        />
-      ):(
-        // <Button
-        //   style={styles.button}
-        //   mode="contained"
-        //   onPress={() => {
-        //     console.log(doctor.id);
-        //     navigation.navigate(routes.DOCTOR_WAITING, {
-        //       doctor: doctor,
-        //     });
-        //   }}
-        // >
-        //   Join Consultation
-        // </Button>
-        <FAB
-          mode="flat"
-          label="Join Consultation"
-          size="small"
-          color="white"
-          style={styles.fab}
-          onPress={() => {
-            navigation.navigate(routes.DOCTOR_WAITING, {
-              doctor: doctor,
-              followUp,
-            });
-          }}
-        />
-      )
+        isFull ? (
+          <FAB
+            mode="flat"
+            label="Doctor Queue Is Full"
+            size="small"
+            color="black"
+            style={styles.fab_offline}
+            onPress={() => {}}
+          />
+        ) : (
+          <FAB
+            mode="flat"
+            label="Join Consultation"
+            size="small"
+            color="white"
+            style={styles.fab}
+            onPress={() => {
+              navigation.navigate(routes.DOCTOR_WAITING, {
+                doctor: doctor,
+                followUp,
+              });
+            }}
+          />
+        )
       ) : (
         <FAB
           mode="flat"
@@ -169,7 +157,6 @@ const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     margin: 16,
-    backgroundColor: "#cfa1f7",
     right: 0,
     bottom: 0,
   },
@@ -178,7 +165,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     margin: 10,
-    backgroundColor: "#F5ECFF",
+    backgroundColor: "#F7F8FF",
     borderRadius: 10,
     padding: 20,
   },
@@ -195,7 +182,7 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   textdec: {
-    backgroundColor: "#cfa1f7",
+    backgroundColor: "#4a148c",
     fontSize: 14,
     color: "black",
     marginEnd: 15,

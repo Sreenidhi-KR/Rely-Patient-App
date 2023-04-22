@@ -102,19 +102,24 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={{ fontSize: 24, fontStyle: "bold", marginBottom: 10 }}>
+        Dr.{doctor.fname} {doctor.lname}
+      </Text>
       <View style={styles.squareTiles}>
         {isLoading ? (
           <ActivityIndicator />
         ) : index == -1 ? null : (
-          <SquareTile
-            imgSrc={null}
-            imgAlt={index}
-            color={"#F5EDF8"}
-            text={"Position in Queue"}
-            onPress={() => {
-              refreshPatientIndex();
-            }}
-          />
+          <>
+            <SquareTile
+              imgSrc={null}
+              imgAlt={index}
+              color={"#F5EDF8"}
+              text={"Position in Queue"}
+              onPress={() => {
+                refreshPatientIndex();
+              }}
+            />
+          </>
         )}
       </View>
       {index == 1 && accept ? (
@@ -122,7 +127,7 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
           <CountdownCircleTimer
             size={50}
             isPlaying
-            duration={20}
+            duration={100}
             colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
             colorsTime={[7, 5, 2, 0]}
             onComplete={async () => {

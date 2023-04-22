@@ -16,17 +16,14 @@ import { downloadDocument } from "../../service/DocumentService";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 
-// create a component
 const ConsultationScreen = ({ navigation }) => {
-  //const [isLoading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = React.useState(true);
   const [data, setData] = useState([]);
-  const { setBottomBarVisible, patientInfo } = useContext(AuthContext);
+  const { patientInfo } = useContext(AuthContext);
   const patientId = patientInfo.patientId;
 
   const getDateTime = (starttime) => {
     const dateObj = new Date(starttime);
-    // console.log("dateObj", dateObj);
 
     const options = {
       year: "numeric",
@@ -37,14 +34,12 @@ const ConsultationScreen = ({ navigation }) => {
     };
 
     const dateString = dateObj.toLocaleString("en-IN", options);
-    // console.log("dateString", dateString);
     const d = dateString.split(/[' ']/);
     const monthname = d[1];
     const year = d[2];
     const t = d[3].split(/[':']/);
     const temp = t[0] == 0 || t[0] == 12 ? 12 : t[0] % 12;
     const time = temp + ":" + t[1];
-    // console.log("time: ",t);
     const ap = t[0] != 0 && t[0] > 11 ? "PM" : "AM";
 
     const day = dateObj.getDate();
@@ -52,7 +47,6 @@ const ConsultationScreen = ({ navigation }) => {
     const formattedDay = `${day}${ordinalIndicator}`;
 
     const formattedDate1 = `${formattedDay} ${monthname} | ${time} ${ap}`;
-    // console.log(formattedDate1);
     const formattedDate2 = `${formattedDate1}-${year}-${time}`;
 
     function getOrdinalIndicator(day) {
@@ -91,8 +85,6 @@ const ConsultationScreen = ({ navigation }) => {
       console.log("REEEEF");
       getPreviousConsultations(patientId);
     });
-
-    // Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, []);
 
@@ -170,17 +162,6 @@ const ConsultationScreen = ({ navigation }) => {
                                 ...styles.myChip,
                                 backgroundColor: "#E8DDF8",
                               }}
-                              // style={{
-                              //   width: "auto",
-                              //   overflow: "visible",
-                              //   maxWidth: 150,
-                              //   borderRadius: 10,
-                              //   borderColor: "#564264",
-                              //   borderWidth: 1,
-                              //   padding: 8,
-                              //   backgroundColor: "#E8DDF8",
-                              //   margin: 3,
-                              // }}
                             >
                               <Text
                                 numberOfLines={1}
@@ -216,46 +197,18 @@ const ConsultationScreen = ({ navigation }) => {
                         </TouchableOpacity>
                       ) : null}
                     </View>
-                    {/* <Divider
-                    style={{ marginVertical: 10, backgroundColor: "#564264" }}
-                  /> */}
-                    <Text
-                      style={{
-                        color: "gray",
-                        fontSize: 11,
-                        fontWeight: "bold",
-                        marginHorizontal: 15,
-                        marginTop: 10,
+                    <Button
+                      onPress={() => {
+                        navigation.navigate(routes.DOCTOR_LIST, {
+                          followUp: item.consultId,
+                        });
                       }}
+                      style={{ marginTop: 10, borderRadius: 10 }}
+                      mode="outlined"
+                      textColor="grey"
                     >
-                      Follow Up
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                      }}
-                    >
-                      <Button
-                        style={{ marginTop: 10 }}
-                        mode="outlined"
-                        textColor="grey"
-                      >
-                        Same Doctor
-                      </Button>
-                      <Button
-                        onPress={() => {
-                          navigation.navigate(routes.DOCTOR_LIST, {
-                            followUp: item.consultId,
-                          });
-                        }}
-                        style={{ marginTop: 10 }}
-                        mode="outlined"
-                        textColor="grey"
-                      >
-                        Different Doctor
-                      </Button>
-                    </View>
+                      Follow Up On This Consultation
+                    </Button>
                   </>
                 </List.Accordion>
               </View>

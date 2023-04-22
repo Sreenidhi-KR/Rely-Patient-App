@@ -8,4 +8,6 @@ export default {
   logobg: require(`../../assets/logo-bg.png`),
   home: require(`../../assets/home.png`),
   folder: require(`../../assets/folder.png`),
+  add_Document: require("../../assets/folder.png"),
+  add_Patient: require("../../assets/add_Patient.png"),
 };

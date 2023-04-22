@@ -93,24 +93,24 @@ const VideoCall = ({ navigation, route }) => {
       }
     }, 2000);
 
-    const subscription = AppState.addEventListener("change", (nextAppState) => {
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === "active"
-      ) {
-        console.log("App has come to the foreground!");
-      }
+    // const subscription = AppState.addEventListener("change", (nextAppState) => {
+    //   if (
+    //     appState.current.match(/inactive|background/) &&
+    //     nextAppState === "active"
+    //   ) {
+    //     console.log("App has come to the foreground!");
+    //   }
 
-      appState.current = nextAppState;
-      setAppStateVisible(appState.current);
-      console.log("AppState", appState.current);
-    });
+    //   appState.current = nextAppState;
+    //   setAppStateVisible(appState.current);
+    //   console.log("AppState", appState.current);
+    // });
 
     return () => {
       removePatientFromQueue(doctor.id, patientId);
       setBottomBarVisible(true);
       unsubscribe();
-      subscription.remove();
+      //subscription.remove();
       console.log("Interval Cleared");
       clearInterval(interval);
     };
