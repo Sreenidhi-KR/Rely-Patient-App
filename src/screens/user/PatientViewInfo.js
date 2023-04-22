@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, TextInput, Button } from "react-native";
+// import { View, Text, TextInput, Button } from "react-native";
+import { View, Button } from "react-native";
+import { Text, TextInput } from "react-native-paper";
 import {
   getPatients,
   removePatient,
