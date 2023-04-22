@@ -1,14 +1,17 @@
 //import libraries
 import React, { Component, useState, useEffect, useContext } from "react";
 import {
-  SafeAreaView,
   View,
   Text,
   StyleSheet,
-  Image,
-  TouchableOpacity,
+  Alert,
+  FlatList,
 } from "react-native";
-import { Modal, Portal, List, Avatar, Snackbar } from "react-native-paper";
+import {
+  Modal,
+  Portal,
+  List,
+} from "react-native-paper";
 import Header from "../../components/Header";
 import SpecializationsModal from "../../components/SpecializationsModal";
 import SquareTile from "../../components/SquareTile";
@@ -19,17 +22,25 @@ import { AuthContext } from "../../context/AuthContext";
 
 const HomeScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackBarText, setSnackBarText] = useState("");
-  const { logout, patientInfo, setPatientInfo } = useContext(AuthContext);
+  const [data, setData] = useState(null);
+  const {  patientInfo,  } = useContext(AuthContext);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
-  const getFollowUp = async() => {
-    var data = await getFollowUp(patientInfo.id);
-    console.log(data);
+  const getFollow = async () => {
+    const res = await getFollowUp(patientInfo.patientId);
+    setData(res);
   };
+  // getFollowUp();
+  const createAlert = () =>
+    Alert.alert("No Doctor is available currently", "Please try later", [
+      { text: "OK" },
+    ]);
+
+  useEffect(() => {
+    getFollow();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -51,26 +62,7 @@ const HomeScreen = ({ navigation }) => {
           onPress={async () => {
             const doc = await getQuickDoctor();
             if (doc.length == 0) {
-              console.log("No Doctor is available currently");
-              setSnackBarText("No Doctor is available currently");
-              setShowSnackbar(true);
-              <Snackbar
-                visible={showSnackbar}
-                duration={4000}
-                style={{
-                  backgroundColor: "#5e17eb",
-                }}
-                wrapperStyle={{}}
-                onDismiss={() => {
-                  setShowSnackbar(false);
-                  console.log("dismissed");
-                }}
-                action={{}}
-                onIconPress={() => {}}
-              >
-                {snackBarText}
-              </Snackbar>;
-              navigation.navigate(routes.HOME);
+              createAlert();
             } else {
               navigation.navigate(routes.DOCTOR_WAITING, { doctor: doc });
             }
@@ -85,12 +77,32 @@ const HomeScreen = ({ navigation }) => {
         />
       </View>
       <View>
-        <></>
         <List.Section
-            title="My Previous Consultations"
-            titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
-          ></List.Section>
-       
+          title="My FollowUp Consultations"
+          titleStyle={{
+            fontWeight: "bold",
+            fontSize: 25,
+            color: "gray",
+            marginTop: 25,
+            marginLeft: 10,
+          }}
+        />
+          <FlatList
+            scrollEnabled
+            showsVerticalScrollIndicator
+            data={data}
+            renderItem={({ item }) => (
+              <View style={styles.card}>
+                <Text style={{ padding: 15, flex: 1 }}>
+                  Dr. {item.fname} {item.lname}
+                </Text>
+                <Text style={{ padding: 15, flex: 1 }}>
+                  {item && item.followUpDate.split("T")[0]}
+                </Text>
+              </View>
+            )}
+            keyExtractor={(item) => item.consultationId}
+          />
       </View>
     </View>
   );
@@ -117,6 +129,14 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 12,
+  },
+  card: {
+    backgroundColor: "#F7F8FF",
+    margin: 5,
+    borderRadius: 10,
+    marginHorizontal: 20,
+    flex: 1,
+    flexDirection: "row",
   },
 });
 

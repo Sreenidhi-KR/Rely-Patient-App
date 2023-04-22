@@ -8,7 +8,6 @@ import { getAllPatientsFromDqueue } from "../../service/DoctorService";
 // create a component
 const DoctorDetailsScreen = ({ navigation, route }) => {
   const { doctor, followUp } = route.params;
-  console.log(doctor);
   const imageUrl = doctor.photo_url;
   const [currentlength, setCurrentLength] = useState(10);
   const isFull = currentlength + 1 > doctor.limit;
@@ -18,6 +17,14 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
     var length = size.length;
     setCurrentLength(length);
   };
+
+  //doc = getDoctorById
+  //check doc.status 
+  //if online 
+  //check queue length
+  //doctor queue waiting screen
+  //if not online 
+  //alert doc offline
 
   useEffect(() => {
     getQueueLength();
@@ -118,6 +125,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
             color="white"
             style={styles.fab}
             onPress={() => {
+              //check if doc online here
               navigation.navigate(routes.DOCTOR_WAITING, {
                 doctor: doctor,
                 followUp,
