@@ -1,5 +1,5 @@
-//import liraries
-import React, { Component } from "react";
+//import libraries
+import React, { Component, useState, useEffect, useContext } from "react";
 import {
   SafeAreaView,
   View,
@@ -8,19 +8,28 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Modal, Portal, List, Avatar } from "react-native-paper";
+import { Modal, Portal, List, Avatar, Snackbar } from "react-native-paper";
 import Header from "../../components/Header";
 import SpecializationsModal from "../../components/SpecializationsModal";
 import SquareTile from "../../components/SquareTile";
 import imagePaths from "../../constants/imagePaths";
 import routes from "../../navigation/routes";
-import { getQuickDoctor } from "../../service/ConsultationService";
+import { getFollowUp, getQuickDoctor } from "../../service/ConsultationService";
+import { AuthContext } from "../../context/AuthContext";
 
 const HomeScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackBarText, setSnackBarText] = useState("");
+  const { logout, patientInfo, setPatientInfo } = useContext(AuthContext);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+
+  const getFollowUp = async() => {
+    var data = await getFollowUp(patientInfo.id);
+    console.log(data);
+  };
 
   return (
     <View style={styles.container}>
@@ -40,12 +49,32 @@ const HomeScreen = ({ navigation }) => {
           color={"#ECF9E3"}
           text={"Quick Consulatation"}
           onPress={async () => {
-            const doc = await getQuickDoctor(); 
-            navigation.navigate(routes.DOCTOR_WAITING, {doctor: doc});
-          if(doc==undefined)
-             console.log("No Doctor is available currently")
-        }
-        }
+            const doc = await getQuickDoctor();
+            if (doc.length == 0) {
+              console.log("No Doctor is available currently");
+              setSnackBarText("No Doctor is available currently");
+              setShowSnackbar(true);
+              <Snackbar
+                visible={showSnackbar}
+                duration={4000}
+                style={{
+                  backgroundColor: "#5e17eb",
+                }}
+                wrapperStyle={{}}
+                onDismiss={() => {
+                  setShowSnackbar(false);
+                  console.log("dismissed");
+                }}
+                action={{}}
+                onIconPress={() => {}}
+              >
+                {snackBarText}
+              </Snackbar>;
+              navigation.navigate(routes.HOME);
+            } else {
+              navigation.navigate(routes.DOCTOR_WAITING, { doctor: doc });
+            }
+          }}
         />
         <SquareTile
           imgSrc={imagePaths.specialist_consultation}
@@ -53,6 +82,14 @@ const HomeScreen = ({ navigation }) => {
           text={"Specialist Consulatation"}
           onPress={showModal}
         />
+      </View>
+      <View>
+        <></>
+        <List.Section
+            title="My Previous Consultations"
+            titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
+          ></List.Section>
+       
       </View>
     </View>
   );
