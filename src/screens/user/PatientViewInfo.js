@@ -82,119 +82,78 @@ const PatientViewInfo = ({ navigation }) => {
         <View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ flex: 1 }}>First Name:</Text>
-            {editing ? (
-              <TextInput
-                style={{ flex: 2 }}
-                value={firstName}
-                onChangeText={setFirstName}
-              />
-            ) : (
-              <Text style={{ flex: 2 }}>{userData.fname}</Text>
-            )}
+
+            <TextInput
+              style={{ flex: 2 }}
+              value={firstName}
+              onChangeText={setFirstName}
+              editable={editing ? true : false}
+            />
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ flex: 1 }}>Last Name:</Text>
-            {editing ? (
-              <TextInput
-                style={{ flex: 2 }}
-                value={lastName}
-                onChangeText={setLastName}
-              />
-            ) : (
-              <Text style={{ flex: 2 }}>{userData.lname}</Text>
-            )}
+            <TextInput
+              style={{ flex: 2 }}
+              value={lastName}
+              onChangeText={setLastName}
+              editable={editing ? true : false}
+            />
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ flex: 1 }}>Sex:</Text>
-            {editing ? (
-              <TextInput
-                style={{ flex: 2 }}
-                value={sex}
-                onChangeText={setSex}
-              />
-            ) : (
-              <Text style={{ flex: 2 }}>{userData.sex}</Text>
-            )}
+            <TextInput style={{ flex: 2 }} value={sex} onChangeText={setSex} />
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ flex: 1 }}>Blood Group:</Text>
-            {editing ? (
-              <TextInput
-                style={{ flex: 2 }}
-                value={bloodGroup}
-                onChangeText={setBloodGroup}
-              />
-            ) : (
-              <Text style={{ flex: 2 }}>{userData.blood_group}</Text>
-            )}
+            <TextInput
+              style={{ flex: 2 }}
+              value={bloodGroup}
+              onChangeText={setBloodGroup}
+            />
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ flex: 1 }}>City:</Text>
-            {editing ? (
-              <TextInput
-                style={{ flex: 2 }}
-                value={city}
-                onChangeText={setCity}
-              />
-            ) : (
-              <Text style={{ flex: 2 }}>{userData.city}</Text>
-            )}
+            <TextInput
+              style={{ flex: 2 }}
+              value={city}
+              onChangeText={setCity}
+            />
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ flex: 1 }}>State:</Text>
-            {editing ? (
-              <TextInput
-                style={{ flex: 2 }}
-                value={state}
-                onChangeText={setState}
-              />
-            ) : (
-              <Text style={{ flex: 2 }}>{userData.state}</Text>
-            )}
+            <TextInput
+              style={{ flex: 2 }}
+              value={state}
+              onChangeText={setState}
+            />
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ flex: 1 }}>ABDM No:</Text>
-            {editing ? (
-              <TextInput
-                style={{ flex: 2 }}
-                value={abdmNo}
-                onChangeText={setAbdmNo}
-              />
-            ) : (
-              <Text style={{ flex: 2 }}>{userData.abdm_no}</Text>
-            )}
+            <TextInput
+              style={{ flex: 2 }}
+              value={abdmNo}
+              onChangeText={setAbdmNo}
+            />
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ flex: 1 }}>Relationship:</Text>
-            {editing ? (
-              <TextInput
-                style={{ flex: 2 }}
-                value={relationship}
-                onChangeText={setRelationship}
-              />
-            ) : (
-              <Text style={{ flex: 2 }}>{userData.relationship}</Text>
-            )}
+            <TextInput
+              style={{ flex: 2 }}
+              value={relationship}
+              onChangeText={setRelationship}
+            />
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ flex: 1 }}>Date of Birth</Text>
-            {editing ? (
-              <TextInput
-                style={{ flex: 2 }}
-                value={dob}
-                onChangeText={setDob}
-              />
-            ) : (
-              <Text style={{ flex: 2 }}>{userData.dob.slice(0, 10)}</Text>
-            )}
+            <TextInput style={{ flex: 2 }} value={dob} onChangeText={setDob} />
           </View>
 
           <Button

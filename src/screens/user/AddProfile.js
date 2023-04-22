@@ -33,6 +33,7 @@ const AddProfile = ({ navigation, route }) => {
     const userId = userInfo.id;
     console.log(userId);
     let dobString = dob.toISOString().split("T")[0];
+    console.log(dobString);
     if (
       fname == "" ||
       lname == "" ||
@@ -42,20 +43,6 @@ const AddProfile = ({ navigation, route }) => {
       abdmNo == "" ||
       relationship == ""
     ) {
-      let patient = {
-        fname: fname,
-        lname: lname,
-        sex: sex,
-        blood_group: bloodGroup,
-        city: city,
-        state: state,
-        abdm_no: abdmNo,
-        photo_url: "None",
-        relationship: relationship,
-        // age: null,
-        dob: dob,
-      };
-      console.log(patient);
       showAlert();
     } else {
       let patient = {
@@ -69,7 +56,7 @@ const AddProfile = ({ navigation, route }) => {
         photo_url: "None",
         relationship: relationship,
         // age: null,
-        dob: dob,
+        dob: dobString,
       };
       console.log(patient);
       addPatient(patient, userId);
@@ -107,7 +94,7 @@ const AddProfile = ({ navigation, route }) => {
       />
       <Text style={styles.label}>Blood Group</Text>
       <Picker
-        selectedValue={sex}
+        selectedValue={bloodGroup}
         style={styles.input}
         onValueChange={(itemValue) => setBloodGroup(itemValue)}
       >
