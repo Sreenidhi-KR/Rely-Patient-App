@@ -1,22 +1,28 @@
 //import liraries
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { Button, Chip, FAB } from "react-native-paper";
 import routes from "../../navigation/routes";
-import { getAllPatientsFromDqueue } from "../../service/DoctorService";
+import { getAllPatientsFromDqueue, getDoctorById } from "../../service/DoctorService";
 
 // create a component
 const DoctorDetailsScreen = ({ navigation, route }) => {
   const { doctor, followUp } = route.params;
-  const imageUrl = doctor.photo_url;
+  const [currDoctor , setCurrDoctor]= useState(doctor)
+  const imageUrl = currDoctor.photo_url;
   const [currentlength, setCurrentLength] = useState(10);
-  const isFull = currentlength + 1 > doctor.limit;
+  const isFull = currentlength + 1 > currDoctor.limit;
 
   const getQueueLength = async () => {
-    var size = await getAllPatientsFromDqueue(doctor.id);
-    var length = size.length;
+    const size = await getAllPatientsFromDqueue(currDoctor.id);
+    const length = size.length;
     setCurrentLength(length);
   };
+
+  const getDoc = async (docId) => {
+   const doc = await getDoctorById(docId);
+   return doc
+  }
 
   //doc = getDoctorById
   //check doc.status 
@@ -39,12 +45,12 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
         />
         <View style={styles.details}>
           <Text style={{ fontSize: 24, fontStyle: "bold" }}>
-            Dr.{doctor.fname} {doctor.lname}
+            Dr.{currDoctor.fname} {currDoctor.lname}
           </Text>
-          <Text style={styles.text}>{doctor.qualification}</Text>
-          <Text style={styles.text}>{doctor.email}</Text>
+          <Text style={styles.text}>{currDoctor.qualification}</Text>
+          <Text style={styles.text}>{currDoctor.email}</Text>
           <Text style={styles.text}>
-            Sex: {doctor.sex} | Age: {doctor.age}
+            Sex: {currDoctor.sex} | Age: {currDoctor.age}
           </Text>
           <View style={styles.detail}>
             <Chip
@@ -52,14 +58,14 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
               style={styles.textdec}
               compact
             >
-              {doctor.specialization}
+              {currDoctor.specialization}
             </Chip>
             <Chip
               textStyle={{ color: "white", fontSize: 13 }}
               style={styles.textdec}
               compact
             >
-              Rating: {doctor.rating.toFixed(1)}/5
+              Rating: {currDoctor.rating.toFixed(1)}/5
             </Chip>
           </View>
         </View>
@@ -74,7 +80,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
             textAlign: "justify",
           }}
         >
-          {doctor.description}
+          {currDoctor.description}
         </Text>
       </View>
       <View style={styles.info}>
@@ -86,7 +92,7 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
             textAlign: "justify",
           }}
         >
-          {doctor.clinic_address}
+          {currDoctor.clinic_address}
           {"\n"}
         </Text>
         <Text style={{ fontSize: 18 }}>Location</Text>
@@ -98,16 +104,16 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
             color: "grey",
           }}
         >
-          {doctor.city}, {doctor.state}
+          {currDoctor.city}, {currDoctor.state}
           {"\n"}
         </Text>
         <Text style={{ fontSize: 18 }}>Timings</Text>
         <Text style={{ fontSize: 15, color: "grey" }}>
-          {doctor.available_timings}
+          {currDoctor.available_timings}
           {"\n"}
         </Text>
       </View>
-      {doctor.online_status ? (
+      {currDoctor.online_status ? (
         isFull ? (
           <FAB
             mode="flat"
@@ -124,12 +130,20 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
             size="small"
             color="white"
             style={styles.fab}
-            onPress={() => {
-              //check if doc online here
-              navigation.navigate(routes.DOCTOR_WAITING, {
-                doctor: doctor,
-                followUp,
-              });
+            onPress={async () => {
+              const doc = await getDoc(currDoctor.id);
+              getQueueLength();
+              if (doc.online_status && ((currentlength+1)<=doc.limit)) {
+                navigation.navigate(routes.DOCTOR_WAITING, {
+                  doctor: currDoctor,
+                  followUp,
+                });
+              } else {
+                  Alert.alert("Doctor went offline or queue is full","" ,[
+                    { text: "OK" },
+                  ])
+                  setCurrDoctor(doc)
+              }
             }}
           />
         )
