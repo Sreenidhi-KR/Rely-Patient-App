@@ -35,14 +35,13 @@ const DocumentScreen = () => {
 
   useEffect(() => {
     getDocuments();
-  }, []);
+  }, [patientId]);
 
   async function getDocuments() {
     setLoading(true);
-    data = await getAllDocumentsList(patientId);
-    if (data.length != docs.length) {
-      setDocs(data);
-    }
+    let id = patientInfo.patientId;
+    data = await getAllDocumentsList(id);
+    setDocs(data);
     setLoading(false);
   }
 
