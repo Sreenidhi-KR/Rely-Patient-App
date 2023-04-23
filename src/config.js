@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const BASE_URL = "https://a611-103-156-19-229.ngrok-free.app";
+const BASE_URL = "https://ae4e-103-156-19-229.ngrok-free.app";
 
 const getToken = async () => {
   let userInfo = await AsyncStorage.getItem("userInfo");

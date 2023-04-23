@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginHorizontal: 5,
     paddingBottom: 50,
+    paddingTop: 25,
   },
   container: {
     flex: 1,
