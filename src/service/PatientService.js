@@ -6,13 +6,11 @@ import Toast from "react-native-simple-toast";
 //Patient is the js object containing all the fields required by the patient
 async function addPatient(patient, userId) {
   try {
-    console.log(`${urlBase}/addPatient/${userId}`);
     let response = await axios.post(
       `${urlBase}/addPatient/${userId}`,
       patient,
       await getConfig()
     );
-    console.log("patient added sucessfully");
   } catch (err) {
     console.log(err);
     Toast.show("Unable to add patient", 10);
@@ -52,7 +50,6 @@ async function removePatient(patientId) {
       `${urlBase}/deletePatient/${patientId}`,
       await getConfig()
     );
-    console.log("patient removed sucessfully");
   } catch (err) {
     console.log(err);
     Toast.show("Unable to remove patient", 10);

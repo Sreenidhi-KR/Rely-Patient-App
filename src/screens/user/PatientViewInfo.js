@@ -66,7 +66,6 @@ const PatientViewInfo = ({ navigation }) => {
   async function deletePatient() {
     await removePatient(patientInfo.patientId);
     setPatientInfo({});
-    navigation.replace(routes.SELECT_PROFILE);
   }
 
   async function modifyPatient() {

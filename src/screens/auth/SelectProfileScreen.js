@@ -1,4 +1,3 @@
-//import liraries
 import React, { Component, useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { ActivityIndicator, Button, List } from "react-native-paper";
@@ -6,12 +5,12 @@ import SquareTile from "../../components/SquareTile";
 import { AuthContext } from "../../context/AuthContext";
 import { getProfilesForUser } from "../../service/UserService";
 import imagePaths from "../../constants/imagePaths";
-import AddProfile from "../user/AddProfile";
+import AddProfile from "./AddProfile";
 import routes from "../../navigation/routes";
 import { verticalScale } from "../../constants/metrics";
-// create a component
+
 const SelectProfileScreen = ({ navigation, route }) => {
-  const { setBottomBarVisible, setPatientInfo, logout } =
+  const { setBottomBarVisible, setPatientInfo, logout, patientInfo } =
     useContext(AuthContext);
   const [profiles, setProfiles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,6 +18,8 @@ const SelectProfileScreen = ({ navigation, route }) => {
   useEffect(() => {
     getProfiles();
     setBottomBarVisible(false);
+    console.log("patient", patientInfo);
+    setPatientInfo({});
     navigation.addListener("beforeRemove", (e) => {
       e.preventDefault();
     });
@@ -48,20 +49,18 @@ const SelectProfileScreen = ({ navigation, route }) => {
             {profiles ? (
               profiles.map((patient) => {
                 return (
-                  
-                    <SquareTile
-                      key={patient.id}
-                      imgSrc={imagePaths.avatar_man}
-                      color={"#ECF9E3"}
-                      text={patient.fname}
-                      onPress={() => {
-                        setPatientInfo({
-                          patientId: patient.id,
-                          patientName: patient.fname,
-                        });
-                      }}
-                    />
-                  
+                  <SquareTile
+                    key={patient.id}
+                    imgSrc={imagePaths.avatar_man}
+                    color={"#ECF9E3"}
+                    text={patient.fname}
+                    onPress={() => {
+                      setPatientInfo({
+                        patientId: patient.id,
+                        patientName: patient.fname,
+                      });
+                    }}
+                  />
                 );
               })
             ) : (
@@ -106,5 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-//make this component available to the app
 export default SelectProfileScreen;

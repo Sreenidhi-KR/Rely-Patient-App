@@ -33,25 +33,8 @@ const DocumentStack = createNativeStackNavigator();
 const ConsultationStack = createNativeStackNavigator();
 
 function HomeStackRenderer() {
-  const { patientInfo } = useContext(AuthContext);
   return (
     <HomeStack.Navigator>
-      {patientInfo == null || patientInfo.patientId == undefined ? (
-        <>
-          <HomeStack.Screen
-            name={routes.SELECT_PROFILE}
-            component={SelectProfileScreen}
-            options={{ headerShown: false }}
-          />
-
-          <HomeStack.Screen
-            name={routes.ADD_PROFILE}
-            component={AddProfile}
-            options={{ headerShown: false }}
-          />
-        </>
-      ) : null}
-
       <HomeStack.Screen
         name={routes.HOME}
         component={HomeScreen}
@@ -113,7 +96,8 @@ function ConsultationStackRenderer() {
 }
 
 function Router() {
-  const { userInfo, bottomBarVisible, splashLoading } = useContext(AuthContext);
+  const { userInfo, bottomBarVisible, splashLoading, patientInfo } =
+    useContext(AuthContext);
 
   return (
     <NavigationContainer>
@@ -140,66 +124,86 @@ function Router() {
         </Stack.Navigator>
       ) : (
         <Fragment>
-          <Tab.Navigator
-            labeled={false}
-            barStyle={{
-              display: bottomBarVisible ? null : "none",
-              backgroundColor: "white",
-              borderTopColor: "#FDFCFD",
-              borderWidth: 0.8,
-            }}
-            screenOptions={{
-              headerShadowVisible: false,
-              headerStyle: {
+          {patientInfo == null || patientInfo.patientId == undefined ? (
+            <Stack.Navigator>
+              <Stack.Screen
+                name={routes.SELECT_PROFILE}
+                component={SelectProfileScreen}
+                options={{ headerShown: false }}
+              />
+
+              <Stack.Screen
+                name={routes.ADD_PROFILE}
+                component={AddProfile}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          ) : (
+            <Tab.Navigator
+              labeled={false}
+              barStyle={{
+                display: bottomBarVisible ? null : "none",
                 backgroundColor: "white",
-              },
-              headerTitleStyle: {
-                fontWeight: "bold",
-              },
-            }}
-          >
-            <Tab.Screen
-              name="HomeStack"
-              component={HomeStackRenderer}
-              options={{
-                headerShown: false,
-                unmountOnBlur: true,
-                tabBarIcon: ({ color }) => (
-                  <MaterialCommunityIcons name="home" color={color} size={22} />
-                ),
+                borderTopColor: "#FDFCFD",
+                borderWidth: 0.8,
               }}
-            />
-            <Tab.Screen
-              name="ConsultationStack"
-              component={ConsultationStackRenderer}
-              options={{
-                headerShown: true,
-                unmountOnBlur: true,
-                tabBarIcon: ({ color }) => (
-                  <MaterialCommunityIcons
-                    name="account-group"
-                    color={color}
-                    size={22}
-                  />
-                ),
+              screenOptions={{
+                headerShadowVisible: false,
+                headerStyle: {
+                  backgroundColor: "white",
+                },
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                },
               }}
-            />
-            <Tab.Screen
-              name="DocumentStack"
-              component={DocumentStackRenderer}
-              options={{
-                headerShown: true,
-                unmountOnBlur: true,
-                tabBarIcon: ({ color }) => (
-                  <MaterialCommunityIcons
-                    name="file-document"
-                    color={color}
-                    size={22}
-                  />
-                ),
-              }}
-            />
-          </Tab.Navigator>
+            >
+              <Tab.Screen
+                name="HomeStack"
+                component={HomeStackRenderer}
+                options={{
+                  headerShown: false,
+                  unmountOnBlur: true,
+                  tabBarIcon: ({ color }) => (
+                    <MaterialCommunityIcons
+                      name="home"
+                      color={color}
+                      size={22}
+                    />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="ConsultationStack"
+                component={ConsultationStackRenderer}
+                options={{
+                  headerShown: true,
+                  unmountOnBlur: true,
+                  tabBarIcon: ({ color }) => (
+                    <MaterialCommunityIcons
+                      name="account-group"
+                      color={color}
+                      size={22}
+                    />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="DocumentStack"
+                component={DocumentStackRenderer}
+                options={{
+                  headerShown: true,
+                  unmountOnBlur: true,
+                  tabBarIcon: ({ color }) => (
+                    <MaterialCommunityIcons
+                      name="file-document"
+                      color={color}
+                      size={22}
+                    />
+                  ),
+                }}
+              />
+            </Tab.Navigator>
+          )}
         </Fragment>
       )}
     </NavigationContainer>
