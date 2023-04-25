@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, ScrollView, View, Alert } from "react-native";
+import { StyleSheet, ScrollView, View, Alert, Image } from "react-native";
 import { Text, TextInput, Portal, Modal, Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import DatePicker from "react-native-date-picker";
@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../../context/AuthContext";
 import routes from "../../navigation/routes";
 import { ActivityIndicator } from "react-native-paper";
+import { uploadPhoto, downloadPhoto } from "../../service/UserService";
 
 const PatientViewInfo = ({ navigation }) => {
   const { logout, patientInfo, setPatientInfo } = useContext(AuthContext);
@@ -28,12 +29,14 @@ const PatientViewInfo = ({ navigation }) => {
   const [dob, setDob] = useState("");
   const [portal, setPortal] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
     getPatient();
   }, []);
 
-  const showAlert = () => Alert.alert("Error ", "All fields are required");
+  const showAlert = (message) => Alert.alert("Error ", message);
 
   useEffect(() => {
     let dobString = date.toISOString().split("T")[0];
@@ -61,6 +64,12 @@ const PatientViewInfo = ({ navigation }) => {
     setAbdmNo(data.abdm_no);
     setRelationship(data.relationship);
     setDob(data.dob);
+    setPhotoUrl(data.photo_url);
+    if (data.photo_url != "") {
+      let id = patientInfo.patientId;
+      data = await downloadPhoto(id);
+      setPhoto(data);
+    }
   }
 
   async function deletePatient() {
@@ -80,8 +89,12 @@ const PatientViewInfo = ({ navigation }) => {
       relationship: relationship,
       dob,
       sex,
+      photo_url: photoUrl,
     };
-    if (
+    if (photoUrl == null || photoUrl == "") {
+      setEditing(true);
+      showAlert("Patient photo must be added first");
+    } else if (
       firstName == "" ||
       lastName == "" ||
       bloodGroup == "" ||
@@ -92,10 +105,12 @@ const PatientViewInfo = ({ navigation }) => {
       sex == ""
     ) {
       setEditing(true);
-      showAlert();
+      showAlert("All fields are required");
     } else {
+      console.log(photoUrl);
       let id = patientInfo.patientId;
       setUserData(null);
+      console.log(patient);
       await editPatient(patient, patientInfo.patientId);
       getPatient();
       setPatientInfo({
@@ -109,6 +124,44 @@ const PatientViewInfo = ({ navigation }) => {
     <ScrollView style={{ backgroundColor: "white" }}>
       {userData ? (
         <View>
+          <View style={{ alignItems: "center", backgroundColor: "white" }}>
+            {photo && (
+              <Image
+                source={{
+                  uri: `data:image/png;base64,${photo}`,
+                }}
+                style={{ height: 200, width: 150, borderRadius: 20 }}
+              />
+            )}
+          </View>
+          <View style={styles.itemContainer}>
+            <Text style={styles.itemTitle}>Profile Photo</Text>
+            <TextInput
+              style={styles.itemValue}
+              value={photoUrl ? "Profile Photo availible" : "No profile photo"}
+              editable={false}
+              textColor={photoUrl ? "green" : "red"}
+              mode="outlined"
+              activeOutlineColor="purple"
+            />
+          </View>
+          <View style={styles.itemContainer}>
+            {(editing || !photoUrl) && (
+              <Button
+                icon="account-edit-outline"
+                mode="contained"
+                style={{ flex: 1 }}
+                onPress={async () => {
+                  let id = patientInfo.patientId;
+                  await uploadPhoto(id);
+                  await getPatient();
+                }}
+              >
+                Add Photo
+              </Button>
+            )}
+          </View>
+
           <View style={styles.itemContainer}>
             <Text style={styles.itemTitle}>First Name</Text>
 
