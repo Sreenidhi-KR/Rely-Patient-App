@@ -41,7 +41,8 @@ const AddProfile = ({ navigation, route }) => {
       city == "" ||
       state == "" ||
       abdmNo == "" ||
-      relationship == ""
+      relationship == ""||
+      sex==""
     ) {
       showAlert();
     } else {
@@ -98,6 +99,7 @@ const AddProfile = ({ navigation, route }) => {
         style={styles.input}
         onValueChange={(itemValue) => setBloodGroup(itemValue)}
       >
+         <Picker.Item label="Choose blood group" value="" />
         <Picker.Item label="O +" value="O+" />
         <Picker.Item label="O -" value="O-" />
         <Picker.Item label="A +" value="A+" />
@@ -112,6 +114,7 @@ const AddProfile = ({ navigation, route }) => {
         style={styles.input}
         onValueChange={(itemValue) => setSex(itemValue)}
       >
+        <Picker.Item label="Choose sex" value="" />
         <Picker.Item label="Male" value="M" />
         <Picker.Item label="Female" value="F" />
         <Picker.Item label="Prefer Not to Mention" value="O" />
