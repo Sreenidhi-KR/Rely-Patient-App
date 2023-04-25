@@ -134,7 +134,9 @@ async function getAllDocumentsList(patientId) {
     );
     console.log("patient id is:", patientId);
     console.log("documents fetched are:", response.data);
-    return response.data;
+    let prescriptions = response.data;
+    prescriptions = prescriptions.filter((item) => item.isAvailible);
+    return prescriptions;
   } catch (err) {
     console.log(err);
   }
@@ -146,7 +148,9 @@ async function getAllPrescriptionsList(patientId) {
       `${urlBase}/document/getAllPrescriptions/${patientId}`,
       await getConfig()
     );
-    return response.data;
+    let prescriptions = response.data;
+    prescriptions = prescriptions.filter((item) => item.isAvailible);
+    return prescriptions;
   } catch (err) {
     console.log(err);
   }
