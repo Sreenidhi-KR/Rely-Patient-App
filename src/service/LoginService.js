@@ -13,7 +13,7 @@ const userLogin = async (username, password) => {
     });
     return response.data;
   } catch (err) {
-    Toast.show("Error", 10);
+    Toast.show("Login Error", 10);
     throw err;
   }
   
@@ -21,11 +21,17 @@ const userLogin = async (username, password) => {
 
 const userRegister = async (username, email, password) => {
   console.log("userRegister - login service");
+  try{
   await axios.post(`${urlBase}/signup`, {
     username,
     password,
     email,
   });
+}
+catch(err) {
+  Toast.show("Unable to register user", 10);
+  throw err;
+}
 };
 
 export { userLogin, userRegister };

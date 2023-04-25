@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BASE_URL, getConfig } from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-simple-toast";
 
 const urlBase = `${BASE_URL}/api/v1`;
 
@@ -16,6 +17,7 @@ async function getProfilesForUser() {
     return response.data;
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to fetch profiles for User", 10);    
   }
 }
 

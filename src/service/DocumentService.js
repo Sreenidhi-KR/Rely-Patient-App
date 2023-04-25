@@ -7,6 +7,7 @@ import { BASE_URL, getConfig, getToken } from "../config";
 import Pdf from "react-native-pdf";
 import View from "react-native-paper";
 const urlBase = `${BASE_URL}/api/v1`;
+import Toast from "react-native-simple-toast";
 
 //returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
 
@@ -19,6 +20,7 @@ async function removeDocFromConsultation(documentId, consultationId) {
     console.log("Document removed from  consultation");
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to remove doc from consultation", 10);
   }
 }
 
@@ -31,6 +33,7 @@ async function addDocToConsultation(documentId, consultationId) {
     console.log("Document added to consultation");
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to add document to consultation", 10);
   }
 }
 async function docsForConsultation(consultationId, patientId) {
@@ -52,6 +55,7 @@ async function docsForConsultation(consultationId, patientId) {
     return [inConsultation, canBeAdded, canBeAdded2];
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to fetch all documents of a consultation", 10);
   }
 }
 
@@ -93,6 +97,7 @@ async function downloadDocument(documentId) {
       );
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to download document", 10);
   }
 }
 
@@ -106,13 +111,17 @@ async function viewDocument(documentId) {
       Accept: "application/json",
     },
   };
-
-  let response = await axios.get(
-    `${urlBase}/document/download/${documentId}`,
-    config
-  );
-  const pdfstr = response.data;
-  return pdfstr;
+  try {
+    let response = await axios.get(
+      `${urlBase}/document/download/${documentId}`,
+      config
+    );
+    const pdfstr = response.data;
+    return pdfstr;
+  } catch (err) {
+    Toast.show("Unable to view document", 10);
+    console.log(err);
+  }
 }
 
 async function removeDocument(docId) {
@@ -123,6 +132,7 @@ async function removeDocument(docId) {
     );
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to remove document", 10);
   }
 }
 
@@ -139,6 +149,7 @@ async function getAllDocumentsList(patientId) {
     return prescriptions;
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to fetch all documents of the patient", 10);
   }
 }
 
@@ -153,6 +164,7 @@ async function getAllPrescriptionsList(patientId) {
     return prescriptions;
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to fetch all prescriptions of a patient", 10);
   }
 }
 
@@ -185,6 +197,7 @@ async function uploadDocument(patientId) {
     );
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to upload document", 10);
   }
 }
 
