@@ -304,6 +304,7 @@ const PatientViewInfo = ({ navigation }) => {
                   maximumDate={new Date()}
                   style={styles.input}
                   textColor="purple"
+                  fadeToColor="white"
                 />
               </Modal>
             </Portal>
@@ -379,7 +380,10 @@ const styles = StyleSheet.create({
   dateInput: {
     alignContent: "center",
     padding: 20,
-    margin: 20,
+    marginTop: "50%",
+    marginHorizontal: 30,
+    backgroundColor: "white",
+    height: "50%",
   },
   itemContainer: {
     flexDirection: "row",

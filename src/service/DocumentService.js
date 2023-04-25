@@ -94,7 +94,7 @@ async function downloadDocument(documentId, fileName) {
     const android = RNFetchBlob.android;
   } catch (err) {
     console.log(err);
-    Toast.show("Unable to download document", 10);
+    Toast.show("Document not found ", 10);
   }
 }
 

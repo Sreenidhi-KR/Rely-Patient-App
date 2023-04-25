@@ -60,18 +60,6 @@ const DocumentScreen = ({ navigation }) => {
     await getDocuments();
   }
 
-  async function viewDoc(docId) {
-    let base64pdf = await viewDocument(docId);
-    //should render the base64 as pdf
-    console.log("Document will be rendered");
-  }
-
-  async function downloadDoc(docId) {
-    setLoading(true);
-    await downloadDocument(item.id, item.name);
-    await getDocuments();
-  }
-
   return (
     <>
       <View style={styles.container}>

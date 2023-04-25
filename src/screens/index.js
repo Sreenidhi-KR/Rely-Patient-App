@@ -6,7 +6,6 @@ export { default as VideoCall } from "./doctor/VideoCall";
 export { default as DoctorDetaisScreen } from "./doctor/DoctorDetailsScreen";
 export { default as DoctorQueueWaitingScreen } from "./doctor/DoctorQueueWaitingScreen";
 export { default as SplashScreen } from "./auth/SplashScreen";
-export { default as ConsultationDetailsScreen } from "./consultation/ConsultationDetailsScreen";
 export { default as AddProfile } from "./auth/AddProfile";
 export { default as PatientViewInfo } from "./user/PatientViewInfo";
 export { default as DoctorReviewScreen } from "./doctor/DoctorReviewScreen";
