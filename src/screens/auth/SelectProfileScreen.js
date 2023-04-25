@@ -74,7 +74,7 @@ const SelectProfileScreen = ({ navigation, route }) => {
                 Logout
               </Button>
             )}
-            {profiles.length < 4 ? (
+            {profiles && profiles.length < 4 ? (
               <SquareTile
                 imgSrc={imagePaths.add_Patient}
                 color={"#ECF9E3"}
