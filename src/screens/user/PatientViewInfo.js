@@ -88,8 +88,8 @@ const PatientViewInfo = ({ navigation }) => {
       city == "" ||
       state == "" ||
       abdmNo == "" ||
-      relationship == ""||
-      sex==""
+      relationship == "" ||
+      sex == ""
     ) {
       setEditing(true);
       showAlert();
@@ -106,7 +106,7 @@ const PatientViewInfo = ({ navigation }) => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: "white" }}>
       {userData ? (
         <View>
           <View style={styles.itemContainer}>
@@ -161,6 +161,8 @@ const PatientViewInfo = ({ navigation }) => {
               <Picker.Item label="O +" value="O+" />
               <Picker.Item label="O -" value="O-" />
               <Picker.Item label="A +" value="A+" />
+              <Picker.Item label="B -" value="B-" />
+              <Picker.Item label="B +" value="B+" />
               <Picker.Item label="A -" value="A-" />
               <Picker.Item label="AB +" value="AB+" />
               <Picker.Item label="AB -" value="AB-" />
@@ -254,15 +256,14 @@ const PatientViewInfo = ({ navigation }) => {
               </Modal>
             </Portal>
           </View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {/* <Button
-              style={{ flex: 1 }}
-              title={editing ? "Save" : "Edit"}
-              onPress={() => {
-                setEditing(!editing);
-                modifyPatient();
-              }}
-            /> */}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              padding: 5,
+              margin: 5,
+            }}
+          >
             {editing ? (
               <Button
                 icon="account-check"
@@ -292,28 +293,32 @@ const PatientViewInfo = ({ navigation }) => {
               icon="delete-empty"
               mode="contained"
               buttonColor="red"
+              textColor="white"
               onPress={() => deletePatient()}
             >
               Delete
             </Button>
-            </View>
+          </View>
         </View>
       ) : (
         <ActivityIndicator />
-      )
-      }
+      )}
       <Button
-            style={{ marginVertical: 10 }}
-            icon="logout"
-            buttonColor="#ccc"
-            mode="contained"
-            onPress={() => {
-              setPatientInfo({});
-              logout();
-            }}
-          >
-            Logout
-          </Button>
+        style={{
+          marginVertical: 10,
+          margin: 10,
+          backgroundColor: "#4a148c",
+        }}
+        textColor="white"
+        icon="logout"
+        mode="contained"
+        onPress={() => {
+          setPatientInfo({});
+          logout();
+        }}
+      >
+        Logout
+      </Button>
     </ScrollView>
   );
 };
@@ -328,6 +333,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "white",
+    margin: 5,
+    borderRadius: 20,
   },
   itemTitle: {
     flex: 1,
@@ -342,7 +349,8 @@ const styles = StyleSheet.create({
     border: 5,
     borderBottomColor: "purple",
     margin: 10,
-    backgroundColor: "#ccc",
+    backgroundColor: "#F7F8FF",
+    borderRadius: 20,
   },
 });
 

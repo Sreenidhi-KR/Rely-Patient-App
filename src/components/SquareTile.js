@@ -9,7 +9,7 @@ const SquareTile = ({ imgSrc, imgAlt, color, text, onPress }) => {
     >
       <View
         style={{
-          padding: 10,
+          padding: 15,
           borderRadius: 20,
           backgroundColor: color,
           flex: 1,

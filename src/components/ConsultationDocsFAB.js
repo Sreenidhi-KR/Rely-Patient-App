@@ -240,15 +240,24 @@ const ConsultationDocsFAB = ({ consultationId }) => {
                   marginVertical: 15,
                 }}
               />
-              <Button
-                icon="upload"
-                onPress={() => {
-                  uploadDoc();
-                  setLoading(true);
-                }}
-              >
-                Upload New Document
-              </Button>
+              <View>
+                <Button
+                  icon="upload"
+                  onPress={() => {
+                    uploadDoc();
+                    setLoading(true);
+                  }}
+                >
+                  Upload New Document
+                </Button>
+                <Button
+                  icon="refresh"
+                  onPress={() => {
+                    getConsultationDocuments(consultationId);
+                    setLoading(true);
+                  }}
+                ></Button>
+              </View>
             </View>
           </Modal>
         </Portal>

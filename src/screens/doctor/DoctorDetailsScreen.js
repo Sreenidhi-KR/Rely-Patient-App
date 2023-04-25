@@ -3,13 +3,17 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { Button, Chip, FAB } from "react-native-paper";
 import routes from "../../navigation/routes";
-import { getAllPatientsFromDqueue, getDoctorById } from "../../service/DoctorService";
+import {
+  getAllPatientsFromDqueue,
+  getDoctorById,
+} from "../../service/DoctorService";
 
 // create a component
 const DoctorDetailsScreen = ({ navigation, route }) => {
   const { doctor, followUp } = route.params;
-  const [currDoctor , setCurrDoctor]= useState(doctor)
+  const [currDoctor, setCurrDoctor] = useState(doctor);
   const imageUrl = currDoctor.photo_url;
+  console.log(imageUrl);
   const [currentlength, setCurrentLength] = useState(10);
   const isFull = currentlength + 1 > currDoctor.limit;
 
@@ -17,20 +21,13 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
     const size = await getAllPatientsFromDqueue(currDoctor.id);
     const length = size.length;
     setCurrentLength(length);
+    return length;
   };
 
   const getDoc = async (docId) => {
-   const doc = await getDoctorById(docId);
-   return doc
-  }
-
-  //doc = getDoctorById
-  //check doc.status 
-  //if online 
-  //check queue length
-  //doctor queue waiting screen
-  //if not online 
-  //alert doc offline
+    const doc = await getDoctorById(docId);
+    return doc;
+  };
 
   useEffect(() => {
     getQueueLength();
@@ -39,10 +36,17 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.image}>
-        <Image
-          source={require(`../../../assets/general-doc.png`)}
-          style={{ width: 100, height: 100, marginRight: 50 }}
-        />
+        {!imageUrl ? (
+          <Image
+            source={require("../../../assets/general-doc.png")}
+            style={{ width: 100, height: 100, marginRight: 50 }}
+          />
+        ) : (
+          <Image
+            source={require(`../../../assets/general-doc.png`)}
+            style={{ width: 100, height: 100, marginRight: 50 }}
+          />
+        )}
         <View style={styles.details}>
           <Text style={{ fontSize: 24, fontStyle: "bold" }}>
             Dr.{currDoctor.fname} {currDoctor.lname}
@@ -132,17 +136,17 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
             style={styles.fab}
             onPress={async () => {
               const doc = await getDoc(currDoctor.id);
-              getQueueLength();
-              if (doc.online_status && ((currentlength+1)<=doc.limit)) {
+              const len = await getQueueLength();
+              if (doc.online_status && len + 1 <= doc.limit) {
                 navigation.navigate(routes.DOCTOR_WAITING, {
                   doctor: currDoctor,
                   followUp,
                 });
               } else {
-                  Alert.alert("Doctor went offline or queue is full","" ,[
-                    { text: "OK" },
-                  ])
-                  setCurrDoctor(doc)
+                Alert.alert("Doctor went offline or queue is full", "", [
+                  { text: "OK" },
+                ]);
+                setCurrDoctor(doc);
               }
             }}
           />

@@ -1,17 +1,7 @@
 //import libraries
 import React, { Component, useState, useEffect, useContext } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Alert,
-  FlatList,
-} from "react-native";
-import {
-  Modal,
-  Portal,
-  List,
-} from "react-native-paper";
+import { View, Text, StyleSheet, Alert, FlatList } from "react-native";
+import { Modal, Portal, List } from "react-native-paper";
 import Header from "../../components/Header";
 import SpecializationsModal from "../../components/SpecializationsModal";
 import SquareTile from "../../components/SquareTile";
@@ -24,7 +14,7 @@ import { verticalScale } from "../../constants/metrics";
 const HomeScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
   const [data, setData] = useState(null);
-  const {  patientInfo,  } = useContext(AuthContext);
+  const { patientInfo } = useContext(AuthContext);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -55,38 +45,39 @@ const HomeScreen = ({ navigation }) => {
         </Modal>
       </Portal>
       <Header />
-      <View style={styles.squareTiles}>
-        <SquareTile
-          imgSrc={imagePaths.quick_consultation}
-          color={"#ECF9E3"}
-          text={"Quick Consulatation"}
-          onPress={async () => {
-            const doc = await getQuickDoctor();
-            if (doc.length == 0) {
-              createAlert();
-            } else {
-              navigation.navigate(routes.DOCTOR_WAITING, { doctor: doc });
-            }
-          }}
-        />
-        <SquareTile
-          imgSrc={imagePaths.specialist_consultation}
-          color="#F7F8FF"
-          text={"Specialist Consulatation"}
-          onPress={showModal}
-        />
-      </View>
-      <View>
-        <List.Section
-          title="My FollowUp Consultations"
-          titleStyle={{
-            fontWeight: "bold",
-            fontSize: 25,
-            color: "gray",
-            marginTop: 25,
-            marginLeft: 10,
-          }}
-        />
+      <View style={{ padding: 5 }}>
+        <View style={styles.squareTiles}>
+          <SquareTile
+            imgSrc={imagePaths.quick_consultation}
+            color={"#ECF9E3"}
+            text={"Quick Consulatation"}
+            onPress={async () => {
+              const doc = await getQuickDoctor();
+              if (doc) {
+                navigation.navigate(routes.DOCTOR_WAITING, { doctor: doc });
+              } else {
+                createAlert();
+              }
+            }}
+          />
+          <SquareTile
+            imgSrc={imagePaths.specialist_consultation}
+            color="#F7F8FF"
+            text={"Specialist Consulatation"}
+            onPress={showModal}
+          />
+        </View>
+        <View>
+          <List.Section
+            title="My Follow Ups"
+            titleStyle={{
+              fontWeight: "bold",
+              fontSize: 25,
+              color: "gray",
+              marginTop: 25,
+              marginLeft: 10,
+            }}
+          />
           <FlatList
             scrollEnabled
             showsVerticalScrollIndicator
@@ -103,6 +94,7 @@ const HomeScreen = ({ navigation }) => {
             )}
             keyExtractor={(item) => item.consultationId}
           />
+        </View>
       </View>
     </View>
   );

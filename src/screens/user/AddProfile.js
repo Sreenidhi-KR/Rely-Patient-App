@@ -41,8 +41,8 @@ const AddProfile = ({ navigation, route }) => {
       city == "" ||
       state == "" ||
       abdmNo == "" ||
-      relationship == ""||
-      sex==""
+      relationship == "" ||
+      sex == ""
     ) {
       showAlert();
     } else {
@@ -99,11 +99,13 @@ const AddProfile = ({ navigation, route }) => {
         style={styles.input}
         onValueChange={(itemValue) => setBloodGroup(itemValue)}
       >
-         <Picker.Item label="Choose blood group" value="" />
+        <Picker.Item label="Choose blood group" value="" />
         <Picker.Item label="O +" value="O+" />
         <Picker.Item label="O -" value="O-" />
         <Picker.Item label="A +" value="A+" />
         <Picker.Item label="A -" value="A-" />
+        <Picker.Item label="B +" value="B+" />
+        <Picker.Item label="B -" value="B-" />
         <Picker.Item label="AB +" value="AB+" />
         <Picker.Item label="AB -" value="AB-" />
       </Picker>
@@ -177,6 +179,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: "white",
   },
   label: {
     fontSize: 18,
