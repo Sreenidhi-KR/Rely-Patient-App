@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_URL, getToken, getConfig } from "../config";
+import Toast from "react-native-simple-toast";
 
 const urlBase = `${BASE_URL}/api/v1`;
 
@@ -13,6 +14,7 @@ const getAllPreviousConsultations = async (patientId) => {
     return response.data;
   } catch (error) {
     console.log(error);
+    Toast.show("Unable to fetch consultations", 10);
   }
 };
 
@@ -26,6 +28,7 @@ const getPrevConsultDetails = async (consultId) => {
     return response.data;
   } catch (error) {
     console.log(error);
+    Toast.show("Unable to fetch consultation details", 10);
   }
 };
 
@@ -45,6 +48,7 @@ const addConsultation = async (patientId, doctorId, startTime, followUp) => {
     return response.data;
   } catch (error) {
     console.log(error);
+    Toast.show("Unable to add consultation", 10);
   }
 };
 
@@ -58,6 +62,7 @@ const getQuickDoctor = async () => {
     return response.data;
   } catch (error) {
     console.log(error);
+    Toast.show("Unable to get quick doctor", 10);
   }
 };
 
@@ -71,6 +76,7 @@ const getFollowUp = async (patient_id) => {
     return response.data;
   } catch (error) {
     console.log(error);
+    Toast.show("Unable to get Followups", 10);
   }
 };
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_URL, getConfig } from "../config";
+import Toast from "react-native-simple-toast";
 
 const urlBase = `${BASE_URL}/api/v1`;
 
@@ -13,6 +14,7 @@ const getAllDoctors = async () => {
     return response.data;
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to get all doctors", 10);
   }
 };
 
@@ -29,6 +31,7 @@ const addPatientToQueue = async (doctorId, patientId) => {
     );
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to fetch doctor by spec.", 10);
   }
 };
 
@@ -41,6 +44,7 @@ const removePatientFromQueue = async (doctorId, patientId) => {
     );
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to remove patient from queue", 10);
   }
 };
 
@@ -62,6 +66,7 @@ const getPatientIndexFromQueue = async (
     return response.data;
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to fetch patient Index from queue", 10);
   }
 };
 
@@ -85,6 +90,7 @@ const addAndGetIndexFromQueue = async (
     return response.data;
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to add/fetch patient index from queue", 10);
   }
 };
 
@@ -96,6 +102,7 @@ const updateDoctorRating = async (doctorId, starRating) => {
     );
   } catch (err) {
     console.log("rating", err);
+    Toast.show("Unable to update doctor rating", 10);
   }
 };
 
@@ -108,6 +115,7 @@ const getAllPatientsFromDqueue = async(doctorId) => {
     return response.data;
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to fetch patients from queue", 10);
   }
 };
 
@@ -120,6 +128,7 @@ const getDoctorById = async(doctorId) => {
     return response.data;
   } catch (err) {
     console.log(err);
+    Toast.show("Unable to fetch doctor by Id", 10);
   }
 };
 
