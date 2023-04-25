@@ -24,8 +24,6 @@ const VideoCall = ({ navigation, route }) => {
   const [index, setIndex] = useState(null);
   const [accept, setAccept] = useState(null);
   let interval;
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   var finish = false;
   const connectionData = {
     appId: "5e2ee6c6fc13459caa99cb8c234d42e0",
@@ -58,7 +56,7 @@ const VideoCall = ({ navigation, route }) => {
 
           onPress: () => {
             unsubscribe();
-            console.log(e.data);
+
             navigation.reset({
               index: 0,
               routes: [{ name: routes.DOCTOR_REVIEW, params: { doctor } }],
@@ -93,19 +91,6 @@ const VideoCall = ({ navigation, route }) => {
       }
     }, 2000);
 
-    // const subscription = AppState.addEventListener("change", (nextAppState) => {
-    //   if (
-    //     appState.current.match(/inactive|background/) &&
-    //     nextAppState === "active"
-    //   ) {
-    //     console.log("App has come to the foreground!");
-    //   }
-
-    //   appState.current = nextAppState;
-    //   setAppStateVisible(appState.current);
-    //   console.log("AppState", appState.current);
-    // });
-
     return () => {
       removePatientFromQueue(doctor.id, patientId);
       setBottomBarVisible(true);
@@ -123,32 +108,5 @@ const VideoCall = ({ navigation, route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-    fontSize: 25,
-  },
-  squareTiles: {
-    flexDirection: "row",
-    width: "100%",
-    height: "30%",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 20,
-  },
-  containerStyle: {
-    alignSelf: "center",
-    backgroundColor: "white",
-    padding: 20,
-    height: "30%",
-    width: "75%",
-    margin: 10,
-  },
-});
 
 export default VideoCall;

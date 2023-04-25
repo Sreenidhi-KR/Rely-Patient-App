@@ -1,11 +1,11 @@
 import axios from "axios";
 import { BASE_URL, getToken, getConfig } from "../config";
 import Toast from "react-native-simple-toast";
+import { AuthContext } from "../context/AuthContext";
 
 const urlBase = `${BASE_URL}/api/v1`;
 
 const getAllPreviousConsultations = async (patientId) => {
-  console.log("Get All Previous Consultations");
   try {
     const response = await axios.get(
       `${urlBase}/consultation/getPrevConsultations/${patientId}`,
@@ -68,7 +68,7 @@ const getQuickDoctor = async () => {
 
 const getFollowUp = async (patient_id) => {
   console.log("Get Follow Up of All Patients");
-  try{
+  try {
     const response = await axios.get(
       `${urlBase}/consultation/getFollowUp/${patient_id}`,
       await getConfig()
@@ -80,4 +80,10 @@ const getFollowUp = async (patient_id) => {
   }
 };
 
-export { getAllPreviousConsultations, getPrevConsultDetails, addConsultation, getQuickDoctor, getFollowUp};
+export {
+  getAllPreviousConsultations,
+  getPrevConsultDetails,
+  addConsultation,
+  getQuickDoctor,
+  getFollowUp,
+};

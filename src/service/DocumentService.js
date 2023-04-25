@@ -140,7 +140,6 @@ async function getAllDocumentsList(patientId) {
       await getConfig()
     );
     console.log("patient id is:", patientId);
-    console.log("documents fetched are:", response.data);
     let prescriptions = response.data;
     prescriptions = prescriptions.filter((item) => item.isAvailible);
     return prescriptions;

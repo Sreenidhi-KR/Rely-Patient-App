@@ -31,9 +31,9 @@ const AddProfile = ({ navigation, route }) => {
     let userInfo = await AsyncStorage.getItem("userInfo");
     userInfo = JSON.parse(userInfo);
     const userId = userInfo.id;
-    console.log(userId);
+
     let dobString = dob.toISOString().split("T")[0];
-    console.log(dobString);
+
     if (
       fname == "" ||
       lname == "" ||

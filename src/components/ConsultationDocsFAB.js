@@ -164,7 +164,6 @@ const ConsultationDocsFAB = ({ consultationId }) => {
                     <TouchableOpacity
                       key={document.id}
                       onPress={() => {
-                        console.log("Press");
                         addDocToConsul(document.id);
                       }}
                     >
@@ -211,7 +210,6 @@ const ConsultationDocsFAB = ({ consultationId }) => {
                     <TouchableOpacity
                       key={document.id}
                       onPress={() => {
-                        console.log("Press");
                         addDocToConsul(document.id);
                       }}
                     >
