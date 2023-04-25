@@ -59,6 +59,19 @@ const getQuickDoctor = async () => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-export { getAllPreviousConsultations, getPrevConsultDetails, addConsultation, getQuickDoctor };
+const getFollowUp = async (patient_id) => {
+  console.log("Get Follow Up of All Patients");
+  try{
+    const response = await axios.get(
+      `${urlBase}/consultation/getFollowUp/${patient_id}`,
+      await getConfig()
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getAllPreviousConsultations, getPrevConsultDetails, addConsultation, getQuickDoctor, getFollowUp};

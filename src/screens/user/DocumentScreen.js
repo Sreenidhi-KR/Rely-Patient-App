@@ -19,7 +19,7 @@ import Header from "../../components/Header";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 
-const DocumentScreen = () => {
+const DocumentScreen = ({navigation}) => {
   const [docs, setDocs] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const { patientInfo } = useContext(AuthContext);
@@ -33,9 +33,12 @@ const DocumentScreen = () => {
     setRefreshing(false);
   }, []);
 
-  useEffect(() => {
-    getDocuments();
-  }, [patientId]);
+  useEffect( () => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      getDocuments()
+    });
+    return unsubscribe;
+  }, []);
 
   async function getDocuments() {
     setLoading(true);
@@ -67,6 +70,7 @@ const DocumentScreen = () => {
     setLoading(true);
     await downloadDocument(item.id);
     await getDocuments();
+
   }
 
   return (

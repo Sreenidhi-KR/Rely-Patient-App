@@ -11,11 +11,12 @@ const userLogin = async (username, password) => {
       username,
       password,
     });
+    return response.data;
   } catch (err) {
     Toast.show("Error", 10);
     throw err;
   }
-  return response.data;
+  
 };
 
 const userRegister = async (username, email, password) => {

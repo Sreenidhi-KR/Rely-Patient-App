@@ -88,7 +88,8 @@ const PatientViewInfo = ({ navigation }) => {
       city == "" ||
       state == "" ||
       abdmNo == "" ||
-      relationship == ""
+      relationship == ""||
+      sex==""
     ) {
       setEditing(true);
       showAlert();
@@ -295,8 +296,13 @@ const PatientViewInfo = ({ navigation }) => {
             >
               Delete
             </Button>
-          </View>
-          <Button
+            </View>
+        </View>
+      ) : (
+        <ActivityIndicator />
+      )
+      }
+      <Button
             style={{ marginVertical: 10 }}
             icon="logout"
             buttonColor="#ccc"
@@ -308,10 +314,6 @@ const PatientViewInfo = ({ navigation }) => {
           >
             Logout
           </Button>
-        </View>
-      ) : (
-        <ActivityIndicator />
-      )}
     </ScrollView>
   );
 };
