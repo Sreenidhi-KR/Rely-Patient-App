@@ -48,7 +48,7 @@ const SelectProfileScreen = ({ navigation, route }) => {
             {profiles ? (
               profiles.map((patient) => {
                 return (
-                  <>
+                  
                     <SquareTile
                       key={patient.id}
                       imgSrc={imagePaths.avatar_man}
@@ -61,7 +61,7 @@ const SelectProfileScreen = ({ navigation, route }) => {
                         });
                       }}
                     />
-                  </>
+                  
                 );
               })
             ) : (
