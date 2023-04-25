@@ -1,13 +1,6 @@
 import React, { useState, useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Button,
-  ScrollView,
-  Alert,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView, Alert } from "react-native";
+import { TextInput, Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import DatePicker from "react-native-date-picker";
 import { addPatient } from "../../service/PatientService";
@@ -40,6 +33,7 @@ const AddProfile = ({ navigation, route }) => {
     const userId = userInfo.id;
     console.log(userId);
     let dobString = dob.toISOString().split("T")[0];
+    console.log(dobString);
     if (
       fname == "" ||
       lname == "" ||
@@ -62,7 +56,7 @@ const AddProfile = ({ navigation, route }) => {
         photo_url: "None",
         relationship: relationship,
         // age: null,
-        dob: dob,
+        dob: dobString,
       };
       console.log(patient);
       addPatient(patient, userId);
@@ -73,10 +67,20 @@ const AddProfile = ({ navigation, route }) => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.label}>First Name</Text>
-      <TextInput style={styles.input} value={fname} onChangeText={setFname} />
+      <TextInput
+        style={styles.input}
+        value={fname}
+        onChangeText={setFname}
+        textColor="black"
+      />
 
       <Text style={styles.label}>Last Name</Text>
-      <TextInput style={styles.input} value={lname} onChangeText={setLname} />
+      <TextInput
+        style={styles.input}
+        value={lname}
+        onChangeText={setLname}
+        textColor="black"
+      />
 
       <Text style={styles.label}>Date of Birth</Text>
       <DatePicker
@@ -84,15 +88,23 @@ const AddProfile = ({ navigation, route }) => {
         date={dob}
         onDateChange={setDob}
         maximumDate={new Date()}
-        textColor="black"
+        textColor="purple"
+        androidVariant="iosClone"
         mode="date"
       />
       <Text style={styles.label}>Blood Group</Text>
-      <TextInput
+      <Picker
+        selectedValue={bloodGroup}
         style={styles.input}
-        value={bloodGroup}
-        onChangeText={setBloodGroup}
-      />
+        onValueChange={(itemValue) => setBloodGroup(itemValue)}
+      >
+        <Picker.Item label="O +" value="O+" />
+        <Picker.Item label="O -" value="O-" />
+        <Picker.Item label="A +" value="A+" />
+        <Picker.Item label="A -" value="A-" />
+        <Picker.Item label="AB +" value="AB+" />
+        <Picker.Item label="AB -" value="AB-" />
+      </Picker>
 
       <Text style={styles.label}>Sex</Text>
       <Picker
@@ -100,33 +112,53 @@ const AddProfile = ({ navigation, route }) => {
         style={styles.input}
         onValueChange={(itemValue) => setSex(itemValue)}
       >
-        <Picker.Item label="Prefer Not to Mention" value="O" />
         <Picker.Item label="Male" value="M" />
         <Picker.Item label="Female" value="F" />
+        <Picker.Item label="Prefer Not to Mention" value="O" />
       </Picker>
 
       <Text style={styles.label}>City</Text>
-      <TextInput style={styles.input} value={city} onChangeText={setCity} />
+      <TextInput
+        style={styles.input}
+        value={city}
+        onChangeText={setCity}
+        textColor="black"
+      />
 
       <Text style={styles.label}>State</Text>
-      <TextInput style={styles.input} value={state} onChangeText={setState} />
+      <TextInput
+        style={styles.input}
+        value={state}
+        onChangeText={setState}
+        textColor="black"
+      />
 
       <Text style={styles.label}>ABDM No.</Text>
-      <TextInput style={styles.input} value={abdmNo} onChangeText={setAbdmNo} />
+      <TextInput
+        style={styles.input}
+        value={abdmNo}
+        onChangeText={setAbdmNo}
+        textColor="black"
+      />
 
       <Text style={styles.label}>Relationship</Text>
       <TextInput
         style={styles.input}
         value={relationship}
         onChangeText={setRelationship}
+        textColor="black"
       />
 
       <View style={styles.submitContainer}>
         <Button
+          icon="plus"
           title="Submit"
+          mode="contained"
           onPress={handleFormSubmit}
           style={styles.submitButton}
-        />
+        >
+          Add Profile
+        </Button>
       </View>
     </ScrollView>
   );
@@ -134,12 +166,10 @@ const AddProfile = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   submitContainer: {
-    marginBottom: 20,
-    marginHorizontal: 16,
-  },
-  submitButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    marginBottom: 5,
+    marginHorizontal: 5,
+    paddingBottom: 50,
+    paddingTop: 25,
   },
   container: {
     flex: 1,
@@ -153,8 +183,9 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
-    padding: 10,
-    marginBottom: 10,
+    padding: 1,
+    marginBottom: 5,
+    backgroundColor: "white",
   },
 });
 
