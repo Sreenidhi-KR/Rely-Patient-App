@@ -54,7 +54,6 @@ const AddProfile = ({ navigation, route }) => {
         city: city,
         state: state,
         abdm_no: abdmNo,
-        photo_url: "None",
         relationship: relationship,
         // age: null,
         dob: dobString,
