@@ -1,6 +1,15 @@
 //import libraries
 import React, { Component, useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Alert, FlatList, ActivityIndicator, RefreshControl, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  FlatList,
+  ActivityIndicator,
+  RefreshControl,
+  Image,
+} from "react-native";
 import { Modal, Portal, List } from "react-native-paper";
 import Header from "../../components/Header";
 import SpecializationsModal from "../../components/SpecializationsModal";
@@ -28,11 +37,11 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const getFollow = async () => {
-    try{
+    setLoading(true);
+    try {
       const res = await getFollowUp(patientInfo.patientId);
-    setData(res);
-    }
-    catch (error) {
+      setData(res);
+    } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
@@ -45,7 +54,10 @@ const HomeScreen = ({ navigation }) => {
     ]);
 
   useEffect(() => {
-    getFollow();
+    const unsubscribe = navigation.addListener("focus", () => {
+      getFollow();
+    });
+    return unsubscribe;
   }, []);
 
   return (
@@ -84,7 +96,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View style={{ backgroundColor: "white" }}>
           <List.Section
-            title="My Follow Ups"
+            title="Follow Up Consultations"
             titleStyle={{
               fontWeight: "bold",
               fontSize: 25,
@@ -95,50 +107,57 @@ const HomeScreen = ({ navigation }) => {
           />
           {isLoading ? (
             <ActivityIndicator />
-          ) : data ? (
+          ) : data && data.length > 0 ? (
             <View>
-              <FlatList data={data}
-              horizontal={true}
-              keyExtractor={( item ) => item.consultationId}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                />
-              }
-              renderItem={({ item }) => (
-                <View style={styles.box}>
-                  <List.Item
-                    descriptionStyle={{
-                      color: "gray",
-                      fontSize: 14,
-                      fontWeight: "300",
-                    }}
-                    title={
-                      <Text
-                        style={{
-                          color: "black",
-                          fontSize: 18,
-                          fontWeight: "500",
-                        }}
-                      >
-                        Dr. {`${item.fname} ${item.lname}`}
-                      </Text>
-                    }
-                    {...console.log("Data: ",data)}
-                    description={`On ${item.followUpDate.split("T")[0]}`}
-                    left={(props) => (
-                      <Image
-                        source={require(`../../../assets/general-doc.png`)}
-                        style={{ width: 55, height: 55 }}
-                      />
-                    )}
+              <FlatList
+                data={data}
+                horizontal={true}
+                keyExtractor={(item) => item.consultationId}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
                   />
-                </View>
-              )}
+                }
+                renderItem={({ item }) => (
+                  <View style={styles.box}>
+                    <List.Item
+                      descriptionStyle={{
+                        color: "gray",
+                        fontSize: 14,
+                        fontWeight: "300",
+                      }}
+                      title={
+                        <Text
+                          style={{
+                            color: "black",
+                            fontSize: 18,
+                            fontWeight: "500",
+                          }}
+                        >
+                          Dr. {`${item.fname} ${item.lname}`}
+                        </Text>
+                      }
+                      {...console.log("Data: ", data)}
+                      description={`On ${item.followUpDate.split("T")[0]}`}
+                      left={(props) => (
+                        <Image
+                          source={require(`../../../assets/general-doc.png`)}
+                          style={{ width: 55, height: 55 }}
+                        />
+                      )}
+                    />
+                  </View>
+                )}
               />
             </View>
-          ): <View style={styles.box}><Text style={{color: "gray", fontSize:20, fontWeight:"500"}}>You have no follow up consultations</Text></View> }
+          ) : (
+            <View style={styles.box}>
+              <Text style={{ color: "gray", fontSize: 17, fontWeight: "500" }}>
+                You have no follow up consultations
+              </Text>
+            </View>
+          )}
         </View>
       </View>
     </View>
@@ -179,7 +198,7 @@ const styles = StyleSheet.create({
     height: verticalScale(130),
     padding: 15,
     marginHorizontal: 10,
-    alignItems:"center",
+    alignItems: "center",
     justifyContent: "center",
     marginVertical: 0,
     borderRadius: 10,

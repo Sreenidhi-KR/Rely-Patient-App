@@ -20,7 +20,7 @@ const AddProfile = ({ navigation, route }) => {
   const [abdmNo, setAbdmNo] = useState("");
   const [relationship, setRelationship] = useState("");
 
-  const showAlert = () => Alert.alert("Error ", "All fields are required");
+  const showAlert = (message) => Alert.alert("Error ", message);
 
   const getProfiles = async () => {
     const patients = await getProfilesForUser();
@@ -31,9 +31,9 @@ const AddProfile = ({ navigation, route }) => {
     let userInfo = await AsyncStorage.getItem("userInfo");
     userInfo = JSON.parse(userInfo);
     const userId = userInfo.id;
-    console.log(userId);
+
     let dobString = dob.toISOString().split("T")[0];
-    console.log(dobString);
+
     if (
       fname == "" ||
       lname == "" ||
@@ -44,7 +44,7 @@ const AddProfile = ({ navigation, route }) => {
       relationship == "" ||
       sex == ""
     ) {
-      showAlert();
+      showAlert("All fields are required");
     } else {
       let patient = {
         fname: fname,
@@ -70,7 +70,14 @@ const AddProfile = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         value={fname}
-        onChangeText={setFname}
+        onChangeText={(text) => {
+          text = text.trim();
+          if (/^[A-Za-z]+$/.test(text) || text == "") {
+            setFname(text);
+          } else {
+            showAlert("Invalid input for First Name");
+          }
+        }}
         textColor="black"
       />
 
@@ -78,7 +85,14 @@ const AddProfile = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         value={lname}
-        onChangeText={setLname}
+        onChangeText={(text) => {
+          text = text.trim();
+          if (/^[A-Za-z]+$/.test(text) || text == "") {
+            setLname(text);
+          } else {
+            showAlert("Invalid input for Last Name");
+          }
+        }}
         textColor="black"
       />
 
@@ -125,7 +139,14 @@ const AddProfile = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         value={city}
-        onChangeText={setCity}
+        onChangeText={(text) => {
+          text = text.trim();
+          if (/^[A-Za-z]+$/.test(text) || text == "") {
+            setCity(text);
+          } else {
+            showAlert("Invalid input for City:Should contain only Letters");
+          }
+        }}
         textColor="black"
       />
 
@@ -133,7 +154,14 @@ const AddProfile = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         value={state}
-        onChangeText={setState}
+        onChangeText={(text) => {
+          text = text.trim();
+          if (/^[A-Za-z]+$/.test(text) || text == "") {
+            setState(text);
+          } else {
+            showAlert("Invalid input for State:Should contain only Letters");
+          }
+        }}
         textColor="black"
       />
 
@@ -141,7 +169,14 @@ const AddProfile = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         value={abdmNo}
-        onChangeText={setAbdmNo}
+        onChangeText={(text) => {
+          text = text.trim();
+          if (/^[0-9]+$/.test(text) || text == "") {
+            setAbdmNo(text);
+          } else {
+            showAlert("Invalid input for ABDM No: Should contain only Numbers");
+          }
+        }}
         textColor="black"
       />
 
@@ -149,7 +184,16 @@ const AddProfile = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         value={relationship}
-        onChangeText={setRelationship}
+        onChangeText={(text) => {
+          text = text.trim();
+          if (/^[A-Za-z]+$/.test(text) || text == "") {
+            setRelationship(text);
+          } else {
+            showAlert(
+              "Invalid input for Relationship:Should contain only Letters"
+            );
+          }
+        }}
         textColor="black"
       />
 

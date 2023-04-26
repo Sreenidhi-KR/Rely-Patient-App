@@ -6,7 +6,6 @@ export default {
   VIDEO: "VideoCall",
   DOCTOR_DETAILS: "DoctorDetails",
   DOCTOR_WAITING: "DoctorWaiting",
-  CONSULTATION_DETAILS: "ConsultationDetails",
   SELECT_PROFILE: "SelectProfile",
   ADD_PROFILE: "addProfile",
   DOCTOR_REVIEW: "DoctorReview",

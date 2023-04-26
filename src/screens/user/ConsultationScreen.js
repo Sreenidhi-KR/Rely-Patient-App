@@ -83,7 +83,6 @@ const ConsultationScreen = ({ navigation }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      console.log("REEEEF");
       getPreviousConsultations(patientId);
     });
     return unsubscribe;
@@ -106,7 +105,6 @@ const ConsultationScreen = ({ navigation }) => {
             data={data}
             keyExtractor={(item) => item.consultId}
             renderItem={({ item }) => {
-              console.log(item);
               return (
                 <View
                   style={{

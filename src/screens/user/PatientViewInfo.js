@@ -65,7 +65,7 @@ const PatientViewInfo = ({ navigation }) => {
     setRelationship(data.relationship);
     setDob(data.dob);
     setPhotoUrl(data.photo_url);
-    if (data.photo_url != "") {
+    if (data.photo_url && data.photo_url != "") {
       let id = patientInfo.patientId;
       data = await downloadPhoto(id);
       setPhoto(data);
@@ -75,7 +75,6 @@ const PatientViewInfo = ({ navigation }) => {
   async function deletePatient() {
     await removePatient(patientInfo.patientId);
     setPatientInfo({});
-    navigation.replace(routes.SELECT_PROFILE);
   }
 
   async function modifyPatient() {
@@ -130,7 +129,7 @@ const PatientViewInfo = ({ navigation }) => {
                 source={{
                   uri: `data:image/png;base64,${photo}`,
                 }}
-                style={{ height: 200, width: 150, borderRadius: 20 }}
+                style={{ height: 150, width: 150, borderRadius: 75 }}
               />
             )}
           </View>
@@ -157,7 +156,7 @@ const PatientViewInfo = ({ navigation }) => {
                   await getPatient();
                 }}
               >
-                Add Photo
+                {photoUrl ? "Change Photo" : "Add Photo"}
               </Button>
             )}
           </View>
@@ -168,7 +167,14 @@ const PatientViewInfo = ({ navigation }) => {
             <TextInput
               style={styles.itemValue}
               value={firstName}
-              onChangeText={setFirstName}
+              onChangeText={(text) => {
+                text = text.trim();
+                if (/^[A-Za-z]+$/.test(text) || text == "") {
+                  setFname(text);
+                } else {
+                  showAlert("Invalid input for First Name");
+                }
+              }}
               editable={editing ? true : false}
               textColor="black"
               mode="outlined"
@@ -181,7 +187,14 @@ const PatientViewInfo = ({ navigation }) => {
             <TextInput
               style={styles.itemValue}
               value={lastName}
-              onChangeText={setLastName}
+              onChangeText={(text) => {
+                text = text.trim();
+                if (/^[A-Za-z]+$/.test(text) || text == "") {
+                  setLname(text);
+                } else {
+                  showAlert("Invalid input for Last Name");
+                }
+              }}
               editable={editing ? true : false}
               textColor="black"
               mode="outlined"
@@ -227,7 +240,16 @@ const PatientViewInfo = ({ navigation }) => {
             <TextInput
               style={styles.itemValue}
               value={city}
-              onChangeText={setCity}
+              onChangeText={(text) => {
+                text = text.trim();
+                if (/^[A-Za-z]+$/.test(text) || text == "") {
+                  setCity(text);
+                } else {
+                  showAlert(
+                    "Invalid input for City:Should contain only Letters"
+                  );
+                }
+              }}
               editable={editing ? true : false}
               textColor="black"
               mode="outlined"
@@ -240,7 +262,16 @@ const PatientViewInfo = ({ navigation }) => {
             <TextInput
               style={styles.itemValue}
               value={state}
-              onChangeText={setState}
+              onChangeText={(text) => {
+                text = text.trim();
+                if (/^[A-Za-z]+$/.test(text) || text == "") {
+                  setState(text);
+                } else {
+                  showAlert(
+                    "Invalid input for State:Should contain only Letters"
+                  );
+                }
+              }}
               editable={editing ? true : false}
               textColor="black"
               mode="outlined"
@@ -253,7 +284,16 @@ const PatientViewInfo = ({ navigation }) => {
             <TextInput
               style={styles.itemValue}
               value={abdmNo}
-              onChangeText={setAbdmNo}
+              onChangeText={(text) => {
+                text = text.trim();
+                if (/^[0-9]+$/.test(text) || text == "") {
+                  setAbdmNo(text);
+                } else {
+                  showAlert(
+                    "Invalid input for ABDM No: Should contain only Numbers"
+                  );
+                }
+              }}
               editable={editing ? true : false}
               textColor="black"
               mode="outlined"
@@ -266,7 +306,16 @@ const PatientViewInfo = ({ navigation }) => {
             <TextInput
               style={styles.itemValue}
               value={relationship}
-              onChangeText={setRelationship}
+              onChangeText={(text) => {
+                text = text.trim();
+                if (/^[A-Za-z]+$/.test(text) || text == "") {
+                  setRelationship(text);
+                } else {
+                  showAlert(
+                    "Invalid input for Relationship:Should contain only Letters"
+                  );
+                }
+              }}
               editable={editing ? true : false}
               textColor="black"
               mode="outlined"
@@ -305,6 +354,7 @@ const PatientViewInfo = ({ navigation }) => {
                   maximumDate={new Date()}
                   style={styles.input}
                   textColor="purple"
+                  fadeToColor="white"
                 />
               </Modal>
             </Portal>
@@ -380,7 +430,10 @@ const styles = StyleSheet.create({
   dateInput: {
     alignContent: "center",
     padding: 20,
-    margin: 20,
+    marginTop: "50%",
+    marginHorizontal: 30,
+    backgroundColor: "white",
+    height: "50%",
   },
   itemContainer: {
     flexDirection: "row",

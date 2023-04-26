@@ -13,7 +13,6 @@ const MySnackBar = ({ showSnackbar, setShowSnackbar, snackBarText }) => {
       wrapperStyle={{}}
       onDismiss={() => {
         setShowSnackbar(false);
-        console.log("dismissed");
       }}
       action={{}}
       onIconPress={() => {}}

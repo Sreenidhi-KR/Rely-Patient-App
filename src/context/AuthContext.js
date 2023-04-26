@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       let userInfo = await AsyncStorage.getItem("userInfo");
       userInfo = JSON.parse(userInfo);
-      console.log("isLoggedIn");
+
       console.log(userInfo);
       if (userInfo) {
         setUserInfo(userInfo);

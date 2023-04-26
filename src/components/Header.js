@@ -1,17 +1,14 @@
-//import liraries
-
 import { useNavigation } from "@react-navigation/native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { List } from "react-native-paper";
 import imagePaths from "../constants/imagePaths";
 
 import { AuthContext } from "../context/AuthContext";
 import routes from "../navigation/routes";
-// create a component
 const Header = () => {
   const navigation = useNavigation();
-  const { logout, patientInfo, setPatientInfo } = useContext(AuthContext);
+  const { patientInfo, setPatientInfo } = useContext(AuthContext);
   const text = "";
   return (
     <View>
@@ -27,8 +24,6 @@ const Header = () => {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate(routes.VIEW_PROFILE);
-              // setPatientInfo({});
-              // logout();
             }}
           >
             <Image
@@ -41,9 +36,6 @@ const Header = () => {
           <TouchableOpacity
             onPress={() => {
               setPatientInfo({});
-              setTimeout(() => {
-                navigation.navigate(routes.SELECT_PROFILE);
-              }, 100);
             }}
           >
             <Image

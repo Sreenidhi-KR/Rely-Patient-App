@@ -94,7 +94,7 @@ async function downloadDocument(documentId, fileName) {
     const android = RNFetchBlob.android;
   } catch (err) {
     console.log(err);
-    Toast.show("Unable to download document", 10);
+    Toast.show("Document not found ", 10);
   }
 }
 
@@ -140,7 +140,6 @@ async function getAllDocumentsList(patientId) {
       await getConfig()
     );
     console.log("patient id is:", patientId);
-    console.log("documents fetched are:", response.data);
     let prescriptions = response.data;
     prescriptions = prescriptions.filter((item) => item.isAvailible);
     return prescriptions;
