@@ -170,7 +170,7 @@ const PatientViewInfo = ({ navigation }) => {
               onChangeText={(text) => {
                 text = text.trim();
                 if (/^[A-Za-z]+$/.test(text) || text == "") {
-                  setFname(text);
+                  setFirstName(text);
                 } else {
                   showAlert("Invalid input for First Name");
                 }
@@ -190,7 +190,7 @@ const PatientViewInfo = ({ navigation }) => {
               onChangeText={(text) => {
                 text = text.trim();
                 if (/^[A-Za-z]+$/.test(text) || text == "") {
-                  setLname(text);
+                  setLastName(text);
                 } else {
                   showAlert("Invalid input for Last Name");
                 }
