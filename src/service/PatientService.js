@@ -2,10 +2,12 @@ import axios from "axios";
 import { BASE_URL, getConfig } from "../config";
 const urlBase = `${BASE_URL}/api/v1/user`;
 import Toast from "react-native-simple-toast";
+import { refreshToken } from "./AuthService";
 
 //Patient is the js object containing all the fields required by the patient
 async function addPatient(patient, userId) {
   try {
+    await refreshToken();
     let response = await axios.post(
       `${urlBase}/addPatient/${userId}`,
       patient,
@@ -20,6 +22,7 @@ async function addPatient(patient, userId) {
 //Patient is the js object containing all the fields required by the patient
 async function editPatient(patient, patientId) {
   try {
+    await refreshToken();
     let response = await axios.post(
       `${urlBase}/editPatient/${patientId}`,
       patient,
@@ -33,6 +36,7 @@ async function editPatient(patient, patientId) {
 
 async function getPatients(userId) {
   try {
+    await refreshToken();
     let response = await axios.get(
       `${urlBase}/getPatients/${userId}`,
       await getConfig()
@@ -46,6 +50,7 @@ async function getPatients(userId) {
 
 async function removePatient(patientId) {
   try {
+    await refreshToken();
     let response = await axios.delete(
       `${urlBase}/deletePatient/${patientId}`,
       await getConfig()

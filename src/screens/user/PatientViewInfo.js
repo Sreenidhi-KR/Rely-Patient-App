@@ -109,7 +109,6 @@ const PatientViewInfo = ({ navigation }) => {
       console.log(photoUrl);
       let id = patientInfo.patientId;
       setUserData(null);
-      console.log(patient);
       await editPatient(patient, patientInfo.patientId);
       getPatient();
       setPatientInfo({

@@ -138,7 +138,6 @@ const HomeScreen = ({ navigation }) => {
                           Dr. {`${item.fname} ${item.lname}`}
                         </Text>
                       }
-                      {...console.log("Data: ", data)}
                       description={`On ${item.followUpDate.split("T")[0]}`}
                       left={(props) => (
                         <Image
@@ -154,7 +153,7 @@ const HomeScreen = ({ navigation }) => {
           ) : (
             <View style={styles.box}>
               <Text style={{ color: "gray", fontSize: 17, fontWeight: "500" }}>
-                You have no follow up consultations
+                No follow up consultations
               </Text>
             </View>
           )}

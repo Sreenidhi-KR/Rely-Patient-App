@@ -58,7 +58,7 @@ const AddProfile = ({ navigation, route }) => {
         // age: null,
         dob: dobString,
       };
-      console.log(patient);
+
       addPatient(patient, userId);
       await getProfiles();
       navigation.replace(routes.SELECT_PROFILE);

@@ -33,7 +33,6 @@ const VideoCall = ({ navigation, route }) => {
 
   const callbacks = {
     EndCall: () => {
-      console.log("END CALL");
       finish = true;
       removePatientFromQueue(doctor.id, patientId);
       navigation.replace(routes.HOME);

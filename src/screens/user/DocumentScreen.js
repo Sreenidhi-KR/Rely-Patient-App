@@ -18,10 +18,12 @@ import {
 import Header from "../../components/Header";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
+import { verticalScale } from "../../constants/metrics";
 
 const DocumentScreen = ({ navigation }) => {
   const [docs, setDocs] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [downloading, setDownloading] = React.useState(false);
   const { patientInfo } = useContext(AuthContext);
   const patientId = patientInfo.patientId;
 
@@ -64,59 +66,71 @@ const DocumentScreen = ({ navigation }) => {
     <>
       <View style={styles.container}>
         <Header />
-        <Spinner visible={isLoading} />
+        <Spinner visible={isLoading || downloading} />
 
         <List.Section
           title="Documents"
           titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
         ></List.Section>
-        <FlatList
-          scrollEnabled
-          showsVerticalScrollIndicator
-          data={docs}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          centerContent
-          keyExtractor={({ id }) => id}
-          renderItem={({ item }) => (
-            <View style={styles.box}>
-              <List.Item
-                title={`${item.name}`}
-                titleStyle={{ color: "black" }}
-                right={() => {
-                  return (
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: "row",
-                        justifyContent: "flex-start",
-                      }}
-                    >
-                      <View style={{ flexDirection: "row" }}>
-                        <Button
-                          textColor="gray"
-                          icon="download"
-                          onPress={() => {
-                            downloadDocument(item.id, item.name);
-                          }}
-                        ></Button>
+        {docs && docs.length > 0 ? (
+          <FlatList
+            scrollEnabled
+            showsVerticalScrollIndicator
+            data={docs}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            centerContent
+            keyExtractor={({ id }) => id}
+            renderItem={({ item }) => (
+              <View style={styles.box}>
+                <List.Item
+                  title={`${item.name}`}
+                  titleStyle={{ color: "black" }}
+                  right={() => {
+                    return (
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        <View style={{ flexDirection: "row" }}>
+                          <Button
+                            textColor="gray"
+                            icon="download"
+                            onPress={async () => {
+                              setDownloading(true);
+                              await downloadDocument(item.id, item.name);
+                              setDownloading(false);
+                            }}
+                          ></Button>
 
-                        <Button
-                          textColor="gray"
-                          icon="delete"
-                          onPress={() => {
-                            removeDoc(item.id);
-                          }}
-                        ></Button>
+                          <Button
+                            textColor="gray"
+                            icon="delete"
+                            onPress={async () => {
+                              setDownloading(true);
+                              await removeDoc(item.id);
+                              setDownloading(false);
+                            }}
+                          ></Button>
+                        </View>
                       </View>
-                    </View>
-                  );
-                }}
-              />
-            </View>
-          )}
-        />
+                    );
+                  }}
+                />
+              </View>
+            )}
+          />
+        ) : (
+          <View style={styles.box_empty}>
+            <Text style={{ color: "gray", fontSize: 17, fontWeight: "500" }}>
+              No Documents
+            </Text>
+          </View>
+        )}
       </View>
       <FAB
         icon="plus"
@@ -138,6 +152,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+  },
+  box_empty: {
+    height: verticalScale(100),
+    padding: 10,
+    marginHorizontal: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 15,
+    borderRadius: 10,
+    backgroundColor: "#F7F8FF",
   },
   box: {
     margin: 10,

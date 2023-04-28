@@ -18,7 +18,6 @@ const SelectProfileScreen = ({ navigation, route }) => {
   useEffect(() => {
     getProfiles();
     setBottomBarVisible(false);
-    console.log("patient", patientInfo);
     setPatientInfo({});
     navigation.addListener("beforeRemove", (e) => {
       e.preventDefault();
@@ -76,7 +75,7 @@ const SelectProfileScreen = ({ navigation, route }) => {
             {profiles && profiles.length < 4 ? (
               <SquareTile
                 imgSrc={imagePaths.add_Patient}
-                color={"#ECF9E3"}
+                color={"#F7F8FF"}
                 text="Add Patient Profile"
                 onPress={() => {
                   navigation.navigate(routes.ADD_PROFILE, { setProfiles });
