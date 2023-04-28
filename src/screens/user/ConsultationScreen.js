@@ -211,16 +211,19 @@ const ConsultationScreen = ({ navigation }) => {
                             flexDirection: "row",
                             justifyContent: "space-between",
                             alignItems: "center",
+                            marginTop: 15,
                           }}
                         >
                           <Text style={styles.text}>Follow up</Text>
                           <Button
                             labelStyle={styles.text}
                             style={{
-                              borderRadius: 10,
-                              backgroundColor: "#E2EEDA",
+                              borderRadius: 2,
+                              borderColor: "black",
+                              borderWidth: 0.3,
+                              //backgroundColor: "#E2EEDA",
                             }}
-                            mode="contained"
+                            mode="outlined"
                             onPress={() => {
                               navigation.navigate(routes.DOCTOR_LIST, {
                                 followUp: item.consultId,
@@ -234,9 +237,12 @@ const ConsultationScreen = ({ navigation }) => {
                           <Button
                             labelStyle={{ ...styles.text }}
                             style={{
-                              borderRadius: 10,
-                              backgroundColor: "#E8DDF8",
+                              borderRadius: 2,
+                              borderColor: "black",
+                              borderWidth: 0.3,
+                              // backgroundColor: "#E8DDF8",
                             }}
+                            mode="outlined"
                             onPress={() => {
                               navigation.navigate(routes.DOCTOR_LIST, {
                                 followUp: item.consultId,
@@ -285,9 +291,9 @@ const styles = StyleSheet.create({
   myChip: {
     width: "auto",
     overflow: "visible",
-    borderRadius: 10,
+    borderRadius: 25,
     borderColor: "black",
-    borderWidth: 1,
+    borderWidth: 0.5,
     padding: 8,
 
     margin: 3,

@@ -10,13 +10,13 @@ App
 
 1. click on follow up and in consultation screen takes to doctor screen
 2. show doctor photo
+3. show time is doctor follow up , format it
 
 //Aditya
 
 6. add img support for documents
-7. Add validtaion for signup
+7. Add validtaion for signup email
 
 Special
 
 1. Document Encryptions
-2. User Pin

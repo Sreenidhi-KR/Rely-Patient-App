@@ -39,6 +39,7 @@ const RegisterScreen = ({ navigation }) => {
           value={name}
           textColor="black"
           placeholder="Enter name"
+          maxLength={20}
           onChangeText={(text) => setName(text)}
         />
 
@@ -47,7 +48,9 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.input}
           value={email}
           textColor="black"
+          textContentType="emailAddress"
           placeholder="Enter email"
+          maxLength={50}
           onChangeText={(text) => setEmail(text)}
         />
 
@@ -56,6 +59,7 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.input}
           value={password}
           textColor="black"
+          maxLength={30}
           placeholder="Enter password"
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
