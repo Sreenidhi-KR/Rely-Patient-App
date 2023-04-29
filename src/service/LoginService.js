@@ -7,7 +7,7 @@ const urlBase = `${BASE_URL}/api/auth`;
 const userLogin = async (username, password) => {
   console.log("userLogin - login service");
   try {
-    const response = await axios.post(`${urlBase}/signin`, {
+    const response = await axios.post(`${urlBase}/user/signin`, {
       username,
       password,
     });
@@ -22,7 +22,7 @@ const userLogin = async (username, password) => {
 const userRegister = async (username, email, password) => {
   console.log("userRegister - login service");
   try{
-  await axios.post(`${urlBase}/signup`, {
+  await axios.post(`${urlBase}/user/signup`, {
     username,
     password,
     email,
