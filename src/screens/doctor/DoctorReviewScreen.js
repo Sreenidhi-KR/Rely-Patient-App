@@ -94,7 +94,6 @@ const DoctorReviewScreen = ({ navigation, route }) => {
               mode="contained"
               style={{ marginTop: 50, width: 200 }}
               onPress={() => {
-                console.log("Submite review");
                 setVisible(false);
                 updateRating();
                 navigation.replace(routes.HOME);

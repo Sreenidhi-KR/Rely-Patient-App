@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useEffect, useState } from "react";
-import { userLogin, userRegister } from "../service/LoginService";
+import { userLogin, userRegister, userLogout } from "../service/AuthService";
 
 export const AuthContext = createContext();
 
@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     setIsLoading(true);
+    await userLogout();
     await AsyncStorage.removeItem("userInfo");
     setUserInfo({});
     setIsLoading(false);

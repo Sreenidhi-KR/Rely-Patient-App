@@ -1,18 +1,17 @@
 import DocumentPicker from "react-native-document-picker";
 import axios from "axios";
-import { Buffer } from "buffer";
 import RNFetchBlob from "rn-fetch-blob";
 const { fs } = RNFetchBlob;
 import { BASE_URL, getConfig, getToken } from "../config";
-import Pdf from "react-native-pdf";
-import View from "react-native-paper";
 const urlBase = `${BASE_URL}/api/v1`;
 import Toast from "react-native-simple-toast";
+import { refreshToken } from "./AuthService";
 
 //returns a array contains 2 seperate arrays where the first array contains all the documents of the patient that are in the consultation and second array contains all the documents of patient that are not in current consultation.
 
 async function removeDocFromConsultation(documentId, consultationId) {
   try {
+    await refreshToken();
     await axios.get(
       `${urlBase}/consultation/removeDocumentByCid_Docuid/${consultationId}/${documentId}`,
       await getConfig()
@@ -26,6 +25,7 @@ async function removeDocFromConsultation(documentId, consultationId) {
 
 async function addDocToConsultation(documentId, consultationId) {
   try {
+    await refreshToken();
     await axios.get(
       `${urlBase}/consultation/addDocumentByCid_Docuid/${consultationId}/${documentId}`,
       await getConfig()
@@ -38,6 +38,7 @@ async function addDocToConsultation(documentId, consultationId) {
 }
 async function docsForConsultation(consultationId, patientId) {
   try {
+    await refreshToken();
     let response = await axios.get(
       `${urlBase}/consultation/getAllDocumentsByCid/${consultationId}`,
       await getConfig()
@@ -70,10 +71,12 @@ async function downloadDocument(documentId, fileName) {
     },
   };
   try {
+    await refreshToken();
     let response = await axios.get(
       `${urlBase}/document/download/${documentId}`,
       config
     );
+
     const pdfstr = response.data;
     const DownloadDir = RNFetchBlob.fs.dirs.DownloadDir;
 
@@ -98,31 +101,33 @@ async function downloadDocument(documentId, fileName) {
   }
 }
 
-async function viewDocument(documentId) {
-  const config = {
-    method: "GET",
-    "Content-Type": "multipart/form-data",
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${await getToken()}`,
-      Accept: "application/json",
-    },
-  };
-  try {
-    let response = await axios.get(
-      `${urlBase}/document/download/${documentId}`,
-      config
-    );
-    const pdfstr = response.data;
-    return pdfstr;
-  } catch (err) {
-    Toast.show("Unable to view document", 10);
-    console.log(err);
-  }
-}
+// async function viewDocument(documentId) {
+//   const config = {
+//     method: "GET",
+//     "Content-Type": "multipart/form-data",
+//     headers: {
+//       "ngrok-skip-browser-warning": "true",
+//       Authorization: `Bearer ${await getToken()}`,
+//       Accept: "application/json",
+//     },
+//   };
+//   try {
+//  await refreshToken();
+//     let response = await axios.get(
+//       `${urlBase}/document/download/${documentId}`,
+//       config
+//     );
+//     const pdfstr = response.data;
+//     return pdfstr;
+//   } catch (err) {
+//     Toast.show("Unable to view document", 10);
+//     console.log(err);
+//   }
+// }
 
 async function removeDocument(docId) {
   try {
+    await refreshToken();
     let response = await axios.delete(
       `${urlBase}/document/delete/${docId}`,
       await getConfig()
@@ -135,14 +140,14 @@ async function removeDocument(docId) {
 
 async function getAllDocumentsList(patientId) {
   try {
+    await refreshToken();
     let response = await axios.get(
       `${urlBase}/document/getAll/${patientId}`,
       await getConfig()
     );
-    console.log("patient id is:", patientId);
-    let prescriptions = response.data;
-    prescriptions = prescriptions.filter((item) => item.isAvailible);
-    return prescriptions;
+    let documents = response.data;
+    documents = documents.filter((item) => item.isAvailible);
+    return documents;
   } catch (err) {
     console.log(err);
     Toast.show("Unable to fetch all documents of the patient", 10);
@@ -151,6 +156,7 @@ async function getAllDocumentsList(patientId) {
 
 async function getAllPrescriptionsList(patientId) {
   try {
+    await refreshToken();
     let response = await axios.get(
       `${urlBase}/document/getAllPrescriptions/${patientId}`,
       await getConfig()
@@ -185,7 +191,7 @@ async function uploadDocument(patientId) {
       name: doc[0].name,
       size: doc[0].size,
     });
-
+    await refreshToken();
     let response = await axios.post(
       `${urlBase}/document/upload/${patientId}`,
       formdata,
@@ -205,5 +211,4 @@ export {
   docsForConsultation,
   addDocToConsultation,
   removeDocFromConsultation,
-  viewDocument,
 };

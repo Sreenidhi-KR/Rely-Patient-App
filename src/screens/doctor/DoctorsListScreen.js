@@ -10,7 +10,10 @@ import {
 } from "react-native";
 import { List, Avatar } from "react-native-paper";
 import routes from "../../navigation/routes";
-import { getAllDoctors } from "../../service/DoctorService";
+import {
+  getAllDoctors,
+  getDoctorsBySpecialisation,
+} from "../../service/DoctorService";
 import { verticalScale } from "../../constants/metrics";
 
 const DoctorListScreen = ({ route, navigation }) => {
@@ -28,7 +31,7 @@ const DoctorListScreen = ({ route, navigation }) => {
 
   const getDoctors = async () => {
     try {
-      const json = await getAllDoctors();
+      const json = await getDoctorsBySpecialisation(specialization);
       setData(json);
     } catch (error) {
       console.error(error);
@@ -45,7 +48,7 @@ const DoctorListScreen = ({ route, navigation }) => {
     <View style={{ flex: 1, backgroundColor: "white" }}>
       {isLoading ? (
         <ActivityIndicator />
-      ) : (
+      ) : data && data.length > 0 ? (
         <View style={styles.wrapper}>
           <FlatList
             data={data}
@@ -97,6 +100,12 @@ const DoctorListScreen = ({ route, navigation }) => {
             )}
           />
         </View>
+      ) : (
+        <View style={styles.box}>
+          <Text style={{ color: "gray", fontSize: 17, fontWeight: "500" }}>
+            Sorry No Doctors available
+          </Text>
+        </View>
       )}
     </View>
   );
@@ -111,7 +120,6 @@ const styles = StyleSheet.create({
     height: verticalScale(100),
     padding: 10,
     marginHorizontal: 20,
-
     justifyContent: "center",
     marginVertical: 15,
     borderRadius: 10,

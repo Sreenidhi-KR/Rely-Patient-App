@@ -15,6 +15,7 @@ import { getAllPreviousConsultations } from "../../service/ConsultationService";
 import { downloadDocument } from "../../service/DocumentService";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
+import { verticalScale } from "../../constants/metrics";
 
 const ConsultationScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = React.useState(true);
@@ -74,7 +75,6 @@ const ConsultationScreen = ({ navigation }) => {
       const json = await getAllPreviousConsultations(patientId);
       setData(json);
     } catch (error) {
-      console.log("error");
       console.error(error);
     } finally {
       setRefreshing(false);
@@ -98,70 +98,93 @@ const ConsultationScreen = ({ navigation }) => {
             title="My Consultations"
             titleStyle={{ fontWeight: "bold", fontSize: 25, color: "grey" }}
           ></List.Section>
-
-          <FlatList
-            scrollEnabled
-            showsVerticalScrollIndicator
-            data={data}
-            keyExtractor={(item) => item.consultId}
-            renderItem={({ item }) => {
-              return (
-                <View
-                  style={{
-                    backgroundColor: "#F7F8FF",
-                    marginHorizontal: 20,
-                    marginVertical: 10,
-                    padding: 10,
-                    borderRadius: 10,
-                  }}
-                >
-                  <List.Accordion
-                    theme={{
-                      colors: { background: "#F7F8FF" },
+          {data && data.length > 0 ? (
+            <FlatList
+              scrollEnabled
+              showsVerticalScrollIndicator
+              data={data}
+              keyExtractor={(item) => item.consultId}
+              renderItem={({ item }) => {
+                return (
+                  <View
+                    style={{
+                      backgroundColor: "#F7F8FF",
+                      marginHorizontal: 20,
+                      marginVertical: 10,
+                      padding: 10,
+                      borderRadius: 10,
                     }}
-                    titleStyle={{
-                      color: "#414141",
-                      fontSize: 20,
-                      fontWeight: "bold",
-                    }}
-                    descriptionStyle={{ color: "gray", fontSize: 11 }}
-                    title={`Dr.${item.doctorName}`}
-                    description={
-                      getDateTime(`${item.startTime}`).formattedDate1
-                    }
                   >
-                    <>
-                      <Divider />
+                    <List.Accordion
+                      theme={{
+                        colors: { background: "#F7F8FF" },
+                      }}
+                      titleStyle={{
+                        color: "#414141",
+                        fontSize: 20,
+                        fontWeight: "bold",
+                      }}
+                      descriptionStyle={{ color: "gray", fontSize: 11 }}
+                      title={`Dr.${item.doctorName}`}
+                      description={
+                        getDateTime(`${item.startTime}`).formattedDate1
+                      }
+                    >
+                      <>
+                        <Divider />
 
-                      <Text
-                        style={{
-                          color: "gray",
-                          fontSize: 11,
-                          fontWeight: "bold",
-                          marginHorizontal: 15,
-                          marginTop: 10,
-                          marginBottom: 5,
-                        }}
-                      >
-                        Documents
-                      </Text>
+                        <Text style={styles.text}>Documents</Text>
 
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          paddingLeft: 15,
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        {item.documentDetailsList.map((document) =>
-                          document.id == item.prescription ? null : (
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            paddingLeft: 15,
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          {item.documentDetailsList
+                            .filter((document) => document.isAvailible)
+                            .map((document) =>
+                              document.id == item.prescription ? null : (
+                                <TouchableOpacity
+                                  key={document.id}
+                                  onPress={async () => {
+                                    setDownloading(true);
+                                    await downloadDocument(
+                                      document.id,
+                                      document.name
+                                    );
+                                    setDownloading(false);
+                                  }}
+                                >
+                                  <View
+                                    style={{
+                                      ...styles.myChip,
+                                      backgroundColor: "#E8DDF8",
+                                    }}
+                                  >
+                                    <Text
+                                      numberOfLines={1}
+                                      ellipsizeMode="tail"
+                                      style={{ fontSize: 11, color: "#564264" }}
+                                    >
+                                      {document.name}
+                                    </Text>
+                                  </View>
+                                </TouchableOpacity>
+                              )
+                            )}
+                          {item.prescription ? (
                             <TouchableOpacity
-                              key={document.id}
                               onPress={async () => {
                                 setDownloading(true);
                                 await downloadDocument(
-                                  document.id,
-                                  document.name
+                                  item.prescription,
+                                  "prescription-" +
+                                    item.doctorName +
+                                    getDateTime(`${item.startTime}`)
+                                      .formattedDay +
+                                    ".pdf"
                                 );
                                 setDownloading(false);
                               }}
@@ -169,70 +192,79 @@ const ConsultationScreen = ({ navigation }) => {
                               <View
                                 style={{
                                   ...styles.myChip,
-                                  backgroundColor: "#E8DDF8",
+                                  backgroundColor: "#edf8dd",
                                 }}
                               >
                                 <Text
                                   numberOfLines={1}
                                   ellipsizeMode="tail"
-                                  style={{ fontSize: 11, color: "#564264" }}
+                                  style={{ fontSize: 11, color: "black" }}
                                 >
-                                  {document.name}
+                                  Prescription
                                 </Text>
                               </View>
                             </TouchableOpacity>
-                          )
-                        )}
-                        {item.prescription ? (
-                          <TouchableOpacity
-                            onPress={async () => {
-                              setDownloading(true);
-                              await downloadDocument(
-                                item.prescription,
-                                "prescription-" +
-                                  item.doctorName +
-                                  getDateTime(`${item.startTime}`)
-                                    .formattedDay +
-                                  ".pdf"
-                              );
-                              setDownloading(false);
+                          ) : null}
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginTop: 15,
+                          }}
+                        >
+                          <Text style={styles.text}>Follow up</Text>
+                          <Button
+                            labelStyle={styles.text}
+                            style={{
+                              borderRadius: 2,
+                              borderColor: "black",
+                              borderWidth: 0.3,
+                              //backgroundColor: "#E2EEDA",
+                            }}
+                            mode="outlined"
+                            onPress={() => {
+                              navigation.navigate(routes.DOCTOR_LIST, {
+                                followUp: item.consultId,
+                              });
                             }}
                           >
-                            <View
-                              style={{
-                                ...styles.myChip,
-                                backgroundColor: "#edf8dd",
-                              }}
-                            >
-                              <Text
-                                numberOfLines={1}
-                                ellipsizeMode="tail"
-                                style={{ fontSize: 11, color: "black" }}
-                              >
-                                Prescription
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-                        ) : null}
-                      </View>
-                      <Button
-                        onPress={() => {
-                          navigation.navigate(routes.DOCTOR_LIST, {
-                            followUp: item.consultId,
-                          });
-                        }}
-                        style={{ marginTop: 10, borderRadius: 10 }}
-                        mode="outlined"
-                        textColor="grey"
-                      >
-                        Follow Up On This Consultation
-                      </Button>
-                    </>
-                  </List.Accordion>
-                </View>
-              );
-            }}
-          />
+                            Same doctor
+                          </Button>
+                          <Divider />
+
+                          <Button
+                            labelStyle={{ ...styles.text }}
+                            style={{
+                              borderRadius: 2,
+                              borderColor: "black",
+                              borderWidth: 0.3,
+                              // backgroundColor: "#E8DDF8",
+                            }}
+                            mode="outlined"
+                            onPress={() => {
+                              navigation.navigate(routes.DOCTOR_LIST, {
+                                followUp: item.consultId,
+                              });
+                            }}
+                          >
+                            Different doctor
+                          </Button>
+                        </View>
+                      </>
+                    </List.Accordion>
+                  </View>
+                );
+              }}
+            />
+          ) : (
+            <View style={styles.box_empty}>
+              <Text style={{ color: "gray", fontSize: 17, fontWeight: "500" }}>
+                No Consulatations
+              </Text>
+            </View>
+          )}
         </>
       </View>
     </>
@@ -259,12 +291,22 @@ const styles = StyleSheet.create({
   myChip: {
     width: "auto",
     overflow: "visible",
-    borderRadius: 10,
+    borderRadius: 25,
     borderColor: "black",
-    borderWidth: 1,
+    borderWidth: 0.5,
     padding: 8,
 
     margin: 3,
+  },
+  box_empty: {
+    height: verticalScale(100),
+    padding: 10,
+    marginHorizontal: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 15,
+    borderRadius: 10,
+    backgroundColor: "#F7F8FF",
   },
   box: {
     height: 120,
@@ -273,6 +315,14 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 20,
     backgroundColor: "#F7F8FF",
+  },
+  text: {
+    color: "gray",
+    fontSize: 11,
+    fontWeight: "bold",
+    marginHorizontal: 15,
+    marginTop: 10,
+    marginBottom: 10,
   },
 });
 

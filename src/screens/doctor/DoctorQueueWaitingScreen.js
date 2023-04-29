@@ -34,7 +34,6 @@ const DoctorQueueWaitingScreen = ({ navigation, route }) => {
   };
 
   const dialogDismiss = () => {
-    console.log("dismiidew");
     setLeftQueue(true);
     navigation.navigate(routes.HOME);
   };

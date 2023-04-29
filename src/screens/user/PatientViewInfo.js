@@ -24,7 +24,7 @@ const PatientViewInfo = ({ navigation }) => {
   const [bloodGroup, setBloodGroup] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [abdmNo, setAbdmNo] = useState("");
+  const [pinCode, setPinCode] = useState("");
   const [relationship, setRelationship] = useState("");
   const [dob, setDob] = useState("");
   const [portal, setPortal] = useState(false);
@@ -61,7 +61,7 @@ const PatientViewInfo = ({ navigation }) => {
     setBloodGroup(data.blood_group);
     setCity(data.city);
     setState(data.state);
-    setAbdmNo(data.abdm_no);
+    setPinCode(data.pinCode);
     setRelationship(data.relationship);
     setDob(data.dob);
     setPhotoUrl(data.photo_url);
@@ -84,7 +84,7 @@ const PatientViewInfo = ({ navigation }) => {
       blood_group: bloodGroup,
       city,
       state,
-      abdm_no: abdmNo,
+      pinCode,
       relationship: relationship,
       dob,
       sex,
@@ -99,7 +99,7 @@ const PatientViewInfo = ({ navigation }) => {
       bloodGroup == "" ||
       city == "" ||
       state == "" ||
-      abdmNo == "" ||
+      pinCode == "" ||
       relationship == "" ||
       sex == ""
     ) {
@@ -109,7 +109,6 @@ const PatientViewInfo = ({ navigation }) => {
       console.log(photoUrl);
       let id = patientInfo.patientId;
       setUserData(null);
-      console.log(patient);
       await editPatient(patient, patientInfo.patientId);
       getPatient();
       setPatientInfo({
@@ -167,6 +166,7 @@ const PatientViewInfo = ({ navigation }) => {
             <TextInput
               style={styles.itemValue}
               value={firstName}
+              maxLength={30}
               onChangeText={(text) => {
                 text = text.trim();
                 if (/^[A-Za-z]+$/.test(text) || text == "") {
@@ -187,6 +187,7 @@ const PatientViewInfo = ({ navigation }) => {
             <TextInput
               style={styles.itemValue}
               value={lastName}
+              maxLength={20}
               onChangeText={(text) => {
                 text = text.trim();
                 if (/^[A-Za-z]+$/.test(text) || text == "") {
@@ -239,6 +240,7 @@ const PatientViewInfo = ({ navigation }) => {
             <Text style={styles.itemTitle}>City</Text>
             <TextInput
               style={styles.itemValue}
+              maxLength={20}
               value={city}
               onChangeText={(text) => {
                 text = text.trim();
@@ -260,6 +262,7 @@ const PatientViewInfo = ({ navigation }) => {
           <View style={styles.itemContainer}>
             <Text style={styles.itemTitle}>State</Text>
             <TextInput
+              maxLength={20}
               style={styles.itemValue}
               value={state}
               onChangeText={(text) => {
@@ -280,17 +283,21 @@ const PatientViewInfo = ({ navigation }) => {
           </View>
 
           <View style={styles.itemContainer}>
-            <Text style={styles.itemTitle}>ABDM No</Text>
+            <Text style={styles.itemTitle}>PIN (4 digits)</Text>
             <TextInput
+              secureTextEntry
+              maxLength={4}
+              inputMode="numeric"
+              keyboardType="number-pad"
               style={styles.itemValue}
-              value={abdmNo}
+              value={pinCode}
               onChangeText={(text) => {
                 text = text.trim();
                 if (/^[0-9]+$/.test(text) || text == "") {
-                  setAbdmNo(text);
+                  setPinCode(text);
                 } else {
                   showAlert(
-                    "Invalid input for ABDM No: Should contain only Numbers"
+                    "Invalid input for PIN No: Should contain only 4 Numbers"
                   );
                 }
               }}
@@ -305,6 +312,7 @@ const PatientViewInfo = ({ navigation }) => {
             <Text style={styles.itemTitle}>Relationship</Text>
             <TextInput
               style={styles.itemValue}
+              maxLength={20}
               value={relationship}
               onChangeText={(text) => {
                 text = text.trim();

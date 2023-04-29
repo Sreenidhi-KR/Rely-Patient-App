@@ -1,12 +1,13 @@
 import axios from "axios";
-import { BASE_URL, getToken, getConfig } from "../config";
+import { BASE_URL, getConfig } from "../config";
 import Toast from "react-native-simple-toast";
-import { AuthContext } from "../context/AuthContext";
+import { refreshToken } from "./AuthService";
 
 const urlBase = `${BASE_URL}/api/v1`;
 
 const getAllPreviousConsultations = async (patientId) => {
   try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/consultation/getPrevConsultations/${patientId}`,
       await getConfig()
@@ -21,6 +22,7 @@ const getAllPreviousConsultations = async (patientId) => {
 const getPrevConsultDetails = async (consultId) => {
   console.log("Get Individual Previous Consultation Details");
   try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/consultation/getAllDocumentsByCid/${consultId}`,
       await getConfig()
@@ -35,6 +37,7 @@ const getPrevConsultDetails = async (consultId) => {
 const addConsultation = async (patientId, doctorId, startTime, followUp) => {
   console.log("Creating new Consultation", followUp);
   try {
+    await refreshToken();
     const response = await axios.post(
       `${urlBase}/consultation/addConsultation`,
       {
@@ -55,6 +58,7 @@ const addConsultation = async (patientId, doctorId, startTime, followUp) => {
 const getQuickDoctor = async () => {
   console.log("Get Doctor with least patients for Quick Consultation");
   try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/dqueue/getQuickDoctor`,
       await getConfig()
@@ -69,6 +73,7 @@ const getQuickDoctor = async () => {
 const getFollowUp = async (patient_id) => {
   console.log("Get Follow Up of All Patients");
   try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/consultation/getFollowUp/${patient_id}`,
       await getConfig()
