@@ -2,7 +2,7 @@ import axios from "axios";
 import { BASE_URL, getConfig, getToken } from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DocumentPicker from "react-native-document-picker";
-import Toast from "react-native-simple-toast";
+import { refreshToken } from "./AuthService";
 
 const urlBase = `${BASE_URL}/api/v1`;
 
@@ -14,6 +14,7 @@ async function downloadPhoto(patientId) {
       Authorization: `Bearer ${await getToken()}`,
     },
   };
+  await refreshToken();
   let response = await axios.get(
     `${urlBase}/user/downloadImage/${patientId}`,
     config
@@ -41,7 +42,7 @@ async function uploadPhoto(patientId) {
       name: doc[0].name,
       size: doc[0].size,
     });
-
+    await refreshToken();
     let response = await axios.post(
       `${urlBase}/user/uploadImage/${patientId}`,
       formdata,
@@ -56,6 +57,7 @@ async function getProfilesForUser() {
     let userInfo = await AsyncStorage.getItem("userInfo");
     userInfo = JSON.parse(userInfo);
     const userId = userInfo.id;
+    await refreshToken();
     let response = await axios.get(
       `${urlBase}/user/getPatients/${userId}`,
       await getConfig()
@@ -63,7 +65,6 @@ async function getProfilesForUser() {
     return response.data;
   } catch (err) {
     console.log(err);
-    Toast.show("Unable to fetch profiles for User", 10);
   }
 }
 

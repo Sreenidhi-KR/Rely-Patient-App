@@ -8,6 +8,29 @@ const getToken = async () => {
   return userInfo == null ? null : userInfo.accessToken;
 };
 
+const getUserId = async () => {
+  let userInfo = await AsyncStorage.getItem("userInfo");
+  userInfo = JSON.parse(userInfo);
+  return userInfo == null ? null : userInfo.id;
+};
+
+const getRefreshToken = async () => {
+  let userInfo = await AsyncStorage.getItem("userInfo");
+  userInfo = JSON.parse(userInfo);
+  return userInfo == null ? null : userInfo.refreshToken;
+};
+
+const setToken = async (newToken) => {
+  let userInfo = await AsyncStorage.getItem("userInfo");
+  userInfo = JSON.parse(userInfo);
+  if (userInfo) {
+    await AsyncStorage.mergeItem(
+      "userInfo",
+      JSON.stringify({ accessToken: newToken })
+    );
+  }
+};
+
 const getConfig = async () => {
   return {
     headers: {
@@ -17,4 +40,4 @@ const getConfig = async () => {
   };
 };
 
-export { BASE_URL, getToken, getConfig };
+export { BASE_URL, getToken, getConfig, getRefreshToken, setToken, getUserId };

@@ -17,7 +17,7 @@ const AddProfile = ({ navigation, route }) => {
   const [sex, setSex] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [abdmNo, setAbdmNo] = useState("");
+  const [pinCode, setPinCode] = useState("");
   const [relationship, setRelationship] = useState("");
 
   const showAlert = (message) => Alert.alert("Error ", message);
@@ -40,7 +40,7 @@ const AddProfile = ({ navigation, route }) => {
       bloodGroup == "" ||
       city == "" ||
       state == "" ||
-      abdmNo == "" ||
+      pinCode == "" ||
       relationship == "" ||
       sex == ""
     ) {
@@ -53,12 +53,12 @@ const AddProfile = ({ navigation, route }) => {
         blood_group: bloodGroup,
         city: city,
         state: state,
-        abdm_no: abdmNo,
+        pinCode: pinCode,
         relationship: relationship,
         // age: null,
         dob: dobString,
       };
-      console.log(patient);
+
       addPatient(patient, userId);
       await getProfiles();
       navigation.replace(routes.SELECT_PROFILE);
@@ -69,6 +69,7 @@ const AddProfile = ({ navigation, route }) => {
       <Text style={styles.label}>First Name</Text>
       <TextInput
         style={styles.input}
+        maxLength={30}
         value={fname}
         onChangeText={(text) => {
           text = text.trim();
@@ -84,6 +85,7 @@ const AddProfile = ({ navigation, route }) => {
       <Text style={styles.label}>Last Name</Text>
       <TextInput
         style={styles.input}
+        maxLength={20}
         value={lname}
         onChangeText={(text) => {
           text = text.trim();
@@ -138,6 +140,7 @@ const AddProfile = ({ navigation, route }) => {
       <Text style={styles.label}>City</Text>
       <TextInput
         style={styles.input}
+        maxLength={20}
         value={city}
         onChangeText={(text) => {
           text = text.trim();
@@ -153,6 +156,7 @@ const AddProfile = ({ navigation, route }) => {
       <Text style={styles.label}>State</Text>
       <TextInput
         style={styles.input}
+        maxLength={20}
         value={state}
         onChangeText={(text) => {
           text = text.trim();
@@ -165,16 +169,22 @@ const AddProfile = ({ navigation, route }) => {
         textColor="black"
       />
 
-      <Text style={styles.label}>ABDM No.</Text>
+      <Text style={styles.label}>Pin Code (4 Digit)</Text>
       <TextInput
         style={styles.input}
-        value={abdmNo}
+        maxLength={4}
+        inputMode="numeric"
+        keyboardType="number-pad"
+        secureTextEntry
+        value={pinCode}
         onChangeText={(text) => {
           text = text.trim();
-          if (/^[0-9]+$/.test(text) || text == "") {
-            setAbdmNo(text);
+          if ((/^[0-9]+$/.test(text) || text == "") && text.length <= 4) {
+            setPinCode(text);
           } else {
-            showAlert("Invalid input for ABDM No: Should contain only Numbers");
+            showAlert(
+              "Invalid input for PIN : Should contain only max 4 Numbers"
+            );
           }
         }}
         textColor="black"
@@ -184,6 +194,7 @@ const AddProfile = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         value={relationship}
+        maxLength={20}
         onChangeText={(text) => {
           text = text.trim();
           if (/^[A-Za-z]+$/.test(text) || text == "") {

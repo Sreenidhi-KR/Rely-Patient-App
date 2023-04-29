@@ -1,12 +1,14 @@
 import axios from "axios";
 import { BASE_URL, getConfig } from "../config";
 import Toast from "react-native-simple-toast";
+import { refreshToken } from "./AuthService";
 
 const urlBase = `${BASE_URL}/api/v1`;
 
 const getAllDoctors = async () => {
   console.log("Get ALL Doctors");
   try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/doctor/getAllDoctors`,
       await getConfig()
@@ -20,11 +22,23 @@ const getAllDoctors = async () => {
 
 const getDoctorsBySpecialisation = async (specialisation) => {
   console.log("Get ALL Doctors BY Specialisation");
+  try {
+    await refreshToken();
+    const response = await axios.get(
+      `${urlBase}/doctor/getAllDoctorsBySpec/${specialisation}`,
+      await getConfig()
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    Toast.show("Unable to get all doctors", 10);
+  }
 };
 
 const addPatientToQueue = async (doctorId, patientId) => {
   console.log("addPatientToQueue");
   try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/dqueue/addPatient/${doctorId}/${patientId}`,
       await getConfig()
@@ -38,6 +52,7 @@ const addPatientToQueue = async (doctorId, patientId) => {
 const removePatientFromQueue = async (doctorId, patientId) => {
   console.log("removePatientFromoQueue");
   try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/dqueue/removePatient/${doctorId}/${patientId}`,
       await getConfig()
@@ -56,6 +71,7 @@ const getPatientIndexFromQueue = async (
 ) => {
   console.log("getPatientIndexFromQueue");
   try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/dqueue/getPatientIndex/${doctorId}/${patientId}`,
       await getConfig()
@@ -77,10 +93,12 @@ const addAndGetIndexFromQueue = async (
   setAccept
 ) => {
   try {
+    await refreshToken();
     await axios.get(
       `${urlBase}/dqueue/addPatient/${doctorId}/${patientId}`,
       await getConfig()
     );
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/dqueue/getPatientIndex/${doctorId}/${patientId}`,
       await getConfig()
@@ -96,6 +114,7 @@ const addAndGetIndexFromQueue = async (
 
 const updateDoctorRating = async (doctorId, starRating) => {
   try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/doctor/updateDoctorRating/${doctorId}/${starRating}`,
       await getConfig()
@@ -106,8 +125,9 @@ const updateDoctorRating = async (doctorId, starRating) => {
   }
 };
 
-const getAllPatientsFromDqueue = async(doctorId) => {
-  try{
+const getAllPatientsFromDqueue = async (doctorId) => {
+  try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/dqueue/getPatients/${doctorId}`,
       await getConfig()
@@ -119,8 +139,9 @@ const getAllPatientsFromDqueue = async(doctorId) => {
   }
 };
 
-const getDoctorById = async(doctorId) => {
-  try{
+const getDoctorById = async (doctorId) => {
+  try {
+    await refreshToken();
     const response = await axios.get(
       `${urlBase}/doctor/getDoctorById/${doctorId}`,
       await getConfig()
@@ -141,4 +162,5 @@ export {
   updateDoctorRating,
   getAllPatientsFromDqueue,
   getDoctorById,
+  getDoctorsBySpecialisation,
 };

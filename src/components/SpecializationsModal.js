@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import doctorSpecializations from "../constants/doctorSpecializations";
 import routes from "../navigation/routes";
+import { horizontalScale, verticalScale } from "../constants/metrics";
 
 const SpecializationsModal = ({ navigation, hideModal }) => {
   return (
@@ -32,8 +33,8 @@ const SpecializationsModal = ({ navigation, hideModal }) => {
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
-                  width: 100,
-                  height: 120,
+                  width: horizontalScale(100),
+                  height: verticalScale(120),
                 }}
               >
                 <Image source={item.url} style={styles.image} />
@@ -51,9 +52,9 @@ const SpecializationsModal = ({ navigation, hideModal }) => {
 
 const styles = StyleSheet.create({
   image: {
-    height: 50,
-    width: 50,
-    margin: 10,
+    height: verticalScale(50),
+    width: horizontalScale(50),
+    margin: verticalScale(10),
   },
 });
 
