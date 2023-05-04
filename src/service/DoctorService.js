@@ -152,6 +152,19 @@ const getDoctorById = async (doctorId) => {
   }
 };
 
+const getDoctorPhoto = async (doctorId) => {
+  try{
+    await refreshToken();
+    const response = await axios.get(
+      `${urlBase}/doctor/getPhotoById/${doctorId}`,
+      await getConfig()
+    );
+    return response.data;
+  } catch(err) {
+    console.log(err);
+  }
+};
+
 export {
   getAllDoctors,
   addPatientToQueue,
@@ -162,4 +175,5 @@ export {
   getAllPatientsFromDqueue,
   getDoctorById,
   getDoctorsBySpecialisation,
+  getDoctorPhoto,
 };
