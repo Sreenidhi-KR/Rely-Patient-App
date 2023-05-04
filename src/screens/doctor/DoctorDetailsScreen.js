@@ -6,17 +6,23 @@ import routes from "../../navigation/routes";
 import {
   getAllPatientsFromDqueue,
   getDoctorById,
+  getDoctorPhoto,
 } from "../../service/DoctorService";
 
 // create a component
 const DoctorDetailsScreen = ({ navigation, route }) => {
   const { doctor, followUp } = route.params;
   const [currDoctor, setCurrDoctor] = useState(doctor);
+  const [photo, setPhoto] = useState(null);
   const imageUrl = currDoctor.photo_url;
   console.log(imageUrl);
   const [currentlength, setCurrentLength] = useState(10);
   const isFull = currentlength + 1 > currDoctor.limit;
 
+  const doctorPhoto=async()=>{
+    const photo=await getDoctorPhoto(currDoctor.id);
+    setPhoto(photo);
+  }
   const getQueueLength = async () => {
     const size = await getAllPatientsFromDqueue(currDoctor.id);
     const length = size.length;
@@ -31,21 +37,24 @@ const DoctorDetailsScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     getQueueLength();
+    doctorPhoto();
   }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.image}>
-        {!imageUrl ? (
+        {!photo ? (
           <Image
             source={require("../../../assets/general-doc.png")}
             style={{ width: 100, height: 100, marginRight: 50 }}
           />
         ) : (
           <Image
-            source={require(`../../../assets/general-doc.png`)}
-            style={{ width: 100, height: 100, marginRight: 50 }}
-          />
+                source={{
+                  uri: `data:image/png;base64,${photo}`,
+                }}
+                style={{ height: 100, width: 100, marginRight:50, borderRadius:50}}
+              />
         )}
         <View style={styles.details}>
           <Text style={{ fontSize: 24, fontStyle: "bold" }}>
