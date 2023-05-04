@@ -66,7 +66,6 @@ const getQuickDoctor = async () => {
     return response.data;
   } catch (error) {
     console.log(error);
-    Toast.show("Unable to get quick doctor", 10);
   }
 };
 

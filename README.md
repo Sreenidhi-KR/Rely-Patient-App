@@ -8,15 +8,13 @@ TODO
 App
 //Kiran
 
-1. click on follow up and in consultation screen takes to doctor screen
 2. show doctor photo
 3. show time is doctor follow up , format it
+4. followup consultation date
 
-//Aditya
-
-6. add img support for documents
-7. Add validtaion for signup email
+//Aditya 8. Do not show prescription in documnents sent to doctor
 
 Special
 
 1. Document Encryptions
+2. Encrypt localstorage in doctor app

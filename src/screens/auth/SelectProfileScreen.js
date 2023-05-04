@@ -94,7 +94,7 @@ const SelectProfileScreen = ({ navigation, route }) => {
                         patientName: patient.fname,
                       });
                     } else {
-                      Toast.show("Wrong PIN", 10);
+                      Toast.show("Wrong PIN", 5);
                     }
                   }}
                 >

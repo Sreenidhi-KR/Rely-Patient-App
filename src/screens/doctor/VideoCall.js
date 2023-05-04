@@ -35,7 +35,7 @@ const VideoCall = ({ navigation, route }) => {
     EndCall: () => {
       finish = true;
       removePatientFromQueue(doctor.id, patientId);
-      navigation.replace(routes.HOME);
+      navigation.replace(routes.DOCTOR_REVIEW, { doctor });
     },
   };
 
@@ -86,7 +86,7 @@ const VideoCall = ({ navigation, route }) => {
       if (res.index == -1) {
         finish = true;
         removePatientFromQueue(doctor.id, patientId);
-        navigation.replace(routes.DOCTOR_REVIEW, { doctor });
+        navigation.replace(routes.HOME);
       }
     }, 2000);
 

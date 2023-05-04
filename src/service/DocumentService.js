@@ -46,21 +46,21 @@ async function docsForConsultation(consultationId, patientId) {
     let inConsultation = response.data;
     let allDocs = await getAllDocumentsList(patientId);
     let allPrescriptions = await getAllPrescriptionsList(patientId);
-    let canBeAdded = allDocs.filter(
+    let docsToBeAdded = allDocs.filter(
       (obj2) => !inConsultation.some((obj1) => obj1.id === obj2.id)
     );
-    let canBeAdded2 = allPrescriptions.filter(
+    let prescriptionsToBeAdded = allPrescriptions.filter(
       (obj2) => !inConsultation.some((obj1) => obj1.id === obj2.id)
     );
 
-    return [inConsultation, canBeAdded, canBeAdded2];
+    return [inConsultation, docsToBeAdded, prescriptionsToBeAdded];
   } catch (err) {
     console.log(err);
     Toast.show("Unable to fetch all documents of a consultation", 10);
   }
 }
 
-async function downloadDocument(documentId, fileName) {
+async function downloadDocument(documentId, fileName, fileType) {
   const config = {
     method: "GET",
     "Content-Type": "multipart/form-data",
@@ -91,7 +91,7 @@ async function downloadDocument(documentId, fileName) {
         path: filePath,
         showNotification: true,
       });
-      RNFetchBlob.android.actionViewIntent(filePath, "application/pdf");
+      RNFetchBlob.android.actionViewIntent(filePath, fileType);
     });
 
     const android = RNFetchBlob.android;
@@ -100,30 +100,6 @@ async function downloadDocument(documentId, fileName) {
     Toast.show("Document not found ", 10);
   }
 }
-
-// async function viewDocument(documentId) {
-//   const config = {
-//     method: "GET",
-//     "Content-Type": "multipart/form-data",
-//     headers: {
-//       "ngrok-skip-browser-warning": "true",
-//       Authorization: `Bearer ${await getToken()}`,
-//       Accept: "application/json",
-//     },
-//   };
-//   try {
-//  await refreshToken();
-//     let response = await axios.get(
-//       `${urlBase}/document/download/${documentId}`,
-//       config
-//     );
-//     const pdfstr = response.data;
-//     return pdfstr;
-//   } catch (err) {
-//     Toast.show("Unable to view document", 10);
-//     console.log(err);
-//   }
-// }
 
 async function removeDocument(docId) {
   try {
@@ -181,7 +157,7 @@ async function uploadDocument(patientId) {
   };
   try {
     const doc = await DocumentPicker.pick({
-      type: [DocumentPicker.types.pdf],
+      type: [DocumentPicker.types.pdf, DocumentPicker.types.images],
     });
     const formdata = new FormData();
 
@@ -191,16 +167,44 @@ async function uploadDocument(patientId) {
       name: doc[0].name,
       size: doc[0].size,
     });
-    await refreshToken();
-    let response = await axios.post(
-      `${urlBase}/document/upload/${patientId}`,
-      formdata,
-      config
-    );
+    if (doc[0].size <= 10000000) {
+      await refreshToken();
+      let response = await axios.post(
+        `${urlBase}/document/upload/${patientId}`,
+        formdata,
+        config
+      );
+    } else {
+      Toast.show("File size should be less than 10 MB", 10);
+    }
   } catch (err) {
     console.log(err);
     Toast.show("Unable to upload document", 10);
   }
+}
+
+function enc() {
+  var text = "The quick brown fox jumps over the lazy dog. 👻 👻";
+  var secret = "René Über";
+  var ciphertext = CryptoJS.AES.encrypt(text, secret);
+  console.log("Cipher text: " + ciphertext);
+
+  // var cipherForm = CryptoJS.AES.encrypt(
+  //   JSON.stringify(formdata),
+  //   "&F)J@NcRfTjWnZr4"
+  // ).toString();
+
+  // for (const pair of formdata.entries()) {
+  //   console.log(`${pair[0]}, ${pair[1]}`);
+  //   cryptdata.append();
+  // }
+
+  // console.log("encry", cipherForm);
+
+  var decrypt = CryptoJS.AES.decrypt(ciphertext, secret);
+  //var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+  //console.log("dec", decryptedData);
 }
 
 export {

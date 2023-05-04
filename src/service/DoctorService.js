@@ -59,7 +59,6 @@ const removePatientFromQueue = async (doctorId, patientId) => {
     );
   } catch (err) {
     console.log(err);
-    Toast.show("Unable to remove patient from queue", 10);
   }
 };
 

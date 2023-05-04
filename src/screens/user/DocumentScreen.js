@@ -45,7 +45,7 @@ const DocumentScreen = ({ navigation }) => {
   async function getDocuments() {
     setLoading(true);
     let id = patientInfo.patientId;
-    data = await getAllDocumentsList(id);
+    let data = await getAllDocumentsList(id);
     setDocs(data);
     setLoading(false);
   }
@@ -102,7 +102,11 @@ const DocumentScreen = ({ navigation }) => {
                             icon="download"
                             onPress={async () => {
                               setDownloading(true);
-                              await downloadDocument(item.id, item.name);
+                              await downloadDocument(
+                                item.id,
+                                item.name,
+                                item.document_type
+                              );
                               setDownloading(false);
                             }}
                           ></Button>

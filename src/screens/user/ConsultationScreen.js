@@ -16,6 +16,7 @@ import { downloadDocument } from "../../service/DocumentService";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import { verticalScale } from "../../constants/metrics";
+import { getDoctorById } from "../../service/DoctorService";
 
 const ConsultationScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = React.useState(true);
@@ -38,8 +39,8 @@ const ConsultationScreen = ({ navigation }) => {
     const dateString = dateObj.toLocaleString("en-IN", options);
     const d = dateString.split(/[' ']/);
     const monthname = d[1];
-    const year = d[2];
-    const t = d[3].split(/[':']/);
+    const year = d[5];
+    const t = d[4].split(/[':']/);
     const temp = t[0] == 0 || t[0] == 12 ? 12 : t[0] % 12;
     const time = temp + ":" + t[1];
     const ap = t[0] != 0 && t[0] > 11 ? "PM" : "AM";
@@ -152,7 +153,8 @@ const ConsultationScreen = ({ navigation }) => {
                                     setDownloading(true);
                                     await downloadDocument(
                                       document.id,
-                                      document.name
+                                      document.name,
+                                      document.document_type
                                     );
                                     setDownloading(false);
                                   }}
@@ -183,8 +185,8 @@ const ConsultationScreen = ({ navigation }) => {
                                   "prescription-" +
                                     item.doctorName +
                                     getDateTime(`${item.startTime}`)
-                                      .formattedDay +
-                                    ".pdf"
+                                      .formattedDay,
+                                  "application/pdf"
                                 );
                                 setDownloading(false);
                               }}
@@ -225,10 +227,14 @@ const ConsultationScreen = ({ navigation }) => {
                                 //backgroundColor: "#E2EEDA",
                               }}
                               mode="outlined"
-                              onPress={() => {
-                                // navigation.navigate(routes.DOCTOR_LIST, {
-                                //   followUp: item.consultId,
-                                // });
+                              onPress={async () => {
+                                const doctor = await getDoctorById(
+                                  item.doctorId
+                                );
+                                navigation.navigate(routes.DOCTOR_DETAILS, {
+                                  doctor,
+                                  followUp: item.consultId,
+                                });
                               }}
                             >
                               Same doctor
