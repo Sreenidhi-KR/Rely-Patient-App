@@ -215,42 +215,46 @@ const ConsultationScreen = ({ navigation }) => {
                           }}
                         >
                           <Text style={styles.text}>Follow up</Text>
-                          <Button
-                            labelStyle={styles.text}
-                            style={{
-                              borderRadius: 2,
-                              borderColor: "black",
-                              borderWidth: 0.3,
-                              //backgroundColor: "#E2EEDA",
-                            }}
-                            mode="outlined"
-                            onPress={() => {
-                              navigation.navigate(routes.DOCTOR_LIST, {
-                                followUp: item.consultId,
-                              });
-                            }}
-                          >
-                            Same doctor
-                          </Button>
-                          <Divider />
+                          <View style={{ flexDirection: "row" }}>
+                            <Button
+                              labelStyle={styles.text}
+                              style={{
+                                borderRadius: 2,
+                                borderColor: "black",
+                                borderWidth: 0.3,
+                                //backgroundColor: "#E2EEDA",
+                              }}
+                              mode="outlined"
+                              onPress={() => {
+                                // navigation.navigate(routes.DOCTOR_LIST, {
+                                //   followUp: item.consultId,
+                                // });
+                              }}
+                            >
+                              Same doctor
+                            </Button>
 
-                          <Button
-                            labelStyle={{ ...styles.text }}
-                            style={{
-                              borderRadius: 2,
-                              borderColor: "black",
-                              borderWidth: 0.3,
-                              // backgroundColor: "#E8DDF8",
-                            }}
-                            mode="outlined"
-                            onPress={() => {
-                              navigation.navigate(routes.DOCTOR_LIST, {
-                                followUp: item.consultId,
-                              });
-                            }}
-                          >
-                            Different doctor
-                          </Button>
+                            <View style={{ width: 10 }} />
+
+                            <Button
+                              labelStyle={{ ...styles.text }}
+                              style={{
+                                borderRadius: 2,
+                                borderColor: "black",
+                                borderWidth: 0.3,
+                                // backgroundColor: "#E8DDF8",
+                              }}
+                              mode="outlined"
+                              onPress={() => {
+                                navigation.navigate(routes.DOCTOR_LIST, {
+                                  followUp: item.consultId,
+                                  specialization: item.specialization,
+                                });
+                              }}
+                            >
+                              Different doctor
+                            </Button>
+                          </View>
                         </View>
                       </>
                     </List.Accordion>
