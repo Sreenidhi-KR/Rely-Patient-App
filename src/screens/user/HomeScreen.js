@@ -19,6 +19,7 @@ import routes from "../../navigation/routes";
 import { getFollowUp, getQuickDoctor } from "../../service/ConsultationService";
 import { AuthContext } from "../../context/AuthContext";
 import { verticalScale } from "../../constants/metrics";
+import { getDoctorById } from "../../service/DoctorService";
 
 const HomeScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
@@ -126,6 +127,14 @@ const HomeScreen = ({ navigation }) => {
                         color: "gray",
                         fontSize: 14,
                         fontWeight: "300",
+                      }}
+                      onPress={async () => {
+                        const doctor = await getDoctorById(item.doctorId);
+                        console.log(doctor);
+                        navigation.navigate(routes.DOCTOR_DETAILS, {
+                          doctor,
+                          followUp: item.consultationId,
+                        });
                       }}
                       title={
                         <Text

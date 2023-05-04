@@ -169,7 +169,7 @@ const AddProfile = ({ navigation, route }) => {
         textColor="black"
       />
 
-      <Text style={styles.label}>Pin Code (4 Digit)</Text>
+      <Text style={styles.label}>Pin(4 Digit)</Text>
       <TextInput
         style={styles.input}
         maxLength={4}
